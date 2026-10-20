@@ -1,0 +1,7 @@
+@page "/vendors/{Id:int}"
+@attribute [RouteParent(typeof(VendorsPage))]
+@attribute [RouteName("vendor-details")]
+@attribute [RouteBreadcrumb("Vendor")]
+@inherits CountedPage
+
+<p id="vendor">Vendor @Id (@Counters)</p>

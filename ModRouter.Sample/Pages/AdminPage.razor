@@ -1,0 +1,8 @@
+@page "/account/admin"
+@attribute [RouteParent(typeof(AccountPage))]
+@attribute [RouteName("account-admin")]
+@attribute [RouteTitle("Admin")]
+@attribute [RouteGuard(typeof(AdminOnlyGuard))]
+@inherits CountedPage
+
+<p id="admin">Admin area (@Counters)</p>

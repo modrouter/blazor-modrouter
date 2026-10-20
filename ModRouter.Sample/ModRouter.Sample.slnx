@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Project References/">
+    <Project Path="../ModRouter/ModRouter.csproj" />
+    <Project Path="../ModRouter.AspNetCore/ModRouter.AspNetCore.csproj" />
+  </Folder>
+  <Project Path="../ModRouter.Sample.Extra/ModRouter.Sample.Extra.csproj" />
+  <Project Path="../ModRouter.Benchmarks/ModRouter.Benchmarks.csproj" />
+  <Project Path="../ModRouter.Test/ModRouter.Test.csproj" />
+  <Project Path="../ModRouter.Test.Fixtures/ModRouter.Test.Fixtures.csproj" />
+  <Project Path="ModRouter.Sample.csproj" />
+</Solution>

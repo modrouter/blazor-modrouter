@@ -1,0 +1,17 @@
+@namespace ModRouter.Components
+@using Microsoft.AspNetCore.Components.Web
+@implements IDisposable
+
+<a @attributes="AdditionalAttributes"
+   href="@(Disabled ? null : _state.Href)"
+   target="@(Disabled ? null : Target)"
+   class="@_state.ClassName(Class)"
+   style="@Style"
+   role="@(Disabled ? "link" : null)"
+   aria-disabled="@(Disabled ? "true" : null)"
+   aria-current="@_state.AriaCurrent"
+   @onmouseenter="IntentMouse"
+   @onmouseleave="LeaveMouse"
+   @onfocus="IntentFocus"
+   @onblur="LeaveFocus"
+   @ontouchstart="IntentTouch">@ChildContent</a>

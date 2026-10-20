@@ -1,0 +1,10 @@
+@page "/customers/{Id:int}"
+@attribute [RouteParent(typeof(CustomersPage))]
+@attribute [RouteName("customer-details")]
+@attribute [RouteTitle("Customer")]
+@inherits CountedPage
+
+<div id="details">
+    <h3>Customer @Id <small>(@Counters)</small></h3>
+    <ModRouterOutlet />
+</div>

@@ -1,0 +1,16 @@
+<Project>
+	<!-- NuGet metadata shared by the packable ModRouter projects (ModRouter and ModRouter.AspNetCore): one version for the pair, bumped
+	     by hand as docs/versioning.md in ModRouter describes. -->
+	<PropertyGroup>
+		<Version>0.1.0-preview.1</Version>
+		<Authors>Paul Van Gundy</Authors>
+		<Copyright>Copyright (c) Paul Van Gundy</Copyright>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageTags>blazor;router;routing;aspnetcore;razor-components</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PublishRepositoryUrl>false</PublishRepositoryUrl>
+		<ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+	</PropertyGroup>
+</Project>

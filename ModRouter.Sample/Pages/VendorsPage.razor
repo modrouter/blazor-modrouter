@@ -1,0 +1,11 @@
+@page "/vendors"
+@page "/suppliers"
+@attribute [RouteName("vendors")]
+@attribute [RouteCanonicalAlias]
+@attribute [RouteBreadcrumb("Vendors")]
+@inherits CountedPage
+
+<section id="vendors">
+    <h2>Vendors <small>(@Counters)</small></h2>
+    <ModRouterOutlet />
+</section>

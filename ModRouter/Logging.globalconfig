@@ -1,0 +1,7 @@
+is_global = true
+
+# Every router log entry goes through Diagnostics/RouterLog ([LoggerMessage], stable EventIds). These two rules (off by
+# default) turn an ad hoc logger.LogXxx call, or an expensive argument evaluated for a disabled level, into a build
+# error under TreatWarningsAsErrors. ArchitectureTests.Only_RouterLog_writes_log_entries checks the same rule in IL.
+dotnet_diagnostic.CA1848.severity = warning
+dotnet_diagnostic.CA1873.severity = warning

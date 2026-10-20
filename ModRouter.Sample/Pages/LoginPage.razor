@@ -1,0 +1,11 @@
+@page "/login"
+@attribute [RouteName("login")]
+@attribute [RouteTitle("Sign in")]
+@inherits CountedPage
+
+<div id="login">
+    <h3>Sign in <small>(@Counters)</small></h3>
+    <p>You were heading to <code id="login-return">@(ReturnUrl ?? "(nowhere)")</code></p>
+    <button id="btn-login-user" @onclick="SignInAsUser">Sign in as user</button>
+    <button id="btn-login-admin" @onclick="SignInAsAdmin">Sign in as admin</button>
+</div>

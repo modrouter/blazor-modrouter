@@ -1,0 +1,9 @@
+@page "/customers"
+@attribute [RouteName("customers")]
+@attribute [RouteTitle("Customers")]
+@inherits CountedPage
+
+<section id="customers">
+    <h2>Customers <small>(@Counters)</small></h2>
+    <ModRouterOutlet />
+</section>

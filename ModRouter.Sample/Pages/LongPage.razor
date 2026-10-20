@@ -1,0 +1,7 @@
+@page "/long/{Id:int}"
+@attribute [RouteName("long")]
+@attribute [RouteTitle("Long")]
+@inherits CountedPage
+
+<h1 id="long-heading">Long page @Id <small>(@Counters)</small></h1>
+<div id="long-body" style="height: 3000px; background: linear-gradient(#eef, #99c)">a tall page, so there is something to scroll</div>

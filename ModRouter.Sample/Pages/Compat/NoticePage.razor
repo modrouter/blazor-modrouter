@@ -1,0 +1,8 @@
+@page "/notice"
+@attribute [RouteName("notice")]
+@attribute [RouteTitle("Notice")]
+@attribute [AllowAnonymous]
+@inherits CountedPage
+
+@* [AllowAnonymous] opts out of the folder's [Authorize]: open to everyone, like a site's Index or NotAuthorized page. *@
+<p id="notice">Notice (open to everyone) (@Counters)</p>

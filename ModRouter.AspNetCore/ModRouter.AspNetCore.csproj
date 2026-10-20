@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\ModRouter.Package.props" />
+	<PropertyGroup Label="Globals">
+		<Configurations>Debug;Release;UAT;QA;LD_Debug</Configurations>
+	</PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageId>ModRouter.AspNetCore</PackageId>
+		<Description>The ASP.NET Core pieces of ModRouter for server hosts: sets the HTTP status (404, 401, 403, 500, 302) of a server-rendered page from the route state.</Description>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="/" />
+	</ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="ModRouter.Test" />
+	</ItemGroup>
+	<ItemGroup>
+		<!-- HttpContext lives here, not in the router package, which also runs in the browser. -->
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ModRouter\ModRouter.csproj" />
+	</ItemGroup>
+</Project>

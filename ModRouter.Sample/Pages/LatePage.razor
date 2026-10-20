@@ -1,0 +1,13 @@
+@page "/late"
+@attribute [RouteName("late")]
+@attribute [RouteTitle("Late")]
+@inherits CountedPage
+
+@if (_ready)
+{
+    <h1 id="late-heading">Late heading <small>(@Counters)</small></h1>
+}
+else
+{
+    <p id="late-fallback">the heading renders after an await...</p>
+}

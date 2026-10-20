@@ -1,0 +1,7 @@
+@page "/customers/{Id:int}/orders/{OrderId:guid}"
+@attribute [RouteParent(typeof(CustomerDetailsPage))]
+@attribute [RouteName("customer-order-details")]
+@attribute [RouteTitle("Order")]
+@inherits CountedPage
+
+<p id="order">Order @OrderId of customer @Id (@Counters)</p>

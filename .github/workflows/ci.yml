@@ -1,0 +1,64 @@
+# The CI for ModRouter: the same commands run locally from the repository root.
+name: ModRouter CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (${{ matrix.framework }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: [net8.0, net9.0, net10.0]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+            10.0.x
+      - name: Build (warnings are errors)
+        run: dotnet build ModRouter.Test/ModRouter.Test.csproj -c Release -f ${{ matrix.framework }}
+      - name: Test
+        run: dotnet test ModRouter.Test/ModRouter.Test.csproj -c Release -f ${{ matrix.framework }} --no-build --logger "trx;LogFileName=test-${{ matrix.framework }}.trx"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.framework }}
+          path: "**/TestResults/*.trx"
+
+  pack:
+    name: Pack
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+            10.0.x
+      - name: Pack
+        run: |
+          dotnet pack ModRouter/ModRouter.csproj -c Release -o artifacts
+          dotnet pack ModRouter.AspNetCore/ModRouter.AspNetCore.csproj -c Release -o artifacts
+      - name: Check the ModRouter package contents
+        run: |
+          package=$(ls artifacts/ModRouter.[0-9]*.nupkg)
+          listing=$(unzip -Z1 "$package")
+          for entry in lib/net8.0/ModRouter.dll lib/net9.0/ModRouter.dll lib/net10.0/ModRouter.dll analyzers/dotnet/cs/ModRouter.Generators.dll staticwebassets/mod-router.js README.md; do
+            echo "$listing" | grep -qx "$entry" || { echo "missing $entry"; exit 1; }
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: artifacts/*

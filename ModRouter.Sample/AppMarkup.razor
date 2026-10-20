@@ -1,0 +1,46 @@
+@* ?mode=markup: the markup facade. The startup routes (home, vendors, query, the slice 3a routes) come from Program.cs;
+   the customers tree and the slice 3b pages are declared here and compiled with them on the router's first render. *@
+<ModRouter DefaultLayout="typeof(MainLayout)">
+    <Routes>
+        <ModRouteEntry Path="/customers" Component="typeof(CustomersPage)" Name="customers" Title="Customers">
+            <ModRouteEntry Index Component="typeof(CustomerListPage)" Name="customer-list" />
+            <ModRouteEntry Path="{id:int}" Component="typeof(CustomerDetailsPage)" Name="customer-details" TitleFunc="@(p => $"Customer {p["id"]}")">
+                <ModRouteEntry Path="orders/{orderId:guid}" Component="typeof(OrderPage)" Name="customer-order-details" TitleFunc="@(p => $"Order {p["orderId"]}")" />
+            </ModRouteEntry>
+        </ModRouteEntry>
+        <ModRouteEntry Path="/long/{id:int}" Component="typeof(LongPage)" Name="long" TitleFunc="@(p => $"Long {p["id"]}")" />
+        <ModRouteEntry Path="/late" Component="typeof(LatePage)" Name="late" Title="Late" />
+        <ModRouteEntry Path="/anchors" Component="typeof(AnchorsPage)" Name="anchors" Title="Anchors" />
+        <ModRouteEntry Path="/no-heading" Component="typeof(NoHeadingPage)" Name="no-heading" Title="No heading" />
+        <ModRouteEntry Path="@_aboutPath" Component="typeof(QueryPage)" Name="@(Duplicate ? "home" : "about")" Title="About" />
+        @if (_lateEntry)
+        {
+            <ModRouteEntry Path="/late-entry" Component="typeof(HomePage)" Name="late-entry" Title="Late entry" />
+        }
+    </Routes>
+    <Loading>
+        <p id="loading">Loading...</p>
+    </Loading>
+    <NotFound>
+        <p id="not-found">Not found.</p>
+    </NotFound>
+    <NotAuthorized Context="error">
+        <p id="not-authorized" role="alert">
+            @error.Message
+            <button id="btn-retry-na" @onclick="error.Retry">Check again</button>
+        </p>
+    </NotAuthorized>
+    <Error Context="error">
+        <p id="route-error" role="alert">
+            @error.Kind: @error.Message
+            @if (error.IsChainLevel)
+            {
+                <button id="btn-retry" @onclick="error.Retry">Retry</button>
+            }
+        </p>
+    </Error>
+</ModRouter>
+<p>
+    <button id="btn-late-entry" @onclick="AddLateEntry">Add an entry after the freeze</button>
+    <button id="btn-move-entry" @onclick="MoveAboutEntry">Change an entry's Path after the freeze</button>
+</p>

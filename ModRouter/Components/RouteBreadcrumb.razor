@@ -1,0 +1,27 @@
+@namespace ModRouter.Components
+@implements IDisposable
+
+@if (_crumbs.Count > 0)
+{
+    <nav @attributes="AdditionalAttributes" class="@Class" style="@Style" aria-label="@AriaLabel">
+        <ol>
+            @foreach (var crumb in _crumbs)
+            {
+                <li>
+                    @if (crumb.Href is not null)
+                    {
+                        <a href="@crumb.Href">@crumb.Label</a>
+                    }
+                    else
+                    {
+                        <span aria-current="@(crumb.IsCurrent ? "page" : null)">@crumb.Label</span>
+                    }
+                    @if (!crumb.IsCurrent)
+                    {
+                        <span aria-hidden="true">@Separator</span>
+                    }
+                </li>
+            }
+        </ol>
+    </nav>
+}

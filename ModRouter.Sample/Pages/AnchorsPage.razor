@@ -1,0 +1,12 @@
+@page "/anchors"
+@attribute [RouteName("anchors")]
+@attribute [RouteTitle("Anchors")]
+@inherits CountedPage
+
+<h1 id="anchors-heading">Anchors <small>(@Counters)</small></h1>
+<div style="height: 1800px">filler above the target</div>
+@if (_ready)
+{
+    <h2 id="target">Target (rendered after the navigation)</h2>
+}
+<div style="height: 1800px">filler below the target</div>

@@ -1,0 +1,10 @@
+@page "/reports"
+@attribute [RouteName("reports")]
+@attribute [RouteTitle("Reports")]
+@attribute [Authorize(Roles = "admin")]
+@inherits CountedPage
+
+@* Administrators only: the folder's [Authorize] (any signed-in user) AND this role, as [Authorize] attributes combine.
+   An anonymous visitor gets NotAuthorized, so the app's fragment renders RedirectToLogin; a signed-in user gets the
+   message; an administrator the page. *@
+<p id="reports">Reports (administrators only) (@Counters)</p>

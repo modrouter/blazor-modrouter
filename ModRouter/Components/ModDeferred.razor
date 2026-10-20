@@ -1,0 +1,25 @@
+@using global::ModRouter.Core.Loading
+@typeparam T
+
+@if (_value is null)
+{
+    @Fallback
+}
+else
+{
+    switch (_value.Status)
+    {
+        case DeferredStatus.Succeeded when ChildContent is not null:
+            @ChildContent(_value.Value!)
+            break;
+        case DeferredStatus.Faulted when Error is not null:
+            @Error(_value.Error!)
+            break;
+        case DeferredStatus.Faulted:
+            <div role="alert" data-mod-deferred-error>@_value.Error!.Message</div>
+            break;
+        case DeferredStatus.Pending:
+            @Fallback
+            break;
+    }
+}

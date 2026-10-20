@@ -1,0 +1,46 @@
+@typeparam T
+
+@if (_stream is null)
+{
+    @Fallback
+}
+else
+{
+    var items = _stream.Items;
+    var error = _stream.Error;
+
+    if (items.Count == 0 && error is null)
+    {
+        if (_stream.IsComplete)
+        {
+            @Empty
+        }
+        else
+        {
+            @Fallback
+        }
+    }
+    else
+    {
+        @foreach (var item in items)
+        {
+            @ItemTemplate?.Invoke(item)
+        }
+
+        if (error is not null)
+        {
+            if (Error is not null)
+            {
+                @Error(error)
+            }
+            else
+            {
+                <div role="alert" data-mod-stream-error>@error.Message</div>
+            }
+        }
+        else if (!_stream.IsComplete)
+        {
+            @InProgress
+        }
+    }
+}

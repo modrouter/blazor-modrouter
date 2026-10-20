@@ -1,0 +1,70 @@
+@inherits LayoutComponentBase
+
+@* A permanent alert that belongs to the layout, not to the router: the focus fallback must never choose it. *@
+<div id="layout-alert" role="alert">Planned maintenance tonight at 22:00 (a notice of the layout).</div>
+<header>
+    <nav>
+        <a id="link-home" href="">Home</a> |
+        <a id="link-customers" href="customers">Customers</a> |
+        <a id="link-c42" href="customers/42">Customer 42</a> |
+        <a id="link-c43" href="customers/43">Customer 43</a> |
+        <a id="link-order" href="customers/42/orders/4ec9a2a2-1b9f-47b9-8d1a-6e8b2f2b9d77">Order</a> |
+        <a id="link-vendors" href="vendors">Vendors</a> |
+        <a id="link-v5" href="vendors/5">Vendor 5</a> |
+        <a id="link-query-a" href="query?tab=a">Query a</a> |
+        <a id="link-query-b" href="query?tab=b&amp;q=hello&amp;nums=1&amp;nums=2">Query b</a> |
+        <a id="link-nope" href="nope">Unknown</a>
+    </nav>
+    <nav id="nav-3a">
+        <a id="link-account" href="account">Account</a> |
+        <a id="link-admin-direct" href="account/admin">Admin</a> |
+        <a id="link-slow" href="slow/7">Slow 7</a> |
+        <a id="link-slow8" href="slow/8">Slow 8</a> |
+        <a id="link-flaky" href="flaky/1">Flaky 1</a> |
+        <a id="link-flaky2" href="flaky/2">Flaky 2</a> |
+        <a id="link-old" href="old/customers/42">Old customer URL</a> |
+        <a id="link-supplier" href="suppliers/5">Supplier 5</a> |
+        <a id="link-loop" href="loop-a">Loop</a> |
+        <a id="link-blocked" href="blocked">Blocked</a>
+    </nav>
+    <nav id="nav-3b">
+        <RouteLink Route="home" data-testid="rl-home">Home</RouteLink> |
+        <RouteLink Route="customers" data-testid="rl-customers">Customers</RouteLink> |
+        <RouteLink Route="customer-details" Parameters="@(new { id = 42 })" data-testid="rl-c42">Customer 42</RouteLink> |
+        <RouteLink Route="long" Parameters="@(new { id = 1 })" data-testid="rl-long1">Long 1</RouteLink> |
+        <RouteLink Route="long" Parameters="@(new { id = 2 })" data-testid="rl-long2">Long 2</RouteLink> |
+        <RouteLink Route="late" data-testid="rl-late">Late</RouteLink> |
+        <RouteLink Route="anchors" Fragment="target" data-testid="rl-anchors-target">Anchors#target</RouteLink> |
+        <RouteLink Route="no-heading" data-testid="rl-no-heading">No heading</RouteLink> |
+        <RouteLink Href="customers" Match="RouteLinkMatch.Exact" data-testid="rl-href-customers">Href customers</RouteLink>
+    </nav>
+    <p>
+        Breadcrumb <RouteBreadcrumb Home="Home" data-testid="breadcrumb" />
+        <input id="search" placeholder="type here" />
+    </p>
+    <p>
+        <button id="btn-nav" @onclick="NavigateToCustomer43">NavigateTo("customers/43")</button>
+        <button id="btn-nav-rooted" @onclick="NavigateToCustomer43Rooted">NavigateTo(GetRouteUrl customer-details 43)</button>
+        <button id="btn-route-42" @onclick="NavigateToCustomer42ByName">NavigateToRoute customer-details 42</button>
+        <button id="btn-route-order" @onclick="NavigateToOrderWithAmbientId">NavigateToRoute order (ambient id)</button>
+        Route URL: <code id="route-url">@RouteUrl</code>
+    </p>
+    <p>
+        Session <code id="session">@Session</code>
+        <button id="btn-user" @onclick="SignInAsUser">User</button>
+        <button id="btn-admin" @onclick="SignInAsAdmin">Admin</button>
+        <button id="btn-signout" @onclick="Session.SignOut">Sign out</button>
+        <ModNavigationIndicator><strong id="busy">Navigating...</strong></ModNavigationIndicator>
+    </p>
+    <StatePanel />
+</header>
+<hr />
+@if (_useScroller)
+{
+    <div id="scroller"><main id="body">@Body</main></div>
+}
+else
+{
+    <main id="body">@Body</main>
+}
+<footer><small id="layout-instance">layout instance #@Instance</small></footer>

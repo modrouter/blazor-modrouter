@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ModRouter sample</title>
+    <base href="/" />
+    <style>
+        #scroller { height: 420px; overflow: auto; border: 1px solid #888; }
+    </style>
+</head>
+<body>
+    <div id="app">Loading...</div>
+    <script>
+        // The sample runs once with the page scrolling and once (?scroller=1) with the content in a scrolling container.
+        window.sampleUsesScroller = () => new URLSearchParams(location.search).has('scroller');
+        // ?mode=pages | markup | markup-dup | compat picks the route source (see Program.cs); the default is the fluent map.
+        window.sampleMode = () => new URLSearchParams(location.search).get('mode') ?? '';
+        // ?slownav=1 (compat mode) makes OnNavigateAsync take 1.5 s.
+        window.sampleSlowNav = () => new URLSearchParams(location.search).has('slownav');
+        // What the user sees, in order, from the moment Blazor boots: every change of these milestones. The mode checks
+        // read it to prove that a deep link never shows not-found, and that only a slow first navigation shows Loading.
+        window.__domLog = [];
+        (() => {
+            let last = '';
+            const snapshot = () => JSON.stringify({
+                loading: !!document.getElementById('loading'),
+                navigating: !!document.getElementById('navigating'),
+                layout: !!document.querySelector('#app header'),
+                page: !!document.querySelector('#body > *'),
+                notFound: !!document.getElementById('not-found'),
+                error: !!document.getElementById('route-error'),
+            });
+            new MutationObserver(() => {
+                const now = snapshot();
+                if (now !== last) { last = now; window.__domLog.push({ t: Math.round(performance.now()), ...JSON.parse(now) }); }
+            }).observe(document.getElementById('app'), { childList: true, subtree: true, characterData: true });
+        })();
+    </script>
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+</html>

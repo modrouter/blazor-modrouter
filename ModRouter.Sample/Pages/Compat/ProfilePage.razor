@@ -1,0 +1,7 @@
+@page "/profile"
+@attribute [RouteName("profile")]
+@attribute [RouteTitle("Profile")]
+@inherits CountedPage
+
+@* Only the folder's [Authorize]: any signed-in user. *@
+<p id="profile">Profile (any signed-in user) (@Counters)</p>

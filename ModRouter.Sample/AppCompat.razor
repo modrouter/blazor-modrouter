@@ -1,0 +1,32 @@
+@* ?mode=compat: shaped like the App.razor of a typical site with the two
+   tag names fully qualified: Razor ignores a `@using Router = ...` alias for a TAG name (the tag would still bind to the
+   built-in Router, silently), and importing the Compatibility namespace next to the framework's is RZ9985. It differs from
+   a typical file, for the browser checks: an extra <Navigating> block, RedirectToNotAuthorized
+   takes routeData (so the message can name the page and template) and Identity carries a null-forgiving `!`. *@
+
+<CascadingAuthenticationState>
+    <ModRouter.Compatibility.Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="@_lazyLoadedAssemblies" OnNavigateAsync="@OnNavigate">
+        <Found Context="routeData">
+            <ModRouter.Compatibility.AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    @if (!context.User.Identity!.IsAuthenticated)
+                    {
+                        <RedirectToLogin />
+                    }
+                    else
+                    {
+                        @RedirectToNotAuthorized(routeData);
+                    }
+                </NotAuthorized>
+            </ModRouter.Compatibility.AuthorizeRouteView>
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(MainLayout)">
+                @RedirectToDashboard();
+            </LayoutView>
+        </NotFound>
+        <Navigating>
+            <p id="navigating">Navigating (OnNavigateAsync is running)...</p>
+        </Navigating>
+    </ModRouter.Compatibility.Router>
+</CascadingAuthenticationState>

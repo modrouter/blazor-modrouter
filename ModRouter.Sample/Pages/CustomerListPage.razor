@@ -1,0 +1,7 @@
+@page "/customers"
+@attribute [RouteParent(typeof(CustomersPage))]
+@attribute [RouteIndex]
+@attribute [RouteName("customer-list")]
+@inherits CountedPage
+
+<p id="list">Pick a customer (@Counters)</p>

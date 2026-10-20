@@ -1,0 +1,7 @@
+@page "/flaky/{Id:int}"
+@attribute [RouteParent(typeof(FlakyPage))]
+@attribute [RouteName("flaky-details")]
+@attribute [RouteLoader(typeof(FlakyLoader))]
+@inherits CountedPage
+
+<p id="flaky-details">@(Data.GetRequired<string>()) (@Counters)</p>

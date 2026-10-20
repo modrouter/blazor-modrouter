@@ -1,0 +1,23 @@
+<ModRouter DefaultLayout="typeof(MainLayout)">
+    <Loading>
+        <p id="loading">Loading...</p>
+    </Loading>
+    <NotFound>
+        <p id="not-found">Not found.</p>
+    </NotFound>
+    <NotAuthorized Context="error">
+        <p id="not-authorized" role="alert">
+            @error.Message
+            <button id="btn-retry-na" @onclick="error.Retry">Check again</button>
+        </p>
+    </NotAuthorized>
+    <Error Context="error">
+        <p id="route-error" role="alert">
+            @error.Kind: @error.Message
+            @if (error.IsChainLevel)
+            {
+                <button id="btn-retry" @onclick="error.Retry">Retry</button>
+            }
+        </p>
+    </Error>
+</ModRouter>

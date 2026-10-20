@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+	<Import Project="..\ModRouter.Package.props" />
+	<PropertyGroup Label="Globals">
+		<Configurations>Debug;Release;UAT;QA;LD_Debug</Configurations>
+	</PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageId>ModRouter</PackageId>
+		<Description>A Blazor router with nested and named routes, a deterministic precedence-based matcher, guards, loaders with caching, redirects, keep-alive pages, view transitions and server-rendering support (HTTP status, loader data across the prerender). Replaces the built-in Router; ships typed-route helpers through a bundled source generator.</Description>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="/" />
+		<!-- The typed-route source generator ships inside this package as an analyzer: the project reference only orders the build, and
+		     the built assembly is packed by hand because a generator is not a library the package depends on. -->
+		<ProjectReference Include="..\ModRouter.Generators\ModRouter.Generators.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" />
+		<None Include="..\ModRouter.Generators\bin\$(Configuration)\ModRouter.Generators.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	</ItemGroup>
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+		<!-- CA1848/CA1873 as errors: logging goes through Diagnostics/RouterLog only. -->
+		<GlobalAnalyzerConfigFiles Include="Logging.globalconfig" />
+	</ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="ModRouter.Test" />
+	</ItemGroup>
+	<!-- Each target framework builds against the first release of its own ASP.NET Core major, so the package asks for no more than
+	     that major needs. AuthenticationStateProvider / AuthenticationState for the authorization guard, the re-check on
+	     authentication change and the compatibility AuthorizeRouteView come from Components.Authorization; IAuthorizeData /
+	     IAllowAnonymous come with it (Microsoft.AspNetCore.Authorization). Only Authorization/ and Compatibility/ may use either
+	     (see ArchitectureTests). -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.0" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.10" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="10.0.10" />
+	</ItemGroup>
+	<!-- Core/ must stay free of Blazor and JS interop (see ArchitectureTests); only Navigation/, Components/, Authorization/ and Compatibility/ use the packages above. -->
+</Project>

@@ -1,0 +1,6 @@
+@page "/extra/{Id:int}"
+@attribute [RouteParent(typeof(ExtraPage))]
+@attribute [RouteName("extra-child")]
+@attribute [RouteTitle("Extra child")]
+
+<p id="extra-child">Extra child @Id</p>

@@ -1,0 +1,17 @@
+@implements IDisposable
+
+<p id="state">
+    Path <code id="state-path">@State?.Path</code>
+    Query <code id="state-query">@State?.Query</code>
+    Trigger <code id="state-trigger">@State?.Trigger</code>
+    Failure <code id="state-failure">@State?.Failure</code>
+    Leaf <code id="state-leaf">@State?.Chain?.Leaf.RouteName</code>
+    Title <code id="state-title">@State?.Chain?.Leaf.Title</code>
+    Error <code id="state-error">@State?.Error?.Kind</code>
+    FailedLevel <code id="state-failed-level">@State?.FailedLevel</code>
+    RedirectedFrom <code id="state-redirected">@State?.RedirectedFrom.Count</code>
+    DocumentTitle <code id="state-doc-title">@State?.Title</code>
+    OnNavigate <code id="state-on-navigate">@AppCompat.OnNavigateCalls</code>
+    OnNavigatePath <code id="state-on-navigate-path">@AppCompat.LastOnNavigatePath</code>
+    OnNavigateCanceled <code id="state-on-navigate-canceled">@AppCompat.OnNavigateCanceled</code>
+</p>

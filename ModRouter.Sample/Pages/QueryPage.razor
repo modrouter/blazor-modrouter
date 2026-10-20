@@ -1,0 +1,6 @@
+@page "/query"
+@attribute [RouteName("query")]
+@attribute [RouteTitle("Query")]
+@inherits CountedPage
+
+<p id="query">tab=@Tab q=@Search nums=@string.Join(",", Nums ?? []) (@Counters)</p>

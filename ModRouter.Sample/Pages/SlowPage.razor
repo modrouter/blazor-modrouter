@@ -1,0 +1,23 @@
+@page "/slow/{Id:int}"
+@attribute [RouteName("slow")]
+@attribute [RouteLoader<SlowCustomerLoader>]
+@inherits CountedPage
+
+<div id="slow">
+    <h3 id="slow-name">@(Data.GetRequired<SlowCustomer>().Name)</h3>
+    <small>(@Counters)</small>
+
+    <h4>Orders (deferred)</h4>
+    <ModDeferred T="string[]" Name="orders">
+        <Fallback><i id="orders-fallback">loading orders...</i></Fallback>
+        <ChildContent Context="orders"><span id="orders">@string.Join(", ", orders)</span></ChildContent>
+        <Error Context="error"><span id="orders-error">@error.Message</span></Error>
+    </ModDeferred>
+
+    <h4>Feed (streamed)</h4>
+    <ModStream T="int" Name="feed">
+        <Fallback><i id="feed-fallback">waiting for the first item...</i></Fallback>
+        <ItemTemplate Context="item"><span class="feed-item">@item </span></ItemTemplate>
+        <InProgress><i id="feed-more">more coming...</i></InProgress>
+    </ModStream>
+</div>

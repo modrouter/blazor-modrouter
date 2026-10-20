@@ -1,0 +1,10 @@
+@page "/account"
+@attribute [RouteName("account")]
+@attribute [RouteTitle("Account")]
+@attribute [RouteGuard<SignedInGuard>]
+@inherits CountedPage
+
+<section id="account">
+    <h2>Account <small>(@Counters)</small></h2>
+    <ModRouterOutlet />
+</section>
