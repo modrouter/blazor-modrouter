@@ -45,11 +45,20 @@
       "_gitContribute": {
         "repo": "https://github.com/modrouter/blazor-modrouter",
         "branch": "main"
-      }
+      },
+      "_appLogoPath": "images/logo.svg",
+      "_appFaviconPath": "images/favicon.png"
     },
     "template": [
       "default",
       "modern"
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
     ]
   }
 }

@@ -1,3 +1,5 @@
+<p align="center"><img src="docs-site/images/logo-128.png" alt="ModRouter logo" width="96" height="96"></p>
+
 # ModRouter
 
 An alternative to the built-in Blazor `Router` with nested routes, named routes, reverse URL generation and a deterministic
