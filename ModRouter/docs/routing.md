@@ -1,7 +1,6 @@
 # Routing
 
 The routing core: templates, constraints, precedence, the compiled table and how the router renders it. Back to the [README](../README.md).
-This page moves from the original README unchanged apart from slice labels.
 
 ## The routing core (`Core/`)
 
@@ -154,10 +153,9 @@ which is resolved against the base and prepared before it commits like any other
 - **Navigation stages:** `INavigationStage` (registered in DI) runs after the built-in normalize, recognize, bind,
   leave-guard, redirect, guard and loader stages, in registration order. A stage is skipped when the navigation already failed (not
   found, binding failure) or recorded an error, unless it returns `true` from `RunsOnFailure`. A stage returns
-  `StageResult.Continue`, `StageResult.Cancel` or `StageResult.Redirect(url)`. Breaking since slice 3a for stages
-  written against slice 2: `StageResult` is a class, not an enum (returning `default` is a null reference, not
+  `StageResult.Continue`, `StageResult.Cancel` or `StageResult.Redirect(url)`. Note for stage authors: `StageResult` is a class, not an enum (returning `default` is a null reference, not
   `Continue`), `RouteNavigationContext.From` is nullable (null before the first commit) and `RouteNavigationContext.Services` is
-  required. Breaking since slice 4b: the context is named `RouteNavigationContext` (it was `NavigationContext`, which is
+  required. The context is named `RouteNavigationContext` (it was `NavigationContext`, which is
   CS0104-ambiguous with `Microsoft.AspNetCore.Components.Routing.NavigationContext` in a file that imports both namespaces).
 - **Verification:** `ModRouter.Sample` plus `tools/verify.mjs` check all of this in a real browser;
   bUnit alone cannot reproduce Blazor's navigation hooks.

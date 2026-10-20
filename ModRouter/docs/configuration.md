@@ -1,7 +1,6 @@
 # Configuration
 
 The options AddModRouter takes. Back to the [README](../README.md).
-This page moves from the original README unchanged.
 
 ## Configuration
 

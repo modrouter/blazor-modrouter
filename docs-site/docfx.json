@@ -1,0 +1,55 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../ModRouter",
+          "files": [
+            "ModRouter.csproj"
+          ]
+        }
+      ],
+      "dest": "api",
+      "properties": {
+        "TargetFramework": "net10.0"
+      },
+      "outputFormat": "apiPage",
+      "namespaceLayout": "nested"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "index.md",
+          "toc.yml",
+          "api/index.md",
+          "api/**.yml"
+        ]
+      },
+      {
+        "src": "..",
+        "files": [
+          "ModRouter/README.md",
+          "ModRouter/CHANGELOG.md",
+          "ModRouter/docs/**.md",
+          "ModRouter.Sample/README.md"
+        ]
+      }
+    ],
+    "output": "_site",
+    "globalMetadata": {
+      "_appName": "ModRouter",
+      "_appTitle": "ModRouter",
+      "_enableSearch": true,
+      "_gitContribute": {
+        "repo": "https://github.com/modrouter/blazor-modrouter",
+        "branch": "main"
+      }
+    },
+    "template": [
+      "default",
+      "modern"
+    ]
+  }
+}

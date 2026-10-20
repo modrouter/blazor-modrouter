@@ -18,6 +18,7 @@ documentation index.
 | [`ModRouter.Test`](ModRouter.Test), [`ModRouter.Test.Fixtures`](ModRouter.Test.Fixtures) | The test suite and the pages it routes |
 | [`ModRouter.Sample`](ModRouter.Sample), [`ModRouter.Sample.Extra`](ModRouter.Sample.Extra) | A Blazor WebAssembly demo app with browser checks, and a class library whose pages are found by reflection |
 | [`ModRouter.Benchmarks`](ModRouter.Benchmarks) | BenchmarkDotNet benchmarks for matching, generation, `Explain` and compilation |
+| [`docs-site`](docs-site) | DocFX configuration for the documentation site: the guide in `ModRouter/docs` plus the generated API reference |
 
 ## Build and test
 

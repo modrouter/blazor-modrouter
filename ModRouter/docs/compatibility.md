@@ -1,7 +1,6 @@
 # Compatibility
 
 The drop-in layer over the built-in Router and the compatibility matrix. Back to the [README](../README.md).
-This page moves from the original README unchanged apart from slice labels.
 
 ## Compatibility with the built-in Router
 

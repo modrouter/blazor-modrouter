@@ -1,7 +1,6 @@
 # Observability
 
 Structured log events, tracing, and the navigation history. Back to the [README](../README.md).
-This page moves from the original README unchanged apart from slice labels.
 
 ## Observability
 

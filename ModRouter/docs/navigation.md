@@ -1,7 +1,6 @@
 # Navigation
 
 Guards, loaders, redirects and error states, route links, breadcrumbs, the document title, focus and scroll. Back to the [README](../README.md).
-This page moves from the original README unchanged apart from slice labels.
 
 ## Guards, loaders, redirects and error states
 

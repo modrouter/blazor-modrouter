@@ -1,0 +1,61 @@
+# Builds the documentation site (DocFX: the guide in ModRouter/docs plus the API reference generated from the XML comments)
+# and, on main, publishes it to GitHub Pages. Build locally with: dotnet tool restore && dotnet docfx docs-site/docfx.json
+name: Docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ModRouter/**"
+      - "docs-site/**"
+      - "dotnet-tools.json"
+      - ".github/workflows/docs.yml"
+  pull_request:
+    paths:
+      - "ModRouter/**"
+      - "docs-site/**"
+      - "dotnet-tools.json"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+            10.0.x
+      - name: Restore tools
+        run: dotnet tool restore
+      - name: Build the site
+        run: dotnet docfx docs-site/docfx.json --warningsAsErrors false
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs-site/_site
+
+  deploy:
+    name: Deploy
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

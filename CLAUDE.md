@@ -14,11 +14,12 @@ MODROUTER_TEST_TELEMETRY=listener dotnet test ModRouter.Test   # also run in `hi
 dotnet run --project ModRouter.Sample --urls http://localhost:5199
 node ModRouter.Sample/tools/verify.mjs http://localhost:5199/  # browser checks need Node 22+, Chrome and the running sample
 dotnet run -c Release --project ModRouter.Benchmarks -- --filter "*MatchBenchmarks*" --job short
+dotnet tool restore && dotnet docfx docs-site/docfx.json      # builds the docs site into docs-site/_site (guide + generated API reference)
 ```
 
 - `TreatWarningsAsErrors` is on in the library projects, and `GenerateDocumentationFile` is on, so a public member without an XML comment fails the build (CS1591). CA1848/CA1873 are errors for logging (see below).
 - `ModRouter.Sample/tools/verify-*.mjs` are the only checks of real-browser behavior (Blazor navigation hooks, focus, scroll); bUnit cannot reproduce them. They are not part of `dotnet test` or CI.
-- CI (`.github/workflows/ci.yml`) builds and tests each framework, then packs `ModRouter` and `ModRouter.AspNetCore` and checks the package contents.
+- CI (`.github/workflows/ci.yml`) builds and tests each framework, then packs `ModRouter` and `ModRouter.AspNetCore` and checks the package contents. `.github/workflows/docs.yml` builds the DocFX site and deploys it to GitHub Pages from `main`. The site reuses `ModRouter/docs/*.md` in place (`docs-site/` holds only `docfx.json`, `toc.yml` and the landing page); a new doc page needs a `toc.yml` entry as well as a README row.
 
 ## Architecture
 

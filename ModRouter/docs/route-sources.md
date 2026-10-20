@@ -1,7 +1,6 @@
 # Route sources
 
 How routes get into the table: page discovery, the Route attributes and the markup facade. Back to the [README](../README.md).
-This page moves from the original README unchanged apart from slice labels.
 
 ## Route sources
 

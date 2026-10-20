@@ -38,22 +38,22 @@ of the four table sizes; the allocated bytes are identical at every size.
 | Encoded | 1,648 | 816 | 50% | 300 | 195 |
 | Catch-all | 1,296 | 792 | 39% | 203 | 144 |
 
-"Before" is the router before slice 4d changed the match path; "After" is the router as shipped. The change was a count-then-fill
+"Before" is the router before the match path was optimized; "After" is the router as shipped. The change was a count-then-fill
 path splitter, a span-based percent-decoder (a stack or pooled buffer instead of a `List<byte>`, an intermediate array and a
 substring per escape), one parameter dictionary for a level with no inherited parameters (it used to build two) and
 `string.Join` instead of LINQ for a catch-all. The encoded path gains most. The miss time is within the noise of a short job: the
 splitter now counts before it fills.
 
-**Generating a URL**: about 210 to 260 ns and 1.13 KB per call at every table size. Not changed by slice 4d.
+**Generating a URL**: about 210 to 260 ns and 1.13 KB per call at every table size. Not changed by that optimization.
 
 **Compiling the table** allocates about 6 KB per route, and its time per route grows with the table (about 1 microsecond at 10
-and 100 routes, 2 at 1,000, 5 at 10,000), paid once at startup (roughly 2 ms for 1,000 routes and 50 ms for 10,000). Slice 4d added about 5% to 7% to the allocations of a compile, because the trie now
+and 100 routes, 2 at 1,000, 5 at 10,000), paid once at startup (roughly 2 ms for 1,000 routes and 50 ms for 10,000). The optimization added about 5% to 7% to the allocations of a compile, because the trie now
 computes a canonical key for each constraint list (48.7 KB to 51.0 KB at 10 routes, 54.6 MB to 58.4 MB at 10,000); the time is
 within the noise of a short job.
 
 **`Explain` is linear in the number of routes** by design: it tests every route against the path and keeps the verdict of each
-(Before figures: 0.7 microseconds at 10 routes, 46 microseconds at 1,000, about 0.5 milliseconds and 2.3 MB at 10,000; slice 4d
-changed only how it ranks matching candidates and did not measure it again). It is the engine of the
+(Before figures: 0.7 microseconds at 10 routes, 46 microseconds at 1,000, about 0.5 milliseconds and 2.3 MB at 10,000; that
+optimization changed only how it ranks matching candidates and did not measure it again). It is the engine of the
 debug panel's explorer and of diagnostics, not a hot path, and nothing in a navigation calls it.
 
 ## Match time does not depend on the number of routes

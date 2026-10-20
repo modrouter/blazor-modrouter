@@ -1,7 +1,6 @@
 # Authorization
 
 Authorization as a route guard. Back to the [README](../README.md).
-This page moves from the original README unchanged apart from slice labels.
 
 ## Authorization
 
@@ -39,7 +38,7 @@ routes.Route("/reports", typeof(ReportsPage), name: "reports").Authorize(roles: 
   render, the level shows the not-authorized content (`ModRouter.NotAuthorized`, the outlet's, or the compatibility
   `AuthorizeRouteView.NotAuthorized`). The router never redirects on a denial; the application's `RedirectToLogin` stays
   in its fragment. `RouteError.GuardType` names the guard that denied or threw; for an `[Authorize]` denial it is the
-  router's own guard, which is internal since slice 4d, so a fragment tells its own guards apart by comparing `GuardType`
+  router's own guard, which is internal, so a fragment tells its own guards apart by comparing `GuardType`
   with their types and treats anything else as the built-in denial.
 - **A denial ends the guard chain.** The pipeline records the first denial and stops running guards (`GuardStage` returns
   there), and `AuthorizeAttributeGuard` is attached **first**. An application `[RouteGuard<...>]` that redirects an

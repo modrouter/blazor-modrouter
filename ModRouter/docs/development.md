@@ -1,7 +1,6 @@
 # Development
 
 Running the tests, the sample, its browser checks and the benchmarks. Back to the [README](../README.md).
-This page moves from the original README unchanged apart from the additions at the end.
 
 ## Tests
 
