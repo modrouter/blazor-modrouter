@@ -1,7 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup Label="Globals">
-		<Configurations>Debug;Release;UAT;QA;LD_Debug</Configurations>
-	</PropertyGroup>
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>

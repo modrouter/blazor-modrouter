@@ -1,7 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup Label="Globals">
-		<Configurations>Debug;Release;UAT;QA;LD_Debug</Configurations>
-	</PropertyGroup>
 	<PropertyGroup>
 		<!-- netstandard2.0 so every host compiler (Visual Studio, MSBuild, the SDK) can load the generator. -->
 		<TargetFramework>netstandard2.0</TargetFramework>
