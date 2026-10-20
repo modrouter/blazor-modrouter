@@ -88,4 +88,4 @@ Paul Van Gundy
 
 ## License
 
-Apache-2.0, see [LICENSE](../LICENSE).
+Apache-2.0, see [LICENSE](https://github.com/modrouter/blazor-modrouter/blob/main/LICENSE).
