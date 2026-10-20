@@ -55,7 +55,7 @@ compatibility `Router`.
 | [Development](docs/development.md) | Running the tests, the sample and its browser checks, and the benchmarks |
 | [Performance](docs/performance.md) | What matching, generation, `Explain` and compilation cost, measured over 10 to 10,000 routes |
 | [Versioning](docs/versioning.md) | Semantic versioning, what counts as public API, deprecation, supported frameworks and how a release is cut |
-| [Known limitations](docs/known-limitations.md) | Every open question from the slice reviews, each marked fixed, accepted or deferred, and the public API surface |
+| [Known limitations](docs/known-limitations.md) | Behavior that can surprise you, known gaps, each marked accepted or open, and the public API surface |
 
 ## Requirements
 
@@ -66,10 +66,9 @@ compatibility `Router`.
 
 ## Status
 
-Slices 1 to 4d are built: the Blazor-free core engine, the navigation pipeline and root components, guards, loaders and
-redirects, links, breadcrumbs, title, focus and scroll, route sources, authorization, the compatibility layer, observability, and
-performance and documentation. What is still open, and what was decided not to change, is on the
-[known limitations](docs/known-limitations.md) page.
+Preview (`0.1.0-preview.1`). The core engine, the navigation pipeline and root components, guards, loaders and redirects, links,
+breadcrumbs, title, focus and scroll, route sources, authorization, the compatibility layer and observability are built. What is still
+open, and what was decided not to change, is on the [known limitations](docs/known-limitations.md) page.
 
 ## Develop
 
