@@ -10,10 +10,21 @@ The `ModRouter.Generators` package is a Roslyn source generator. For every page 
 - On `INavigationService`, a `Get{Name}Url` and a `NavigateTo{Name}Async` extension method per route whose parameters are the template's, so a
   missing or mistyped value is a compile error instead of a `RouteUrlGenerationException` at run time.
 
-```razor
-@page "/customers/{id:int}"
-@attribute [RouteName("customer-details")]
+```csharp
+// CustomerDetails.razor.cs, the code-behind of CustomerDetails.razor
+[Route("/customers/{Id:int}")]
+[RouteName("customer-details")]
+public partial class CustomerDetails
+{
+    [Parameter]
+    public int Id { get; set; }
+}
 ```
+
+**Write the attributes in C#, not as `@page` and `@attribute` in the `.razor` file.** A source generator cannot read the code that
+another generator (Razor's) produces in the same build, so with the released .NET SDKs the generator does not see a `[Route]` or `[RouteName]`
+that comes from `@page` and `@attribute`, and the helpers are not generated. `@page` and the `[Route]` attribute mean the same to the router,
+so a page can use either; only the typed helpers need the attributes in C#. See [known limitations](known-limitations.md).
 
 ```csharp
 string url = Navigation.GetCustomerDetailsUrl(42);                       // "/customers/42" (with the base path)

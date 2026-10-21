@@ -1,8 +1,3 @@
-@page "/lessons/names/dock/{Id:int}"
-@attribute [RouteParent(typeof(Lesson2Page))]
-@attribute [RouteName("dock")]
-@attribute [RouteTitle("Dock")]
-
 <XRay Name="L2Dock" Level="1">
     <h2>Dock @Id</h2>
     <p>
@@ -16,11 +11,3 @@
         }
     </p>
 </XRay>
-
-@code {
-    [Parameter]
-    public int Id { get; set; }
-
-    [Inject]
-    INavigationService Navigation { get; set; } = default!;
-}

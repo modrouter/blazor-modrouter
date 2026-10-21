@@ -1,7 +1,3 @@
-@page "/lessons/names"
-@attribute [RouteName("l2")]
-@attribute [RouteTitle("Names instead of URLs")]
-
 <LessonFrame Number="2">
     <Try>
         <ol class="steps">
@@ -74,9 +70,9 @@
         </XRay>
     </Stage>
     <Code>
-        <CodeRef File="Lessons/L2/Lesson2Page.razor">a page that declares its route with <code>@@page</code> and <code>[RouteName]</code></CodeRef>
+        <CodeRef File="Lessons/L2/Lesson2Page.razor.cs">a page that declares its route with <code>[Route]</code> and <code>[RouteName]</code></CodeRef>
         <CodeRef File="Lessons/L2/Lesson2Page.razor.cs"><code>TryGetRouteUrl</code>, <code>NavigateToRoute</code> and the generated typed helper</CodeRef>
-        <CodeRef File="Lessons/L2/L2Dock.razor">a child page that nests under its parent with <code>[RouteParent]</code></CodeRef>
+        <CodeRef File="Lessons/L2/L2Dock.razor.cs">a child page that nests under its parent with <code>[RouteParent]</code></CodeRef>
         <CodeRef File="LabRoutes.cs"><code>AddPages</code> finds the attribute pages next to the fluent routes</CodeRef>
     </Code>
 </LessonFrame>
