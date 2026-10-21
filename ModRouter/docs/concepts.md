@@ -122,6 +122,51 @@ A rule of thumb: if the addresses share a start, nest. If they do not and you st
 
 [Lesson 7](lessons/07-shared-layouts-and-side-panels.md) shows a group live. [Routing](routing.md#pathless-groups-and-named-outlets) has the full rules, including the markup form and named outlets.
 
+## An example: columns that follow the address
+
+A **Miller column** layout, like the column view in a file manager, shows a hierarchy as a row of columns: pick an item and its children open in a new column to the right. Nested routes fit it directly, because each column is one level of the chain and the address says which item is picked in each:
+
+| Address | Columns on screen |
+|---|---|
+| `/library` | shelves |
+| `/library/fiction` | shelves, books on the `fiction` shelf |
+| `/library/fiction/7` | shelves, books on the `fiction` shelf, details of book 7 |
+
+```csharp
+routes.Route("/library", typeof(ShelfColumn), name: "shelves", children: shelves => shelves
+    .Route("{shelf}", typeof(BookColumn), name: "books", children: books => books
+        .Route("{book:int}", typeof(BookDetails), name: "book")));
+```
+
+Each route component renders its own column, then an outlet for the next one. Only the first adds a row to hold them all. A component that places an outlet adds no wrapper element of its own, so the deeper columns become siblings of the first inside that row:
+
+```razor
+@* ShelfColumn.razor: level 0 owns the row *@
+<div class="columns">
+    <nav class="column">
+        <RouteLink Route="books" Parameters="@(new { shelf = "fiction" })">Fiction</RouteLink>
+        <RouteLink Route="books" Parameters="@(new { shelf = "history" })">History</RouteLink>
+    </nav>
+    <ModRouterOutlet />
+</div>
+
+@* BookColumn.razor: level 1 adds one column and the outlet for the next *@
+<nav class="column">@* links to route "book" with shelf and book values *@</nav>
+<ModRouterOutlet />
+
+@* BookDetails.razor: the last level has no outlet *@
+<article class="column">...</article>
+```
+
+```css
+.columns { display: flex; overflow-x: auto; }
+.column  { min-width: 14rem; }
+```
+
+Because a parent is updated in place and not rebuilt, picking another book changes only the last column. The shelves and the book list keep their state and scroll position, and the address stays the full path, so Back, a bookmark or a shared link restores every column. A column that needs the picked value declares a `[Parameter]` for it, as the [Getting started](getting-started.md) example does.
+
+This is a sketch: neither the sample app nor the lessons contain it, and it has not been run.
+
 ## How the router picks a route
 
 Many routes can fit one address. The router ranks them, and the order never depends on the order you declared them in:
