@@ -7,7 +7,11 @@ import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-const CHROME = process.env.CHROME_PATH ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+// CHROME_PATH overrides the default: chrome.exe on Windows, the app bundle on macOS, `google-chrome` on the PATH elsewhere.
+const CHROME = process.env.CHROME_PATH ?? ({
+  win32: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+  darwin: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+}[process.platform] ?? 'google-chrome');
 
 export const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -22,7 +26,10 @@ export async function launch(port = 0) {
   const profile = mkdtempSync(join(tmpdir(), 'modrouter-chrome-'));
   const process_ = spawn(CHROME, [
     '--headless=new', `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`,
-    '--window-size=1200,800', '--no-first-run', '--disable-gpu', 'about:blank',
+    '--window-size=1200,800', '--no-first-run', '--disable-gpu',
+    // On a CI runner Chrome's sandbox is often unavailable (user namespaces are restricted), and the runner is disposable anyway.
+    ...(process.env.CI ? ['--no-sandbox'] : []),
+    'about:blank',
   ], { stdio: 'ignore' });
 
   let cleaned = false;
@@ -56,7 +63,7 @@ export async function launch(port = 0) {
       } catch { /* Chrome is not up yet */ }
       if (!target) await sleep(200);
     }
-    if (!target) throw new Error('Chrome did not start (set CHROME_PATH to chrome.exe)');
+    if (!target) throw new Error('Chrome did not start (set CHROME_PATH to the Chrome executable)');
 
     const socket = new WebSocket(target.webSocketDebuggerUrl);
     await new Promise((resolve, reject) => { socket.onopen = resolve; socket.onerror = reject; });

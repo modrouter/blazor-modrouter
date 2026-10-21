@@ -40,6 +40,29 @@ jobs:
           name: test-results-${{ matrix.framework }}
           path: "**/TestResults/*.trx"
 
+  # The behavior bUnit cannot reproduce (Blazor's navigation hooks, focus, scroll restore, view transitions, trimming) is checked in a
+  # real browser: the sample is published trimmed, served as a published app is, and driven by headless Chrome.
+  browser:
+    name: Browser checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Publish the sample (Release, trimmed)
+        run: dotnet publish ModRouter.Sample/ModRouter.Sample.csproj -c Release -o pub
+      - name: Serve it
+        run: |
+          node ModRouter.Sample/tools/serve.mjs pub/wwwroot 5177 &
+          for attempt in $(seq 1 30); do curl -sf http://localhost:5177/ > /dev/null && exit 0; sleep 1; done
+          echo "the sample did not start" && exit 1
+      - name: Run the browser checks
+        run: node ModRouter.Sample/tools/verify-all.mjs http://localhost:5177/
+
   pack:
     name: Pack
     needs: test

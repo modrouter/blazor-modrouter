@@ -43,13 +43,16 @@ suite started was never stopped.
 dotnet run --project ModRouter.Sample --urls http://localhost:5199
 ```
 
-bUnit cannot reproduce Blazor's navigation hooks, so four Node scripts in the sample's `tools/` folder (Node 22+ and Chrome) check the running sample. Each takes the URL of the running sample:
+bUnit cannot reproduce Blazor's navigation hooks, so Node scripts in the sample's `tools/` folder (Node 22+ and Chrome) check the running sample. Each takes the URL of the running sample, and `verify-all.mjs` runs the other three in turn and fails if any does:
 
 ```bash
+node ModRouter.Sample/tools/verify-all.mjs http://localhost:5199/            # all three of the following, one after the other
 node ModRouter.Sample/tools/verify.mjs http://localhost:5199/                # navigation, guards, loaders, links, title, focus and scroll
 node ModRouter.Sample/tools/verify-modes.mjs http://localhost:5199/ all     # the pages and markup modes (or: markup | pages)
 node ModRouter.Sample/tools/verify-compat.mjs http://localhost:5199/        # the compatibility layer
 ```
+
+The continuous integration runs them too, in the `browser` job: it publishes the sample trimmed in Release, serves the publish with `tools/serve.mjs` (as a published app is served) and runs `verify-all.mjs` in headless Chrome, so a regression in focus, scroll, view transitions or the trimmed build fails the build. Set `CHROME_PATH` when Chrome is not at its default location.
 
 The benchmarks (`ModRouter.Benchmarks`, BenchmarkDotNet) measure matching, generation, `Explain` and compilation through the public API over synthetic tables of 10 to 10,000 routes. Run one class at a time, in Release:
 
