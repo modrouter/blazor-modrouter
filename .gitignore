@@ -9,3 +9,4 @@ BenchmarkDotNet.Artifacts/
 docs-site/_site/
 docs-site/api/*.yml
 docs-site/api/*.manifest
+lab-out/

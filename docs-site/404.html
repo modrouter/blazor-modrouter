@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page not found - ModRouter</title>
+    <script>
+        // GitHub Pages answers an address inside the lab (a Blazor app with its own routes) with this page. Send it to the lab's
+        // index.html with the path in the query string; the lab's own script puts the path back before Blazor starts.
+        (function (l) {
+            var lab = '/blazor-modrouter/lab/';
+            if (l.pathname.indexOf(lab) === 0) {
+                var path = l.pathname.slice(lab.length);
+                var query = l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '';
+                l.replace(l.origin + lab + '?/' + path.replace(/&/g, '~and~') + query + l.hash);
+            }
+        }(window.location));
+    </script>
+    <style>
+        body { font-family: system-ui, "Segoe UI", sans-serif; max-width: 34rem; margin: 18vh auto; padding: 0 1.2rem; line-height: 1.5; color: #1d1b2e; }
+        a { color: #4b38d6; }
+        @media (prefers-color-scheme: dark) { body { background: #0d0a24; color: #eeecff; } a { color: #9a8cff; } }
+    </style>
+</head>
+<body>
+    <h1>Page not found</h1>
+    <p>There is no page at this address. Try the <a href="/blazor-modrouter/">ModRouter documentation</a>
+        or the <a href="/blazor-modrouter/lab/">interactive lab</a>.</p>
+</body>
+</html>

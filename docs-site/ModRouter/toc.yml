@@ -1,5 +1,36 @@
+# Learn
 - name: Overview
   href: ../../ModRouter/README.md
+- name: Getting started
+  href: ../../ModRouter/docs/getting-started.md
+- name: Concepts
+  href: ../../ModRouter/docs/concepts.md
+- name: Why ModRouter
+  href: ../../ModRouter/docs/why-modrouter.md
+- name: Guided lessons
+  href: ../../ModRouter/docs/lessons.md
+  items:
+    - name: 1. Pages inside pages
+      href: ../../ModRouter/docs/lessons/01-pages-inside-pages.md
+    - name: 2. Names instead of URLs
+      href: ../../ModRouter/docs/lessons/02-names-instead-of-urls.md
+    - name: 3. Which route wins?
+      href: ../../ModRouter/docs/lessons/03-which-route-wins.md
+    - name: 4. Gates
+      href: ../../ModRouter/docs/lessons/04-gates.md
+    - name: 5. Data in flight
+      href: ../../ModRouter/docs/lessons/05-data-in-flight.md
+    - name: 6. Are you sure?
+      href: ../../ModRouter/docs/lessons/06-are-you-sure.md
+    - name: 7. Shared layouts and side panels
+      href: ../../ModRouter/docs/lessons/07-shared-layouts-and-side-panels.md
+    - name: 8. Pages that stay alive
+      href: ../../ModRouter/docs/lessons/08-pages-that-stay-alive.md
+    - name: 9. The flight recorder
+      href: ../../ModRouter/docs/lessons/09-the-flight-recorder.md
+- name: Glossary
+  href: ../../ModRouter/docs/glossary.md
+# Reference
 - name: Routing
   href: ../../ModRouter/docs/routing.md
 - name: Navigation

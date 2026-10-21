@@ -27,6 +27,11 @@ jobs:
             10.0.x
       - name: Build (warnings are errors)
         run: dotnet build ModRouter.Test/ModRouter.Test.csproj -c Release -f ${{ matrix.framework }}
+      - name: Build the lab and the sample (net10.0 only)
+        if: matrix.framework == 'net10.0'
+        run: |
+          dotnet build ModRouter.Lab/ModRouter.Lab.csproj -c Release
+          dotnet build ModRouter.Sample/ModRouter.Sample.csproj -c Release
       - name: Test
         run: dotnet test ModRouter.Test/ModRouter.Test.csproj -c Release -f ${{ matrix.framework }} --no-build --logger "trx;LogFileName=test-${{ matrix.framework }}.trx"
       - uses: actions/upload-artifact@v4

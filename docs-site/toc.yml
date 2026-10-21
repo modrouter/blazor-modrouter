@@ -1,6 +1,8 @@
 - name: Guide
   href: ModRouter/
   homepage: ../ModRouter/README.md
+- name: Lab
+  href: https://modrouter.github.io/blazor-modrouter/lab/
 - name: API reference
   href: api/
 - name: GitHub

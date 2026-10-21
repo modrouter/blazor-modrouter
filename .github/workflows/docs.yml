@@ -7,12 +7,14 @@ on:
     branches: [main]
     paths:
       - "ModRouter/**"
+      - "ModRouter.Lab/**"
       - "docs-site/**"
       - "dotnet-tools.json"
       - ".github/workflows/docs.yml"
   pull_request:
     paths:
       - "ModRouter/**"
+      - "ModRouter.Lab/**"
       - "docs-site/**"
       - "dotnet-tools.json"
       - ".github/workflows/docs.yml"
@@ -41,6 +43,14 @@ jobs:
         run: dotnet tool restore
       - name: Build the site
         run: dotnet docfx docs-site/docfx.json --warningsAsErrors false
+      - name: Publish the lab into the site
+        # The lab is a Blazor WebAssembly app served from /blazor-modrouter/lab/, so its base address changes. Deep links into it
+        # come back through docs-site/404.html.
+        run: |
+          dotnet publish ModRouter.Lab/ModRouter.Lab.csproj -c Release -o lab-out
+          sed -i 's#<base href="/" />#<base href="/blazor-modrouter/lab/" />#' lab-out/wwwroot/index.html
+          mkdir -p docs-site/_site/lab
+          cp -r lab-out/wwwroot/. docs-site/_site/lab/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs-site/_site
