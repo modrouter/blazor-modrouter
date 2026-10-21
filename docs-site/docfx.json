@@ -24,7 +24,8 @@
           "index.md",
           "toc.yml",
           "api/index.md",
-          "api/**.yml"
+          "api/**.yml",
+          "ModRouter/toc.yml"
         ]
       },
       {

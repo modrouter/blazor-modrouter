@@ -1,36 +1,6 @@
 - name: Guide
-  href: ../ModRouter/README.md
-  items:
-    - name: Overview
-      href: ../ModRouter/README.md
-    - name: Routing
-      href: ../ModRouter/docs/routing.md
-    - name: Navigation
-      href: ../ModRouter/docs/navigation.md
-    - name: Route sources
-      href: ../ModRouter/docs/route-sources.md
-    - name: Typed routes
-      href: ../ModRouter/docs/typed-routes.md
-    - name: Authorization
-      href: ../ModRouter/docs/authorization.md
-    - name: Compatibility
-      href: ../ModRouter/docs/compatibility.md
-    - name: Hosting
-      href: ../ModRouter/docs/hosting.md
-    - name: Observability
-      href: ../ModRouter/docs/observability.md
-    - name: Configuration
-      href: ../ModRouter/docs/configuration.md
-    - name: Development
-      href: ../ModRouter/docs/development.md
-    - name: Performance
-      href: ../ModRouter/docs/performance.md
-    - name: Versioning
-      href: ../ModRouter/docs/versioning.md
-    - name: Known limitations
-      href: ../ModRouter/docs/known-limitations.md
-    - name: Changelog
-      href: ../ModRouter/CHANGELOG.md
+  href: ModRouter/
+  homepage: ../ModRouter/README.md
 - name: API reference
   href: api/
 - name: GitHub
