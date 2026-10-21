@@ -1,0 +1,4 @@
+/* Space between the navbar logo and the site title. */
+.navbar-brand img {
+  margin-right: 0.5rem;
+}

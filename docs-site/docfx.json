@@ -52,7 +52,8 @@
     },
     "template": [
       "default",
-      "modern"
+      "modern",
+      "template"
     ],
     "resource": [
       {
