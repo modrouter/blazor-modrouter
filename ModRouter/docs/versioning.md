@@ -50,7 +50,15 @@ To rehearse a release without publishing, run the **Release** workflow by hand f
 
 ### One-time setup
 
-- Create the account and an API key at nuget.org that may push new packages and new versions of `ModRouter*`, with an expiry, and store it as the repository
-  secret `NUGET_API_KEY` (Settings, Secrets and variables, Actions).
-- Check that the package ids `ModRouter` and `ModRouter.AspNetCore` are free on nuget.org before the first release. A published version cannot be deleted or
-  reused (it can be unlisted), so check the version too.
+The release workflow publishes with [NuGet trusted publishing](https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing), so no API key is stored anywhere.
+
+1. Create the account at nuget.org. Check that the package ids `ModRouter` and `ModRouter.AspNetCore` are free before the first release. A published version
+   cannot be deleted or reused (it can be unlisted), so check the version too.
+2. At nuget.org, open your profile name, then **Trusted Publishing**, and add a policy for the owner of the packages (you, or an organization):
+   repository owner `modrouter`, repository `blazor-modrouter`, workflow file `release.yml` (the file name only), no environment, and the scopes
+   to push new packages and new package versions for the glob `ModRouter*`.
+3. Store your nuget.org **profile name** (not your email address) as the repository secret `NUGET_USER` (Settings, Secrets and variables, Actions).
+
+When the workflow runs for a tag, GitHub issues it a short-lived OIDC token, nuget.org checks it against the policy and returns an API key that is valid for
+one hour. The workflow asks for it right before the push. A policy for a private repository starts as active for 7 days and becomes permanent after its first
+successful publish; this repository is public, so that does not apply.

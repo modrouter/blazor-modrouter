@@ -4,8 +4,12 @@
 #   Dry run:   Actions > Release > Run workflow. It builds, tests, packs and checks the packages but pushes and releases nothing.
 #
 # The tag must match `Version` in ModRouter.Package.props, and CHANGELOG.md must have a section for that version (see
-# ModRouter/docs/versioning.md). Pushing needs the repository secret NUGET_API_KEY: an API key from nuget.org that may push new
-# packages and versions of ModRouter*.
+# ModRouter/docs/versioning.md).
+#
+# Publishing uses NuGet trusted publishing: no API key is stored. The job asks GitHub for an OIDC token, nuget.org checks it against
+# a trusted publishing policy (repository owner modrouter, repository blazor-modrouter, workflow file release.yml) and returns an API
+# key that lasts one hour. The only setting the workflow needs is the repository secret NUGET_USER: the nuget.org profile name (not the
+# email address) that owns the policy.
 name: Release
 
 on:
@@ -14,7 +18,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: write   # create the GitHub release
+  id-token: write   # let the job request an OIDC token for NuGet trusted publishing
 
 jobs:
   release:
@@ -72,12 +77,25 @@ jobs:
           name: packages
           path: artifacts/*
 
+      - name: Check that the NuGet user is set
+        if: env.IS_TAG == 'true'
+        env:
+          NUGET_USER: ${{ secrets.NUGET_USER }}
+        run: '[ -n "$NUGET_USER" ] || { echo "The repository secret NUGET_USER (the nuget.org profile name) is not set"; exit 1; }'
+
+      # Requested right before the push: the key it returns is valid for one hour.
+      - name: NuGet login (OIDC, short-lived API key)
+        if: env.IS_TAG == 'true'
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: Push to nuget.org
         if: env.IS_TAG == 'true'
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
         run: |
-          [ -n "$NUGET_API_KEY" ] || { echo "The repository secret NUGET_API_KEY is not set"; exit 1; }
           # The .snupkg symbol packages next to the .nupkg files are pushed with them. --skip-duplicate keeps a re-run harmless.
           dotnet nuget push "artifacts/*.nupkg" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
