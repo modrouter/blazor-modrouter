@@ -15,22 +15,22 @@ Give routes names, build their addresses from values, and let the compiler check
 
 Hand-typed addresses break quietly: a renamed path, a typo, a value in the wrong place. A **named route** lets you say where you want to go, and ModRouter builds the address.
 
-Lesson 1 declared routes in code. Lesson 2 declares them on the pages themselves. A page states its address and its name with attributes on its class:
+Lesson 1 declared routes in code. Lesson 2 declares them on the pages themselves. A page states its address with `@page` and its name with an attribute:
 
-```csharp
-// ModRouter.Lab/Lessons/L2/Lesson2Page.razor.cs
-[Route("/lessons/names")]
-[RouteName("l2")]
-[RouteTitle("Names instead of URLs")]
+```razor
+@* ModRouter.Lab/Lessons/L2/Lesson2Page.razor *@
+@page "/lessons/names"
+@attribute [RouteName("l2")]
+@attribute [RouteTitle("Names instead of URLs")]
 ```
 
-`[Route]` is what `@page` compiles to. The lab writes it in the code-behind, not as `@page` in the `.razor` file, because the typed helpers further down are generated from these attributes, and the generator cannot see attributes that Razor itself generates (see [Typed routes](../typed-routes.md)). A child page nests under its parent with `[RouteParent]`, and its address carries a typed value:
+A child page nests under it with `[RouteParent]`, and its address carries a typed value:
 
-```csharp
-// ModRouter.Lab/Lessons/L2/L2Dock.razor.cs
-[Route("/lessons/names/dock/{Id:int}")]
-[RouteParent(typeof(Lesson2Page))]
-[RouteName("dock")]
+```razor
+@* ModRouter.Lab/Lessons/L2/L2Dock.razor *@
+@page "/lessons/names/dock/{Id:int}"
+@attribute [RouteParent(typeof(Lesson2Page))]
+@attribute [RouteName("dock")]
 ```
 
 The router finds these pages when you ask it to, in `LabRoutes.cs`, next to the routes declared in code:
@@ -61,9 +61,13 @@ The address also includes the app's base path. The lab is served from `/blazor-m
 
 A trailing `?` makes a value optional. The component must bind it to a nullable property:
 
+```razor
+@* ModRouter.Lab/Lessons/L2/L2Beacon.razor *@
+@page "/lessons/names/beacon/{Code}/{Channel:int?}"
+```
+
 ```csharp
-// ModRouter.Lab/Lessons/L2/L2Beacon.razor.cs
-[Route("/lessons/names/beacon/{Code}/{Channel:int?}")]
+// ModRouter.Lab/Lessons/L2/L2Beacon.razor
 public int? Channel { get; set; }
 ```
 
@@ -82,7 +86,7 @@ async Task LaunchTyped() => await Navigation.NavigateToDockAsync(4);
 
 ## Your turn
 
-1. Add a page: `Lessons/L2/L2Hangar.razor` for the markup and `L2Hangar.razor.cs` with a `partial class L2Hangar` carrying `[Route("/lessons/names/hangar/{Bay:int}")]`, `[RouteParent(typeof(Lesson2Page))]` and `[RouteName("hangar-bay")]`. Copy `L2Dock.razor.cs` as a start.
+1. Add a page `Lessons/L2/L2Hangar.razor` with `@page "/lessons/names/hangar/{Bay:int}"`, `[RouteParent(typeof(Lesson2Page))]` and `[RouteName("hangar-bay")]`.
 2. Build the project. A method `NavigateToHangarBayAsync(int bay)` now exists. Call it from a new button in `Lesson2Page.razor.cs`.
 3. Give the new page the same name as an existing route, such as `"dock"`, and start the lab. It stops at startup with an `RT0010` error that names the duplicate. Fix it before moving on. This is the router refusing a mistake early.
 

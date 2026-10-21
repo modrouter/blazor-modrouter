@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,6 +12,12 @@ namespace ModRouter.Generators;
 /// <c>[RouteName]</c>: a <c>RouteNames</c> class of constants and, on <c>INavigationService</c>, a <c>Get{Name}Url</c> and a
 /// <c>NavigateTo{Name}Async</c> method per route whose parameters are the template's, typed from its constraints. The URL is still built by
 /// the router, so base paths, encoding and constraint checks are unchanged.
+/// <para>
+/// The attributes can be written in C# or as <c>@page</c> and <c>@attribute [RouteName("...")]</c> in a <c>.razor</c> file. Razor's own
+/// source generator turns the directives into attributes, but one generator cannot see another's output, so this one reads the directives
+/// from the <c>.razor</c> files, which the Razor SDK passes to every generator as additional files, and joins the two halves of a page that
+/// declares its route in one place and its name in the other (a component and its <c>.razor.cs</c> code-behind).
+/// </para>
 /// </summary>
 [Generator(LanguageNames.CSharp)]
 public sealed class TypedRouteGenerator : IIncrementalGenerator
@@ -39,21 +46,41 @@ public sealed class TypedRouteGenerator : IIncrementalGenerator
 
     static readonly string[] ReservedParameterNames = ["navigation", "query", "fragment", "options", "cancellationToken"];
 
-    /// <summary>Registers the pipeline: the pages that declare a route name, collected, then one generated file.</summary>
+    /// <summary>The name of the step that reads the route directives of the <c>.razor</c> files.</summary>
+    internal const string RazorStep = "RazorPages";
+
+    /// <summary>Registers the pipeline: the halves of a page's route found in C# and in <c>.razor</c> files, joined, then one generated file.</summary>
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var pages = context.SyntaxProvider
+        // Pages that declare [RouteName] in C#; the [Route] on the same class is read with it.
+        var named = context.SyntaxProvider
             .ForAttributeWithMetadataName(RouteNameAttribute, static (node, _) => node is ClassDeclarationSyntax, Collect)
             .Where(static page => page is not null)
             .Select(static (page, _) => page!)
             .WithTrackingName(PagesStep);
 
+        // Pages that declare [Route] in C# and may take their name from the .razor file.
+        var routed = context.SyntaxProvider
+            .ForAttributeWithMetadataName(RouteAttribute, static (node, _) => node is ClassDeclarationSyntax, Collect)
+            .Where(static page => page is not null)
+            .Select(static (page, _) => page!);
+
+        // Pages whose @page and @attribute [RouteName] directives are in a .razor file.
+        var razor = context.AdditionalTextsProvider
+            .Where(static file => file.Path.EndsWith(".razor", StringComparison.OrdinalIgnoreCase))
+            .Select(static (file, cancellationToken) => ReadRazor(file, cancellationToken))
+            .Where(static page => page is not null)
+            .Select(static (page, _) => page!)
+            .WithTrackingName(RazorStep);
+
         var assembly = context.CompilationProvider.Select(static (compilation, _) => compilation.AssemblyName ?? "App");
 
-        context.RegisterSourceOutput(pages.Collect().Combine(assembly), static (output, input) => Emit(output, input.Left, input.Right));
+        var all = named.Collect().Combine(routed.Collect()).Combine(razor.Collect()).Combine(assembly);
+
+        context.RegisterSourceOutput(all, static (output, input) => Emit(output, Join(input.Left.Left.Left.Concat(input.Left.Left.Right).Concat(input.Left.Right)), input.Right));
     }
 
-    static PageRoute? Collect(GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
+    static Fragment? Collect(GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
     {
         if (context.TargetSymbol is not INamedTypeSymbol type)
         {
@@ -84,14 +111,93 @@ public sealed class TypedRouteGenerator : IIncrementalGenerator
             }
         }
 
-        if (string.IsNullOrWhiteSpace(name) || template is null)
+        if (string.IsNullOrWhiteSpace(name) && template is null)
         {
             return null;
         }
 
         var location = type.Locations.FirstOrDefault();
+        var path = Normalize(location?.SourceTree?.FilePath ?? string.Empty);
 
-        return new PageRoute(name!, template, type.ToDisplayString(), location is null ? null : new LocationInfo(location.SourceTree?.FilePath ?? string.Empty, location.SourceSpan, location.GetLineSpan().Span));
+        // The code-behind of Foo.razor is Foo.razor.cs: both halves of the page share the key Foo.razor. Any other class is its own page.
+        var key = path.EndsWith(".razor.cs", StringComparison.OrdinalIgnoreCase) ? path.Substring(0, path.Length - 3) : "type:" + type.ToDisplayString();
+
+        return new Fragment(key, string.IsNullOrWhiteSpace(name) ? null : name, template, type.ToDisplayString(), location is null ? null : new LocationInfo(path, location.SourceSpan, location.GetLineSpan().Span), FromCode: true);
+    }
+
+    // ---- .razor files ----------------------------------------------------------------------------------------------
+
+    static readonly Regex RazorComment = new(@"@\*[\s\S]*?\*@", RegexOptions.Compiled);
+    static readonly Regex PageDirective = new("^@page\\s+\"(?<template>(?:[^\"\\\\]|\\\\.)*)\"", RegexOptions.Compiled);
+    static readonly Regex AttributeDirective = new(@"^@attribute\s+\[(?<body>.*)\]\s*$", RegexOptions.Compiled);
+    static readonly Regex RouteNameInAttribute = new("(?:^|[\\s,\\[])(?:ModRouter\\.Discovery\\.)?RouteName(?:Attribute)?\\s*\\(\\s*\"(?<name>(?:[^\"\\\\]|\\\\.)*)\"\\s*\\)", RegexOptions.Compiled);
+
+    /// <summary>Reads the first <c>@page "template"</c> and the first <c>@attribute [RouteName("name")]</c> of a component file.</summary>
+    static Fragment? ReadRazor(AdditionalText file, CancellationToken cancellationToken)
+    {
+        var text = file.GetText(cancellationToken)?.ToString();
+
+        if (text is null || (text.IndexOf("@page", StringComparison.Ordinal) < 0 && text.IndexOf("RouteName", StringComparison.Ordinal) < 0))
+        {
+            return null;
+        }
+
+        string? template = null;
+        string? name = null;
+
+        foreach (var raw in RazorComment.Replace(text, string.Empty).Split('\n'))
+        {
+            var line = raw.Trim();
+
+            if (template is null && PageDirective.Match(line) is { Success: true } page)
+            {
+                template = Regex.Unescape(page.Groups["template"].Value);
+            }
+            else if (name is null && AttributeDirective.Match(line) is { Success: true } attribute
+                && RouteNameInAttribute.Match(attribute.Groups["body"].Value) is { Success: true } routeName)
+            {
+                name = Regex.Unescape(routeName.Groups["name"].Value);
+            }
+        }
+
+        if (template is null && string.IsNullOrWhiteSpace(name))
+        {
+            return null;
+        }
+
+        var path = Normalize(file.Path);
+
+        return new Fragment(path, string.IsNullOrWhiteSpace(name) ? null : name, template, System.IO.Path.GetFileNameWithoutExtension(path), new LocationInfo(path, default, default), FromCode: false);
+    }
+
+    static string Normalize(string path) => path.Replace('\\', '/');
+
+    // ---- joining the halves of a page ------------------------------------------------------------------------------
+
+    /// <summary>
+    /// Joins the fragments that share a key (a component and its code-behind) into pages that have both a name and a template. A page
+    /// found twice, with the same name and template, in C# and in its .razor file, is kept once, and the C# reading wins.
+    /// </summary>
+    static ImmutableArray<PageRoute> Join(IEnumerable<Fragment> fragments)
+    {
+        var pages = new List<PageRoute>();
+        var seen = new HashSet<string>(StringComparer.Ordinal);
+
+        foreach (var group in fragments.GroupBy(f => f.Key, StringComparer.Ordinal).OrderBy(g => g.Any(f => f.FromCode) ? 0 : 1).ThenBy(g => g.Key, StringComparer.Ordinal))
+        {
+            var ordered = group.OrderBy(f => f.FromCode ? 0 : 1).ToList();
+            var name = ordered.Select(f => f.Name).FirstOrDefault(n => n is not null);
+            var template = ordered.Select(f => f.Template).FirstOrDefault(t => t is not null);
+
+            if (name is null || template is null || !seen.Add(name + "\u0001" + template))
+            {
+                continue;
+            }
+
+            pages.Add(new PageRoute(name, template, ordered[0].Type, ordered[0].Location));
+        }
+
+        return pages.ToImmutableArray();
     }
 
     static void Emit(SourceProductionContext context, ImmutableArray<PageRoute> pages, string assemblyName)
@@ -333,6 +439,8 @@ public sealed class TypedRouteGenerator : IIncrementalGenerator
     {
         public Location ToLocation() => Location.Create(FilePath, Span, LineSpan);
     }
+
+    sealed record Fragment(string Key, string? Name, string? Template, string Type, LocationInfo? Location, bool FromCode);
 
     sealed record PageRoute(string Name, string Template, string Type, LocationInfo? Location);
 }

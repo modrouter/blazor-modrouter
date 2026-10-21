@@ -5,6 +5,11 @@ versions follow [Semantic Versioning](https://semver.org); see [Versioning](docs
 
 ## Unreleased
 
+### Fixed
+
+- **Typed route helpers for pages declared in markup.** `ModRouter.Generators` now reads `@page` and `@attribute [RouteName("...")]` from `.razor` files. With the
+  released .NET SDKs it could not see the attributes Razor generates from those directives, so no helpers were generated for such pages.
+
 ## 0.1.0-preview.1
 
 The first packaged preview. Until 1.0.0 a minor version may break the public API.

@@ -1,6 +1,5 @@
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
-using ModRouter.Discovery;
 using ModRouter.Core.Compilation;
 using ModRouter.Navigation;
 
@@ -8,11 +7,6 @@ namespace ModRouter.Lab.Lessons.L2;
 
 public sealed record ForgeParameter(string Name, string Rule, bool Optional);
 
-// The route of a page is declared with attributes on its class. [Route] is what @page compiles to; [RouteName] names the route.
-// They sit in the code-behind, not in the .razor file, so the typed-route generator can see them.
-[Route("/lessons/names")]
-[RouteName("l2")]
-[RouteTitle("Names instead of URLs")]
 public partial class Lesson2Page
 {
     // The routes the forge offers. They are looked up by name in the compiled table, so the list can only contain real routes.
