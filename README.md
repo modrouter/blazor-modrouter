@@ -19,6 +19,7 @@ Targets .NET 8, 9 and 10. Read the [documentation site](https://modrouter.github
 | [`ModRouter.Generators`](ModRouter.Generators) | Source generator for typed route names and URL helpers |
 | [`ModRouter.Test`](ModRouter.Test), [`ModRouter.Test.Fixtures`](ModRouter.Test.Fixtures) | The test suite and the pages it routes |
 | [`ModRouter.Sample`](ModRouter.Sample), [`ModRouter.Sample.Extra`](ModRouter.Sample.Extra) | A Blazor WebAssembly demo app with browser checks, and a class library whose pages are found by reflection |
+| [`ModRouter.Lab`](ModRouter.Lab) | An interactive Blazor WebAssembly app with nine guided lessons, [live online](https://modrouter.github.io/blazor-modrouter/lab/); the lessons are written up in the [guide](ModRouter/docs/lessons.md) |
 | [`ModRouter.Benchmarks`](ModRouter.Benchmarks) | BenchmarkDotNet benchmarks for matching, generation, `Explain` and compilation |
 | [`docs-site`](docs-site) | DocFX configuration for the documentation site: the guide in `ModRouter/docs` plus the generated API reference |
 

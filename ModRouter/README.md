@@ -7,6 +7,10 @@ ambiguous or invalid routes fails at startup with a code and a message. It also 
 It is for Blazor WebAssembly apps that need nested layouts, guards and loaders, named routes or readable routing
 diagnostics. The router needs nothing but Blazor.
 
+**New here?** Try the **[interactive lab](https://modrouter.github.io/blazor-modrouter/lab/)**, nine short lessons you can click through, then
+follow them in code in the [guided lessons](docs/lessons.md). Start with [Getting started](docs/getting-started.md) to put ModRouter in an app,
+read [Concepts](docs/concepts.md) for the picture, or see [Why ModRouter](docs/why-modrouter.md) for how it differs from the built-in router.
+
 ## Install and register
 
 Reference the project and register the router in `Program.cs`:
@@ -42,6 +46,18 @@ compatibility `Router`.
 ## Documentation
 
 The full documentation, with a searchable API reference, is at **[https://modrouter.github.io/blazor-modrouter/](https://modrouter.github.io/blazor-modrouter/)**. The pages below are the same guide.
+
+### Learn
+
+| Page | What it covers |
+|---|---|
+| [Getting started](docs/getting-started.md) | Put ModRouter in a new Blazor WebAssembly app, with a nested page and a named link, in about ten minutes |
+| [Concepts](docs/concepts.md) | What a route is, how an address becomes a page and what happens during a navigation, with diagrams |
+| [Why ModRouter](docs/why-modrouter.md) | What it adds to the built-in `Router`, what it costs, and when to keep the built-in one |
+| [Guided lessons](docs/lessons.md) | Nine lessons from nested routes to the flight recorder, each with a live demo, the code and an exercise |
+| [Glossary](docs/glossary.md) | The words ModRouter uses, in plain language |
+
+### Reference
 
 | Page | What it covers |
 |---|---|

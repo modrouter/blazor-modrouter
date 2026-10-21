@@ -19,9 +19,12 @@ public sealed partial class DocumentationLinkTests
     {
         yield return "README.md";
 
-        foreach (var page in Directory.GetFiles(Path.Combine(RouterDocs.Root, "docs"), "*.md").Order(StringComparer.Ordinal))
+        var docs = Path.Combine(RouterDocs.Root, "docs");
+
+        // The lessons live in docs/lessons; the lessons page links them, the README links every page directly in docs.
+        foreach (var page in Directory.GetFiles(docs, "*.md", SearchOption.AllDirectories).Order(StringComparer.Ordinal))
         {
-            yield return "docs/" + Path.GetFileName(page);
+            yield return "docs/" + Path.GetRelativePath(docs, page).Replace(Path.DirectorySeparatorChar, '/');
         }
     }
 
@@ -65,9 +68,20 @@ public sealed partial class DocumentationLinkTests
     {
         var readme = RouterDocs.Read("README.md");
 
-        foreach (var page in Files().Where(f => f.StartsWith("docs/", StringComparison.Ordinal)))
+        foreach (var page in Files().Where(f => f.StartsWith("docs/", StringComparison.Ordinal) && f.Count(c => c == '/') == 1))
         {
             Assert.That(readme, Does.Contain($"]({page})"), $"README.md does not link {page}");
+        }
+    }
+
+    [Test]
+    public void The_lessons_page_lists_every_lesson()
+    {
+        var lessons = RouterDocs.Read("docs/lessons.md");
+
+        foreach (var page in Files().Where(f => f.StartsWith("docs/lessons/", StringComparison.Ordinal)))
+        {
+            Assert.That(lessons, Does.Contain($"]({page["docs/".Length..]})"), $"docs/lessons.md does not link {page}");
         }
     }
 
