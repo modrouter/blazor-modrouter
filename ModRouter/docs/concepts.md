@@ -47,7 +47,80 @@ flowchart TB
 
 Each level is a component. The parent places a `<ModRouterOutlet />` where the next level should appear. When only the child changes (the visitor opens a different tab of the same customer), the parent is **not rebuilt**. It stays on screen, keeps its state, and is updated in place. [Lesson 1](lessons/01-pages-inside-pages.md) lets you watch this happen.
 
-Layouts work the same way. A layout is just a component with an outlet. A **group** shares a layout between routes that have no common start, without adding anything to their addresses.
+Layouts work the same way. A layout is just a component with an outlet. To share one between routes whose addresses have no common start, use a **group**, described next.
+
+## Groups: a shared frame with no address of its own
+
+Nesting shares a frame because the child's address starts with the parent's: `/customers` is the frame, `/customers/42` is inside it. But some pages belong in the same frame without sharing a start. An account area might hold `/overview`, `/profile` and `/billing`. There is no `/account` in those addresses and you do not want one.
+
+A **group** is a route level that has no address. It holds a component (usually a layout with a `<ModRouterOutlet />`) and a set of routes. Those routes keep their own addresses, and the group's component wraps whichever one is showing:
+
+```csharp
+routes
+    .Route("/", typeof(Home), name: "home")
+    .Group(typeof(AccountLayout), account => account
+        .Route("overview", typeof(AccountOverview), name: "account")   // /overview
+        .Route("profile", typeof(Profile), name: "profile")            // /profile
+        .Route("billing", typeof(Billing), name: "billing"))           // /billing
+    .Guard<SignedInGuard>();                                           // covers all three
+```
+
+```mermaid
+flowchart LR
+    subgraph Nested["Nesting: the parent adds to the address"]
+        direction TB
+        n1["/customers<br/>CustomersPage"] --> n2["/customers/42<br/>CustomerDetails"]
+    end
+    subgraph Grouped["A group: the frame adds nothing"]
+        direction TB
+        g0["(no address)<br/>AccountLayout"] --> g1["/overview"]
+        g0 --> g2["/profile"]
+        g0 --> g3["/billing"]
+    end
+```
+
+What a group does and does not do:
+
+| A group | Details |
+|---|---|
+| Is a level of the chain | For `/profile` the chain is two levels: the group (`AccountLayout`), then `Profile`. The layout places the page where its outlet is. |
+| Keeps its layout alive | Going from `/overview` to `/billing` changes only the deepest level. `AccountLayout` is updated, not rebuilt, exactly like a parent when only its child changes. |
+| Shares more than a layout | A guard or a loader declared on the group runs for every route inside it. One `SignedInGuard` protects all three pages. |
+| Adds nothing to addresses | The children's templates are relative (no leading `/`). The group itself is never matched, so it has no address, name, alias or title. Breadcrumbs and document titles skip it. |
+| Can hold a default page | An index route inside a group is the default page of the group's *parent* path, shown inside the group's layout. |
+
+### The problem a group solves
+
+Without groups you have two choices, and both are poor:
+
+1. **Nest the pages under a made-up parent.** The frame is shared, but the address grows a segment you did not want: `/account/overview` instead of `/overview`. If the addresses are already public or bookmarked, you cannot change them.
+2. **Repeat yourself.** Each page declares the same `@layout` and the same check, and each loads the same shared data. The copies drift apart: someone adds a fourth page and forgets the guard, and that page is open to everyone.
+
+A group declares the shared part once, and every route inside gets it, including pages added later.
+
+### When to use a group
+
+Use one when **pages share something but not the start of their address**:
+
+- A signed-in area (`/overview`, `/profile`, `/billing`) behind one layout and one guard.
+- A console or admin shell around unrelated top-level addresses.
+- A multi-step flow that needs a common frame and a guard such as "the cart must not be empty".
+- Pages that all need the same data, such as the current user, loaded once by a group loader instead of in every page.
+
+Do not use one when:
+
+- The pages already share an address start (`/customers`, `/customers/42`). Nest them: the parent's address is the shared part.
+- Only one page needs the layout or guard. Declare it on that route.
+- You want the shared area to have an address of its own. Use a parent route, which a group cannot be.
+
+A rule of thumb: if the addresses share a start, nest. If they do not and you still want a common frame, guard or loader, use a group.
+
+### Two things to watch
+
+- A guard on a group runs for every route in it, so its redirect target must not be inside the group, or the redirect is guarded too and loops.
+- An index route inside a group is the default page of the group's *parent* path, not of the group. Adding one changes what that parent path shows.
+
+[Lesson 7](lessons/07-shared-layouts-and-side-panels.md) shows a group live. [Routing](routing.md#pathless-groups-and-named-outlets) has the full rules, including the markup form and named outlets.
 
 ## How the router picks a route
 
