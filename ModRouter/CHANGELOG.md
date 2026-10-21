@@ -5,11 +5,6 @@ versions follow [Semantic Versioning](https://semver.org); see [Versioning](docs
 
 ## Unreleased
 
-### Fixed
-
-- **Typed route helpers for pages declared in markup.** `ModRouter.Generators` now reads `@page` and `@attribute [RouteName("...")]` from `.razor` files. With the
-  released .NET SDKs it could not see the attributes Razor generates from those directives, so no helpers were generated for such pages.
-
 ## 0.1.0-preview.1
 
 The first packaged preview. Until 1.0.0 a minor version may break the public API.
@@ -32,6 +27,8 @@ The first packaged preview. Until 1.0.0 a minor version may break the public API
 - **Hosting.** Blazor WebAssembly, and Blazor Web App with interactive Server, WebAssembly or Auto rendering, with or without prerendering; the HTTP status of a
   server-rendered page (`ModRouter.AspNetCore`) and loader data carried across the prerender (`PersistLoaderData`).
 - **Typed routes.** A source generator, shipped inside the package, that turns `[Route]` and `[RouteName]` into `RouteNames` constants and typed
-  `Get...Url` and `NavigateTo...Async` helpers (`MRG001`, `MRG002`).
+  `Get...Url` and `NavigateTo...Async` helpers (`MRG001`, `MRG002`). The attributes can be written in C# or as `@page` and
+  `@attribute [RouteName("...")]` in a `.razor` file; the generator reads the directives from the markup, because it cannot see the attributes Razor's own
+  generator produces from them.
 - **Observability.** Log events, `ActivitySource` tracing, a navigation history and the outlet warning.
 - **Targets.** `net8.0`, `net9.0` and `net10.0`.
