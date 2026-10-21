@@ -1,0 +1,94 @@
+# Publishes ModRouter and ModRouter.AspNetCore to nuget.org and creates a GitHub release.
+#
+#   Release:   git tag modrouter-v0.1.0-preview.1 && git push origin modrouter-v0.1.0-preview.1
+#   Dry run:   Actions > Release > Run workflow. It builds, tests, packs and checks the packages but pushes and releases nothing.
+#
+# The tag must match `Version` in ModRouter.Package.props, and CHANGELOG.md must have a section for that version (see
+# ModRouter/docs/versioning.md). Pushing needs the repository secret NUGET_API_KEY: an API key from nuget.org that may push new
+# packages and versions of ModRouter*.
+name: Release
+
+on:
+  push:
+    tags: ["modrouter-v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build, check and publish
+    runs-on: ubuntu-latest
+    env:
+      IS_TAG: ${{ github.ref_type == 'tag' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read the version
+        run: |
+          version=$(sed -n 's#.*<Version>\(.*\)</Version>.*#\1#p' ModRouter.Package.props | head -n 1)
+          [ -n "$version" ] || { echo "No <Version> in ModRouter.Package.props"; exit 1; }
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+          echo "Version: $version"
+
+      - name: Check the tag and the changelog
+        if: env.IS_TAG == 'true'
+        run: |
+          [ "$GITHUB_REF_NAME" = "modrouter-v$VERSION" ] || { echo "The tag $GITHUB_REF_NAME does not match Version $VERSION in ModRouter.Package.props (expected modrouter-v$VERSION)"; exit 1; }
+          awk -v v="$VERSION" 'index($0, "## " v) == 1 { found = 1 } END { exit !found }' ModRouter/CHANGELOG.md || { echo "ModRouter/CHANGELOG.md has no '## $VERSION' section"; exit 1; }
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+            10.0.x
+
+      - name: Test on every framework
+        run: dotnet test ModRouter.Test/ModRouter.Test.csproj -c Release
+
+      - name: Pack
+        run: |
+          dotnet pack ModRouter/ModRouter.csproj -c Release -o artifacts
+          dotnet pack ModRouter.AspNetCore/ModRouter.AspNetCore.csproj -c Release -o artifacts
+
+      - name: Check the packages
+        run: |
+          package=$(ls artifacts/ModRouter.[0-9]*.nupkg)
+          listing=$(unzip -Z1 "$package")
+          for entry in lib/net8.0/ModRouter.dll lib/net9.0/ModRouter.dll lib/net10.0/ModRouter.dll analyzers/dotnet/cs/ModRouter.Generators.dll staticwebassets/mod-router.js README.md icon.png; do
+            echo "$listing" | grep -qx "$entry" || { echo "missing $entry in $package"; exit 1; }
+          done
+          adapter=$(ls artifacts/ModRouter.AspNetCore.[0-9]*.nupkg)
+          for entry in lib/net8.0/ModRouter.AspNetCore.dll lib/net10.0/ModRouter.AspNetCore.dll README.md icon.png; do
+            unzip -Z1 "$adapter" | grep -qx "$entry" || { echo "missing $entry in $adapter"; exit 1; }
+          done
+          ls artifacts/*.snupkg > /dev/null || { echo "no symbol packages"; exit 1; }
+          ls -la artifacts
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: artifacts/*
+
+      - name: Push to nuget.org
+        if: env.IS_TAG == 'true'
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          [ -n "$NUGET_API_KEY" ] || { echo "The repository secret NUGET_API_KEY is not set"; exit 1; }
+          # The .snupkg symbol packages next to the .nupkg files are pushed with them. --skip-duplicate keeps a re-run harmless.
+          dotnet nuget push "artifacts/*.nupkg" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Create the GitHub release
+        if: env.IS_TAG == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # The release notes are the changelog section of this version.
+          awk -v v="$VERSION" 'index($0, "## " v) == 1 { found = 1; next } found && /^## / { exit } found { print }' ModRouter/CHANGELOG.md > notes.md
+          [ -s notes.md ] || echo "Release $VERSION. See ModRouter/CHANGELOG.md." > notes.md
+          prerelease=""
+          case "$VERSION" in *-*) prerelease="--prerelease" ;; esac
+          gh release create "$GITHUB_REF_NAME" artifacts/*.nupkg artifacts/*.snupkg --title "ModRouter $VERSION" --notes-file notes.md $prerelease

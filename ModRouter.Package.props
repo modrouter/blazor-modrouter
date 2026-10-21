@@ -15,5 +15,12 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageProjectUrl>https://github.com/modrouter/blazor-modrouter</PackageProjectUrl>
 		<ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+		<PackageIcon>icon.png</PackageIcon>
+		<!-- Embed the sources' locations in the symbol package, so a debugger can step into the library from GitHub. -->
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 	</PropertyGroup>
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)docs-site\images\logo-128.png" Pack="true" PackagePath="icon.png" Visible="false" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.402" PrivateAssets="all" />
+	</ItemGroup>
 </Project>

@@ -83,7 +83,7 @@ jobs:
         run: |
           package=$(ls artifacts/ModRouter.[0-9]*.nupkg)
           listing=$(unzip -Z1 "$package")
-          for entry in lib/net8.0/ModRouter.dll lib/net9.0/ModRouter.dll lib/net10.0/ModRouter.dll analyzers/dotnet/cs/ModRouter.Generators.dll staticwebassets/mod-router.js README.md; do
+          for entry in lib/net8.0/ModRouter.dll lib/net9.0/ModRouter.dll lib/net10.0/ModRouter.dll analyzers/dotnet/cs/ModRouter.Generators.dll staticwebassets/mod-router.js README.md icon.png; do
             echo "$listing" | grep -qx "$entry" || { echo "missing $entry"; exit 1; }
           done
       - uses: actions/upload-artifact@v4

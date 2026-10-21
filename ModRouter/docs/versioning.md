@@ -41,5 +41,16 @@ Behavior that differs by framework is listed in the README's requirements.
 2. Set `Version` in `ModRouter.Package.props`.
 3. Build and test on all three frameworks (`.github/workflows/ci.yml` runs exactly this) and pack both packages in Release.
 4. Check the packed `ModRouter` package: `lib/` for the three frameworks, `analyzers/dotnet/cs/ModRouter.Generators.dll`, `staticwebassets/mod-router.js`,
-   `README.md`, and no dependency on anything but the ASP.NET Core Components packages.
-5. Tag the commit `modrouter-v{version}`, publish the `.nupkg` and `.snupkg` files, and publish the release notes from the changelog.
+   `README.md`, `icon.png`, and no dependency on anything but the ASP.NET Core Components packages.
+5. Tag the commit `modrouter-v{version}` and push the tag. `.github/workflows/release.yml` then builds, tests, packs and checks the packages again, pushes
+   the `.nupkg` and `.snupkg` files to nuget.org and creates a GitHub release whose notes are the changelog section. The workflow refuses a tag that does
+   not match `Version` or a version without a changelog section. A pre-release version (one with a `-`) is marked as a pre-release.
+
+To rehearse a release without publishing, run the **Release** workflow by hand from the Actions tab: it does everything except the push and the release.
+
+### One-time setup
+
+- Create the account and an API key at nuget.org that may push new packages and new versions of `ModRouter*`, with an expiry, and store it as the repository
+  secret `NUGET_API_KEY` (Settings, Secrets and variables, Actions).
+- Check that the package ids `ModRouter` and `ModRouter.AspNetCore` are free on nuget.org before the first release. A published version cannot be deleted or
+  reused (it can be unlisted), so check the version too.
