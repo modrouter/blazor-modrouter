@@ -1,0 +1,15 @@
+@* Declaring [Parameter] int Id here is enough: a child receives the route values of its ancestors too. *@
+<XRay Name="ShipOverview" Level="3">
+    <dl class="facts">
+        <dt>Class</dt><dd>@Ship?.Class</dd>
+        <dt>Crew</dt><dd>@Ship?.Crew</dd>
+        <dt>Role</dt><dd>@Ship?.Role</dd>
+    </dl>
+</XRay>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    Ship? Ship => Fleet.Find(Id);
+}

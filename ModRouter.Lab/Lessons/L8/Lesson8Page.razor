@@ -1,0 +1,30 @@
+<LessonFrame Number="8">
+    <Try>
+        <ol class="steps">
+            <li>Open <b>Reactor</b>. It counts, and the core pulses.</li>
+            <li>Type a note in <b>Hangar</b>, then open <b>Observatory</b> and type a note there too.</li>
+            <li>Go back to the Reactor. The count carried on from where it was, and it says it was <i>paused</i> while you were away.</li>
+            <li>Go back to Hangar: your note is still there. Go back to the Observatory: its note is gone, because that page is not kept alive.</li>
+            <li>Notice the fade as the pages change. That is a view transition, turned on once in <code>Program.cs</code>.</li>
+        </ol>
+    </Try>
+    <Stage>
+        <XRay Name="Lesson8Page" Level="0">
+            <nav class="tabs" aria-label="Pages">
+                <RouteLink Route="reactor" Class="tab">Reactor</RouteLink>
+                <RouteLink Route="hangar" Class="tab">Hangar</RouteLink>
+                <RouteLink Route="observatory" Class="tab">Observatory</RouteLink>
+            </nav>
+            <div class="tab-body">
+                <ModRouterOutlet>
+                    <EmptyContent><p class="dim">Pick a page.</p></EmptyContent>
+                </ModRouterOutlet>
+            </div>
+        </XRay>
+    </Stage>
+    <Code>
+        <CodeRef File="LabRoutes.cs"><code>.KeepAlive(3)</code> on two routes, and none on the third</CodeRef>
+        <CodeRef File="Lessons/L8/ReactorPage.razor.cs"><code>IKeepAliveRoute</code>: pause when hidden, resume when shown</CodeRef>
+        <CodeRef File="Program.cs"><code>options.ViewTransitions.Enabled</code></CodeRef>
+    </Code>
+</LessonFrame>

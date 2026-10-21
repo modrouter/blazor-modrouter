@@ -1,0 +1,20 @@
+@* A group's component is a layout: it places the child route with a ModRouterOutlet, and may place named outlets as well. *@
+<XRay Name="ConsoleLayout" Level="1">
+    <nav class="tabs" aria-label="Console pages">
+        <RouteLink Route="radar" Class="tab">Radar</RouteLink>
+        <RouteLink Route="comms" Class="tab">Comms</RouteLink>
+        <RouteLink Route="power" Class="tab">Power</RouteLink>
+    </nav>
+    <div class="console">
+        <section class="console-main" aria-label="Page">
+            <ModRouterOutlet />
+        </section>
+        <aside class="console-side" aria-label="Inspector">
+            <ModRouterOutlet Name="side">
+                <EmptyContent>
+                    <p class="dim">No inspector for this page. Nothing declared a <code>side</code> slot here.</p>
+                </EmptyContent>
+            </ModRouterOutlet>
+        </aside>
+    </div>
+</XRay>

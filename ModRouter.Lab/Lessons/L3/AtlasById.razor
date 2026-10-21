@@ -1,0 +1,9 @@
+<XRay Name="AtlasById" Level="1">
+    <h2>Region @Id</h2>
+    <p>The route <code>atlas/{id:int}</code> rendered, and <code>id</code> is the number @Id.</p>
+</XRay>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+}

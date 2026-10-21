@@ -1,0 +1,53 @@
+@* Lesson 3 asks the router to explain itself. Explain lists every candidate route for an address and what it decided about each. *@
+<LessonFrame Number="3">
+    <Try>
+        <ol class="steps">
+            <li>Press <code>new</code>. A route made only of fixed text beats every route with a placeholder.</li>
+            <li>Press <code>42</code>. Both <code>{id:int}</code> and <code>{slug}</code> fit, and the one with a rule wins.</li>
+            <li>Press <code>andromeda</code>. The int rule fails, so the plain placeholder takes it.</li>
+            <li>Press <code>42/notes/7</code>. Only the catch-all is long enough.</li>
+            <li>Type your own address and press <b>Go there</b> to see the page the winner renders.</li>
+        </ol>
+        <p class="dim">The order never depends on the order the routes were declared in. Two routes the router cannot rank
+            stop the app at startup.</p>
+    </Try>
+    <Stage>
+        <div class="atlas-bar">
+            <span class="mono atlas-prefix">/lessons/matching/atlas/</span>
+            <input class="atlas-input" type="text" aria-label="The rest of the address" value="@Rest" @oninput="OnInput" />
+            <button class="btn" @onclick="GoThere">Go there</button>
+        </div>
+        <div class="atlas-presets">
+            @foreach (var preset in Presets)
+            {
+                <button class="chip" @onclick="() => Pick(preset)">@preset</button>
+            }
+        </div>
+
+        <ol class="ladder" aria-label="Candidate routes, best first">
+            @foreach (var row in Rows)
+            {
+                <li class="rung rung-@row.Kind">
+                    <span class="rung-mark" aria-hidden="true"></span>
+                    <span class="rung-template mono">@row.Template</span>
+                    <span class="rung-name">@row.Name</span>
+                    <span class="rung-why">@row.Why</span>
+                </li>
+            }
+            @if (Rows.Count == 0)
+            {
+                <li class="rung rung-miss"><span class="rung-why">No route starts like this address.</span></li>
+            }
+        </ol>
+
+        <XRay Name="Lesson3Page" Level="0">
+            <ModRouterOutlet>
+                <EmptyContent><p class="dim">Press Go there to render the winner.</p></EmptyContent>
+            </ModRouterOutlet>
+        </XRay>
+    </Stage>
+    <Code>
+        <CodeRef File="Lessons/L3/Lesson3Page.razor.cs"><code>RouteTableHolder.Table.Explain(path)</code> and how its candidates are read</CodeRef>
+        <CodeRef File="LabRoutes.cs">four routes that compete for <code>/atlas/...</code></CodeRef>
+    </Code>
+</LessonFrame>

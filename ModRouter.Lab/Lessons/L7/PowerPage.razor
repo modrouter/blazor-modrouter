@@ -1,0 +1,10 @@
+<XRay Name="PowerPage" Level="2">
+    <h3>Power</h3>
+    <div class="cells">
+        @foreach (var level in new[] { 82, 64, 91, 37, 55 })
+        {
+            <span class="cell" style="--level:@(level)%"><i></i></span>
+        }
+    </div>
+    <p class="dim">This page declares no inspector, so the side panel is empty.</p>
+</XRay>

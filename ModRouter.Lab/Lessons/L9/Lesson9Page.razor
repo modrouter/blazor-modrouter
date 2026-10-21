@@ -1,0 +1,62 @@
+@implements IDisposable
+
+<LessonFrame Number="9">
+    <Try>
+        <ol class="steps">
+            <li>Press the four buttons. Each one provokes a different ending: a page, a redirect, a missing route and a refusal.</li>
+            <li>Read the recorder. Every navigation is one row, with the stages it ran and how long each took.</li>
+            <li>Compare the colors. A stage that sent you elsewhere is amber, and one that stopped the navigation is rose.</li>
+            <li>Click around the other lessons and come back: the recorder keeps the last forty navigations.</li>
+        </ol>
+        <p class="dim">The same records are available to your code through <code>RouterDiagnostics</code>, and as log events and
+            traces for your tools.</p>
+    </Try>
+    <Stage>
+        <div class="fire">
+            <button class="btn" @onclick="@(() => Navigation.NavigateToRoute("ship", new { id = 3 }))">A page</button>
+            <button class="btn btn-quiet" @onclick="@(() => Navigation.NavigateTo("lessons/guards/old-bridge"))">A redirect</button>
+            <button class="btn btn-quiet" @onclick="@(() => Navigation.NavigateTo("lessons/recorder/nothing-here"))">A missing route</button>
+            <button class="btn btn-quiet" @onclick="@(() => Navigation.NavigateToRoute("gate-airlock"))">A refusal</button>
+        </div>
+
+        <div class="table-scroll">
+        <table class="recorder">
+            <caption class="sr-only">The most recent navigations, newest first</caption>
+            <thead>
+                <tr><th scope="col">#</th><th scope="col">Target</th><th scope="col">How it began</th><th scope="col">How it ended</th><th scope="col">Stages</th><th scope="col">Time</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var record in Records)
+                {
+                    <tr>
+                        <td class="mono">@record.NavigationId</td>
+                        <td class="mono">@record.Target</td>
+                        <td>@record.Trigger</td>
+                        <td><span class="outcome-chip outcome-@Kind(record)">@Ending(record)</span></td>
+                        <td>
+                            <span class="waterfall" role="img" aria-label="@Describe(record)">
+                                @foreach (var stage in record.Stages)
+                                {
+                                    <i class="wf wf-@stage.Outcome.ToString().ToLowerInvariant()" style="flex-grow:@Weight(stage)" title="@stage.Name: @Ms(stage.Duration)"></i>
+                                }
+                            </span>
+                        </td>
+                        <td class="mono">@Ms(record.Duration)</td>
+                    </tr>
+                }
+                @if (Records.Count == 0)
+                {
+                    <tr><td colspan="6" class="dim">Nothing recorded yet. Press a button.</td></tr>
+                }
+            </tbody>
+        </table>
+        </div>
+        <p class="dim recorder-note">Stage legend: <span class="legend wf-continued"></span> continued <span class="legend wf-redirected"></span> redirected
+            <span class="legend wf-canceled"></span> stopped. Hover a bar for the stage name.</p>
+    </Stage>
+    <Code>
+        <CodeRef File="Lessons/L9/Lesson9Page.razor.cs"><code>RouterDiagnostics.History</code> and its <code>Changed</code> event</CodeRef>
+        <CodeRef File="Hud/SignalStrip.razor.cs">the lights at the top of every page are drawn from the same records</CodeRef>
+        <CodeRef File="Program.cs"><code>options.Diagnostics.HistorySize</code> turns the history on</CodeRef>
+    </Code>
+</LessonFrame>

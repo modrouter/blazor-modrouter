@@ -1,0 +1,9 @@
+<XRay Name="AtlasBySlug" Level="1">
+    <h2>@Slug</h2>
+    <p>The route <code>atlas/{slug}</code> rendered: a placeholder with no rule takes any single word.</p>
+</XRay>
+
+@code {
+    [Parameter]
+    public string Slug { get; set; } = string.Empty;
+}

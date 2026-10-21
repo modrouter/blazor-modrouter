@@ -1,0 +1,23 @@
+@* Lesson 1 is a route with children. This component is level 0 of the chain; the outlet below shows level 1. *@
+<LessonFrame Number="1">
+    <Try>
+        <ol class="steps">
+            <li>Open <b>Fleet</b>, then a ship. Watch the chain above grow: one node for each level of the route.</li>
+            <li>Click <b>Crew</b> and <b>Log</b> on the ship. Only the part inside the ship changes. The frames around it keep the same
+                <i>instance</i>, and their <i>updated</i> counters stay put.</li>
+            <li>Switch to another ship. The ship page is not rebuilt; it is updated in place with the new <code>id</code>.</li>
+            <li>Press the browser's Back button. Every step you took is in the history.</li>
+        </ol>
+    </Try>
+    <Stage>
+        <XRay Name="Lesson1Page" Level="0">
+            <ModRouterOutlet>
+                <EmptyContent><p class="dim">Nothing selected.</p></EmptyContent>
+            </ModRouterOutlet>
+        </XRay>
+    </Stage>
+    <Code>
+        <CodeRef File="LabRoutes.cs">the route declarations: <code>Route</code>, <code>Index</code> and <code>children:</code></CodeRef>
+        <CodeRef File="Lessons/L1/ShipPage.razor">a route component with an outlet and tabs</CodeRef>
+    </Code>
+</LessonFrame>

@@ -1,0 +1,20 @@
+<XRay Name="ShipCrew" Level="3">
+    <ul class="crew">
+        @foreach (var name in Names())
+        {
+            <li>@name</li>
+        }
+    </ul>
+</XRay>
+
+@code {
+    static readonly string[] Given = ["Ines", "Tamsin", "Oleg", "Rafaela", "Kenji", "Marit", "Dov", "Anouk"];
+    static readonly string[] Family = ["Vale", "Okoro", "Lindqvist", "Sato", "Marchetti", "Reyes"];
+
+    [Parameter]
+    public int Id { get; set; }
+
+    IEnumerable<string> Names()
+        => Enumerable.Range(0, Math.Min(6, Fleet.Find(Id)?.Crew ?? 0))
+            .Select(i => $"{Given[(Id + i) % Given.Length]} {Family[(Id * 3 + i) % Family.Length]}");
+}

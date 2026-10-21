@@ -1,0 +1,58 @@
+@implements IDisposable
+
+@* The signal strip is the lab's window into the router. It reads three things: the committed route state (the address and the chain
+   of matched levels), the navigating flag, and the history of ended navigations (the pipeline lights). *@
+<section class="signal" aria-label="What the router is doing">
+    <div class="signal-url" aria-label="Current address">
+        <span class="seg seg-root">/</span>
+        @foreach (var segment in Segments)
+        {
+            <span class="seg">@segment</span>
+        }
+        @if (!string.IsNullOrEmpty(State?.Query))
+        {
+            <span class="seg seg-query">@State!.Query</span>
+        }
+        @if (State?.Fragment is { Length: > 0 } fragment)
+        {
+            <span class="seg seg-query">#@fragment</span>
+        }
+    </div>
+
+    <ol class="signal-chain" aria-label="Matched route levels">
+        @if (State?.Chain is { } chain)
+        {
+            @for (var i = 0; i < chain.Matches.Count; i++)
+            {
+                var level = chain.Matches[i];
+                <li class="node @(State.FailedLevel == i ? "node-failed" : null)" style="--depth:@i">
+                    <span class="node-name">@Describe(level)</span>
+                    <span class="node-comp">@level.Route.Component.Name</span>
+                    @foreach (var value in level.Parameters.Values)
+                    {
+                        <span class="node-param">@value.Key = @value.Value</span>
+                    }
+                </li>
+            }
+        }
+        else if (State?.Failure is { } failure && failure != RouteFailure.None)
+        {
+            <li class="node node-failed"><span class="node-name">@failure</span><span class="node-comp">no route matched</span></li>
+        }
+    </ol>
+
+    <div class="signal-pipe-wrap">
+        <ol class="signal-pipe @(Navigation.IsNavigating ? "is-busy" : null)" @key="PipeKey" aria-label="Navigation pipeline of the last navigation">
+            @for (var i = 0; i < Lights.Count; i++)
+            {
+                var light = Lights[i];
+                <li class="light light-@light.State" style="--i:@i; --wait:@(light.WaitMs)ms" title="@light.Hint">
+                    <span class="light-lamp"></span>
+                    <span class="light-name">@light.Name</span>
+                    <span class="light-ms">@light.Ms</span>
+                </li>
+            }
+        </ol>
+        <p class="signal-verdict" aria-live="polite">@Verdict</p>
+    </div>
+</section>

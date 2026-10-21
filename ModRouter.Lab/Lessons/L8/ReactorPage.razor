@@ -1,0 +1,9 @@
+<XRay Name="ReactorPage" Level="1">
+    <div class="reactor @(_paused ? "reactor-paused" : null)">
+        <div class="core" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="reactor-read">
+            <span class="reactor-count" aria-live="off">@_ticks</span>
+            <span class="dim">cycles. @(_paused ? "Paused: this page is hidden." : "Running.") Paused @_pauses time@(_pauses == 1 ? "" : "s").</span>
+        </div>
+    </div>
+</XRay>

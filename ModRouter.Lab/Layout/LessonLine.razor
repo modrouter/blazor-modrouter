@@ -1,0 +1,14 @@
+@implements IDisposable
+
+<RouteLink Route="home" Class="line-start" Match="RouteLinkMatch.Exact">Start</RouteLink>
+<ol class="line-track">
+    @foreach (var lesson in LessonCatalog.All)
+    {
+        <li class="@(Progress.Visited(lesson.Number) ? "visited" : null)">
+            <RouteLink Route="@lesson.RouteName" Class="station" title="@lesson.Promise">
+                <span class="dot">@lesson.Number</span>
+                <span class="station-name">@lesson.Title</span>
+            </RouteLink>
+        </li>
+    }
+</ol>

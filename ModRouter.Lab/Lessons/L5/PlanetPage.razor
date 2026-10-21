@@ -1,0 +1,23 @@
+@implements IDisposable
+
+<XRay Name="PlanetPage" Level="1">
+    <header class="ship-head">
+        <h2>@Reading.Name</h2>
+        <span class="dim">planet @Reading.Id, @Reading.Surface</span>
+        <RouteLink Route="planet-list" Class="chip">All planets</RouteLink>
+    </header>
+
+    <div class="age age-@Freshness.Kind" aria-live="off">
+        <span class="age-state">@Freshness.Kind</span>
+        <span>data is @Age.TotalSeconds.ToString("0.0") s old. @Freshness.Note</span>
+        <button class="chip" @onclick="Revalidate">Refresh now</button>
+    </div>
+
+    <nav class="tabs" aria-label="Planet sections">
+        <RouteLink Route="planet-summary" Parameters="@(new { id = Reading.Id })" Match="RouteLinkMatch.Exact" Class="tab">Summary</RouteLink>
+        <RouteLink Route="planet-live" Parameters="@(new { id = Reading.Id })" Class="tab">Live feed</RouteLink>
+    </nav>
+    <div class="tab-body">
+        <ModRouterOutlet />
+    </div>
+</XRay>

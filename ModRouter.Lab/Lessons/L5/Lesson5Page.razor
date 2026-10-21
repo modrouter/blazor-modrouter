@@ -1,0 +1,59 @@
+@implements IDisposable
+
+<LessonFrame Number="5">
+    <Try>
+        <ol class="steps">
+            <li>Open a planet. The old page stays while the data loads, then the page appears at once.</li>
+            <li>Open its <b>Live feed</b>. The page shows first; the moon count arrives later, and the telemetry keeps streaming in.</li>
+            <li>Go back to the list and open the <i>same</i> planet again. The <b>ledger</b> does not grow: the answer came from the cache.</li>
+            <li>Wait until the page says <b>stale</b>, then reopen it. It shows at once, and the ledger adds one run: a refresh in the background.</li>
+            <li>Turn on <b>make the loader fail</b>, open a planet you have not seen, and use <b>Try again</b> when it breaks.</li>
+            <li>Hover a planet in the list for a moment before clicking. That link preloads the data, so the click is instant.</li>
+        </ol>
+    </Try>
+    <Stage>
+        <div class="knobs">
+            <label class="knob">
+                <span>Critical data takes <b>@Knobs.CriticalMs ms</b></span>
+                <input type="range" min="0" max="2500" step="100" value="@Knobs.CriticalMs" @oninput="e => Knobs.SetCritical(ToInt(e))" />
+            </label>
+            <label class="knob">
+                <span>Moons take <b>@Knobs.MoonsMs ms</b></span>
+                <input type="range" min="0" max="4000" step="100" value="@Knobs.MoonsMs" @oninput="e => Knobs.SetMoons(ToInt(e))" />
+            </label>
+            <label class="knob knob-check">
+                <input type="checkbox" checked="@Knobs.Fail" @onchange="e => Knobs.SetFail((bool)(e.Value ?? false))" />
+                <span>Make the loader fail</span>
+            </label>
+        </div>
+
+        <div class="ledger" aria-label="Loader ledger">
+            <div class="ledger-head">
+                <span>Loader runs: <b>@Ledger.Runs</b></span>
+                <button class="chip" @onclick="Ledger.Clear">Reset</button>
+                <button class="chip" @onclick="Navigation.ClearLoaderCache">Clear the cache</button>
+            </div>
+            <ol class="ledger-list">
+                @foreach (var entry in Ledger.Entries)
+                {
+                    <li><span class="mono">#@entry.Sequence</span> @entry.What <small>@entry.At.ToString("HH:mm:ss.fff")</small></li>
+                }
+                @if (Ledger.Entries.Count == 0)
+                {
+                    <li class="dim">The loader has not run yet.</li>
+                }
+            </ol>
+        </div>
+
+        <XRay Name="Lesson5Page" Level="0">
+            <ModRouterOutlet />
+        </XRay>
+    </Stage>
+    <Code>
+        <CodeRef File="Lessons/L5/PlanetLoader.cs"><code>IRouteLoader</code>: plain data to cache, and a second loader with <code>Defer</code> and <code>Stream</code></CodeRef>
+        <CodeRef File="LabRoutes.cs"><code>.Loader&lt;T&gt;()</code> and <code>.CacheFor(fresh, stale)</code></CodeRef>
+        <CodeRef File="Lessons/L5/PlanetLive.razor"><code>ModDeferred</code> and <code>ModStream</code></CodeRef>
+        <CodeRef File="Lessons/L5/PlanetPage.razor.cs"><code>ModRouteData</code>, read by the page that owns the data</CodeRef>
+        <CodeRef File="Lessons/L5/PlanetList.razor"><code>Preload="RoutePreload.Intent"</code> on a link</CodeRef>
+    </Code>
+</LessonFrame>

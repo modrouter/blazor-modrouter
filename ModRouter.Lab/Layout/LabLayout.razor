@@ -1,0 +1,28 @@
+@inherits LayoutComponentBase
+
+@* The layout is not part of the route chain: ModRouter renders it once around whatever the chain shows. *@
+<div class="lab">
+    <header class="topbar">
+        <RouteLink Route="home" Class="brand" title="ModRouter Lab home">
+            <img src="favicon.svg" alt="" width="30" height="30" />
+            <span>ModRouter Lab</span>
+        </RouteLink>
+        <ModNavigationIndicator>
+            <span class="navigating" role="status">Navigating</span>
+        </ModNavigationIndicator>
+        <a class="topbar-link" href="https://modrouter.github.io/blazor-modrouter/" target="_blank" rel="noopener">Documentation</a>
+    </header>
+
+    <nav class="line" aria-label="Lessons">
+        <LessonLine />
+    </nav>
+
+    <main class="stage">
+        <SignalStrip />
+        <div class="lesson-body">
+            @Body
+        </div>
+    </main>
+
+    <ConfirmHost />
+</div>

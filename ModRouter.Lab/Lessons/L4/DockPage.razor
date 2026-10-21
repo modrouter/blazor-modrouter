@@ -1,0 +1,40 @@
+@implements IDisposable
+
+<XRay Name="DockPage" Level="1">
+    <h2>Dock</h2>
+    <p>Anyone may stand here. You are a <b>@Clearance.Current</b>.</p>
+    @if (!string.IsNullOrEmpty(ReturnUrl))
+    {
+        <p>
+            You were turned away from <code>@ReturnUrl</code>.
+            <button class="btn" @onclick="SignInAsCrew">Become crew and go on</button>
+        </p>
+    }
+    else
+    {
+        <p class="dim">Open the bridge as a visitor, and the guard will send you back here with a note about where you were going.</p>
+    }
+</XRay>
+
+@code {
+    [SupplyParameterFromQuery]
+    public string? ReturnUrl { get; set; }
+
+    [Inject]
+    Clearance Clearance { get; set; } = default!;
+
+    [Inject]
+    INavigationService Navigation { get; set; } = default!;
+
+    protected override void OnInitialized() => Clearance.Changed += OnClearanceChanged;
+
+    public void Dispose() => Clearance.Changed -= OnClearanceChanged;
+
+    void OnClearanceChanged() => _ = InvokeAsync(StateHasChanged);
+
+    void SignInAsCrew()
+    {
+        Clearance.Set(Level.Crew);
+        Navigation.NavigateTo(ReturnUrl!);
+    }
+}

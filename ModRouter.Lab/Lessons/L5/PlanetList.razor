@@ -1,0 +1,15 @@
+<XRay Name="PlanetList" Level="1">
+    <h2>Survey targets</h2>
+    <p class="dim">These links use <code>Preload="Intent"</code>: resting the pointer on one starts the loader early.</p>
+    <ul class="ship-list">
+        @foreach (var id in new[] { 1, 2, 3, 4, 5, 6 })
+        {
+            <li>
+                <RouteLink Route="planet" Parameters="@(new { id })" Preload="RoutePreload.Intent" Class="ship-card">
+                    <b>Planet @id</b>
+                    <span>open the survey</span>
+                </RouteLink>
+            </li>
+        }
+    </ul>
+</XRay>

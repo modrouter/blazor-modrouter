@@ -1,0 +1,30 @@
+<article class="home">
+    <header class="hero">
+        <h1>Watch a router think</h1>
+        <p class="hero-lead">
+            Every click in this lab runs through ModRouter. The strip above shows what it sees: the address, the route levels that
+            matched, and each stage the navigation passed through. Fire a few navigations and watch the signal travel.
+        </p>
+        <div class="hero-actions">
+            <button class="btn" @onclick="@(() => Navigation.NavigateToRoute("ship", new { id = 2 }))">Open a ship</button>
+            <button class="btn btn-quiet" @onclick="@(() => Navigation.NavigateTo("/nowhere/at/all"))">Ask for a page that does not exist</button>
+            <RouteLink Route="l1" Match="RouteLinkMatch.Exact" Class="btn btn-quiet">Start lesson 1</RouteLink>
+        </div>
+    </header>
+
+    <section class="home-grid" aria-label="The lessons">
+        @foreach (var lesson in LessonCatalog.All)
+        {
+            <RouteLink Route="@lesson.RouteName" Match="RouteLinkMatch.Exact" Class="lesson-card">
+                <span class="dot">@lesson.Number</span>
+                <b>@lesson.Title</b>
+                <span>@lesson.Promise</span>
+            </RouteLink>
+        }
+    </section>
+
+    <p class="home-foot">
+        Each lesson is a real ModRouter feature with its code in this repository. The written walkthrough that goes with them is in the
+        <a href="https://modrouter.github.io/blazor-modrouter/ModRouter/docs/lessons.html" target="_blank" rel="noopener">guided lessons</a>.
+    </p>
+</article>

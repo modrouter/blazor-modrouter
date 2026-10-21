@@ -1,0 +1,21 @@
+@* A route component declares the route values it wants as [Parameter]s. {id:int} in the template arrives here as an int. *@
+<XRay Name="ShipPage" Level="2">
+    <header class="ship-head">
+        <h2>@(Ship?.Name ?? "Unknown ship")</h2>
+        <span class="dim">ship @Id</span>
+    </header>
+    <nav class="tabs" aria-label="Ship sections">
+        <RouteLink Route="ship-overview" Parameters="@(new { id = Id })" Match="RouteLinkMatch.Exact" Class="tab">Overview</RouteLink>
+        <RouteLink Route="ship-crew" Parameters="@(new { id = Id })" Class="tab">Crew</RouteLink>
+        <RouteLink Route="ship-log" Parameters="@(new { id = Id })" Class="tab">Log</RouteLink>
+    </nav>
+    <div class="tab-body">
+        <ModRouterOutlet />
+    </div>
+    <p class="neighbours">
+        @foreach (var other in Fleet.Ships.Where(s => s.Id != Id))
+        {
+            <RouteLink Route="ship" Parameters="@(new { id = other.Id })" Class="chip">@other.Name</RouteLink>
+        }
+    </p>
+</XRay>

@@ -1,0 +1,59 @@
+@implements IDisposable
+
+<LessonFrame Number="4">
+    <Try>
+        <ol class="steps">
+            <li>You start as a <b>visitor</b>. Open the <b>Bridge</b>. A guard sends you to the dock and remembers where you were going.</li>
+            <li>On the dock, become <b>crew</b>. You are taken on to the bridge you asked for.</li>
+            <li>Open the <b>Vault</b>. The navigation goes through, but the page is replaced by "gate closed", and the URL changes.</li>
+            <li>Press the <b>Airlock</b>. It always says no: nothing moves, not even the URL.</li>
+            <li>Open <b>Old bridge</b>. It is a redirect rule, not a page; it forwards to the bridge.</li>
+        </ol>
+        <p class="dim">The result shown under the gates is what <code>NavigateToAsync</code> returned.</p>
+    </Try>
+    <Stage>
+        <div class="clearance" role="radiogroup" aria-label="Clearance">
+            @foreach (var level in Enum.GetValues<Level>())
+            {
+                <button class="rank @(Clearance.Current == level ? "rank-on" : null)" role="radio" aria-checked="@(Clearance.Current == level)"
+                        @onclick="() => Clearance.Set(level)">@level</button>
+            }
+        </div>
+
+        <div class="gates">
+            <button class="gate" @onclick="@(() => Try("gate-dock"))"><b>Dock</b><span>open to everyone</span></button>
+            <button class="gate" @onclick="@(() => Try("gate-bridge"))"><b>Bridge</b><span>crew, or redirected to the dock</span></button>
+            <button class="gate" @onclick="@(() => Try("gate-vault"))"><b>Vault</b><span>captains only, otherwise "gate closed"</span></button>
+            <button class="gate" @onclick="@(() => Try("gate-airlock"))"><b>Airlock</b><span>always cancelled</span></button>
+            <button class="gate" @onclick="TryOld"><b>Old bridge</b><span>a redirect rule</span></button>
+        </div>
+
+        <p class="outcome" aria-live="polite">
+            @if (Last is null)
+            {
+                <span class="dim">Open a gate to see how the navigation ended.</span>
+            }
+            else
+            {
+                <span class="outcome-label">NavigateToAsync returned</span>
+                <span class="outcome-chip outcome-@Last.Status.ToString().ToLowerInvariant()">@Last.Status</span>
+                @if (Last.RedirectedTo is { } to)
+                {
+                    <code>@(new Uri(to).PathAndQuery)</code>
+                }
+            }
+        </p>
+
+        <XRay Name="Lesson4Page" Level="0">
+            <ModRouterOutlet>
+                <EmptyContent><p class="dim">No gate has been passed yet.</p></EmptyContent>
+            </ModRouterOutlet>
+        </XRay>
+    </Stage>
+    <Code>
+        <CodeRef File="Lessons/L4/Gates.cs">three guards: redirect, not authorized and cancel</CodeRef>
+        <CodeRef File="LabRoutes.cs"><code>.Guard&lt;T&gt;()</code> on a route, and <code>.Redirect(...)</code> as a rule</CodeRef>
+        <CodeRef File="Lessons/L4/Lesson4Page.razor.cs"><code>NavigateToAsync</code> and the <code>NavigationStatus</code> it returns</CodeRef>
+        <CodeRef File="App.razor">the <code>NotAuthorized</code> fragment of the router</CodeRef>
+    </Code>
+</LessonFrame>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <title>ModRouter Lab</title>
+    <base href="/" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="css/lab.css" />
+    <link rel="stylesheet" href="css/lessons.css" />
+    <link href="ModRouter.Lab.styles.css" rel="stylesheet" />
+    <script>
+        // GitHub Pages serves a 404 for a deep link; the site's 404.html sends it back here as ?/path and this puts the
+        // path back before Blazor starts, so the lab can be opened on any lesson.
+        (function (l) {
+            if (l.search[1] === '/') {
+                var decoded = l.search.slice(1).split('&').map(function (s) { return s.replace(/~and~/g, '&'); }).join('?');
+                window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+            }
+        }(window.location));
+    </script>
+</head>
+<body>
+    <div id="app">
+        <div class="boot"><span class="boot-mark"></span><p>Calibrating the router...</p></div>
+    </div>
+    <div id="blazor-error-ui">An unhandled error has occurred. <a href="." class="reload">Reload</a></div>
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+</html>

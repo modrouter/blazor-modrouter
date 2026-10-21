@@ -1,0 +1,12 @@
+<li>
+    <a href="https://github.com/modrouter/blazor-modrouter/blob/main/ModRouter.Lab/@File" target="_blank" rel="noopener"><code>@File</code></a>
+    <span>@ChildContent</span>
+</li>
+
+@code {
+    [Parameter, EditorRequired]
+    public string File { get; set; } = string.Empty;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

@@ -1,0 +1,9 @@
+<XRay Name="AtlasRest" Level="1">
+    <h2>Deep address</h2>
+    <p>The catch-all <code>atlas/{*rest}</code> rendered. It took <code>@Rest</code>, however many segments there were.</p>
+</XRay>
+
+@code {
+    [Parameter]
+    public string Rest { get; set; } = string.Empty;
+}

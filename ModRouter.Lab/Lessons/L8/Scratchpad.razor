@@ -1,0 +1,13 @@
+<div class="scratch">
+    <label for="@_id">@Label</label>
+    <textarea id="@_id" rows="4" @bind="_text" @bind:event="oninput" placeholder="Type here, leave the page, and come back."></textarea>
+    <small>@_text.Length characters in this page's own state.</small>
+</div>
+
+@code {
+    readonly string _id = $"scratch-{Guid.NewGuid():N}";
+    string _text = string.Empty;
+
+    [Parameter]
+    public string Label { get; set; } = "Notes";
+}

@@ -1,0 +1,48 @@
+@* The frame every lesson page wears: what the lesson is about, what to try, the live stage, and where the code lives. *@
+<article class="lesson">
+    <header class="lesson-head">
+        <span class="lesson-num" aria-hidden="true">@Number</span>
+        <div>
+            <h1>@Lesson.Title</h1>
+            <p class="promise">@Lesson.Promise</p>
+        </div>
+    </header>
+
+    <div class="lesson-grid">
+        <section class="panel panel-try" aria-labelledby="try-@Number">
+            <h2 id="try-@Number">Try this</h2>
+            @Try
+        </section>
+        <section class="panel panel-stage" aria-label="Live demonstration">
+            @Stage
+        </section>
+    </div>
+
+    <section class="panel panel-code" aria-labelledby="code-@Number">
+        <h2 id="code-@Number">Where it lives in the code</h2>
+        <ul class="code-refs">
+            @Code
+        </ul>
+    </section>
+
+    <footer class="lesson-nav">
+        @if (Previous is { } previous)
+        {
+            <RouteLink Route="@previous.RouteName" Match="RouteLinkMatch.Exact" Class="pager pager-back">
+                <span class="pager-dir">Back</span> <span class="pager-title">@previous.Title</span>
+            </RouteLink>
+        }
+        @if (Next is { } next)
+        {
+            <RouteLink Route="@next.RouteName" Match="RouteLinkMatch.Exact" Class="pager pager-next">
+                <span class="pager-dir">Next lesson</span> <span class="pager-title">@next.Title</span>
+            </RouteLink>
+        }
+        else
+        {
+            <a class="pager pager-next" href="https://modrouter.github.io/blazor-modrouter/" target="_blank" rel="noopener">
+                <span class="pager-dir">Keep going</span> <span class="pager-title">Read the documentation</span>
+            </a>
+        }
+    </footer>
+</article>

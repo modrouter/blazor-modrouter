@@ -1,0 +1,17 @@
+<XRay Name="PlanetLive" Level="2">
+    <h3>Moons <small>deferred: the page did not wait for them</small></h3>
+    <ModDeferred T="string[]" Name="moons">
+        <Fallback><p class="pending">Counting moons...</p></Fallback>
+        <ChildContent Context="moons">
+            <p class="moons">@foreach (var moon in moons) { <span class="chip">@moon</span> }</p>
+        </ChildContent>
+        <Error Context="error"><p class="dim">@error.Message</p></Error>
+    </ModDeferred>
+
+    <h3>Telemetry <small>streamed: items keep arriving</small></h3>
+    <ModStream T="int" Name="telemetry">
+        <Fallback><p class="pending">Waiting for the first reading...</p></Fallback>
+        <ItemTemplate Context="item"><span class="bar" style="--h:@(item)%" title="@item"></span></ItemTemplate>
+        <InProgress><span class="pending">more coming</span></InProgress>
+    </ModStream>
+</XRay>

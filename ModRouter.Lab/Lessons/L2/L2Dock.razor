@@ -1,0 +1,26 @@
+@page "/lessons/names/dock/{Id:int}"
+@attribute [RouteParent(typeof(Lesson2Page))]
+@attribute [RouteName("dock")]
+@attribute [RouteTitle("Dock")]
+
+<XRay Name="L2Dock" Level="1">
+    <h2>Dock @Id</h2>
+    <p>
+        The value <code>@Id</code> arrived as an <code>int</code>, converted by the <code>:int</code> in the template.
+        Other docks, built by the typed helper:
+    </p>
+    <p class="neighbours">
+        @foreach (var other in new[] { 1, 2, 3, 4 }.Where(n => n != Id))
+        {
+            <a class="chip" href="@Navigation.GetDockUrl(other)">Dock @other</a>
+        }
+    </p>
+</XRay>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    [Inject]
+    INavigationService Navigation { get; set; } = default!;
+}

@@ -1,0 +1,26 @@
+@implements IDisposable
+
+<XRay Name="LogEditor" Level="1">
+    <div class="editor @(Draft.IsDirty ? "editor-dirty" : null)">
+        <header class="ship-head">
+            <h2>Mission log</h2>
+            <span class="editor-state">@(Draft.IsDirty ? "Unsaved changes" : "Saved")</span>
+        </header>
+        <textarea aria-label="Mission log" rows="5" value="@Draft.Text" @oninput="e => Draft.Edit(e.Value?.ToString() ?? string.Empty)"></textarea>
+        <div class="editor-actions">
+            <button class="btn" disabled="@(!Draft.IsDirty)" @onclick="Draft.Save">Save</button>
+            <RouteLink Route="log-archive" Class="btn btn-quiet">Open the archive</RouteLink>
+        </div>
+    </div>
+</XRay>
+
+@code {
+    [Inject]
+    Draft Draft { get; set; } = default!;
+
+    protected override void OnInitialized() => Draft.Changed += OnChanged;
+
+    public void Dispose() => Draft.Changed -= OnChanged;
+
+    void OnChanged() => _ = InvokeAsync(StateHasChanged);
+}

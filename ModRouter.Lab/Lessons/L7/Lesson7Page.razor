@@ -1,0 +1,25 @@
+<LessonFrame Number="7">
+    <Try>
+        <ol class="steps">
+            <li>Open <b>Radar</b>, <b>Comms</b> and <b>Power</b>. Their addresses share a prefix, but the console around them is one layout,
+                and the frame labelled <code>ConsoleLayout</code> never changes.</li>
+            <li>Watch the right-hand panel. Radar and Comms each fill it with their own inspector. Power declares none, so the panel shows
+                its empty state.</li>
+            <li>Look at the chain above. The console is a level of its own, but it adds nothing to the address.</li>
+        </ol>
+        <p class="dim">A group shares a layout (or a guard, or a loader) between routes without adding a segment to their URLs. A named
+            outlet is a second place a route can render into.</p>
+    </Try>
+    <Stage>
+        <XRay Name="Lesson7Page" Level="0">
+            <ModRouterOutlet>
+                <EmptyContent><p class="dim">Open a console page.</p></EmptyContent>
+            </ModRouterOutlet>
+        </XRay>
+    </Stage>
+    <Code>
+        <CodeRef File="LabRoutes.cs"><code>.Group(layout, ...)</code> and <code>.Slot("side", ...)</code></CodeRef>
+        <CodeRef File="Lessons/L7/ConsoleLayout.razor">the group's layout: the page outlet and a named outlet</CodeRef>
+        <CodeRef File="Lessons/L7/RadarInspector.razor">a component that fills the named outlet</CodeRef>
+    </Code>
+</LessonFrame>

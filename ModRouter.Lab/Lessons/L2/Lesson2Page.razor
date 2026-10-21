@@ -1,0 +1,82 @@
+@page "/lessons/names"
+@attribute [RouteName("l2")]
+@attribute [RouteTitle("Names instead of URLs")]
+
+<LessonFrame Number="2">
+    <Try>
+        <ol class="steps">
+            <li>Pick a route name in the <b>URL forge</b> and fill in its values. The URL is built from the name, never typed by hand.</li>
+            <li>Type <code>abc</code> where an <code>int</code> is expected. The router refuses and says why, before anything navigates.</li>
+            <li>Try <b>beacon</b>: its second value is optional, so the URL is shorter when you leave it empty.</li>
+            <li>Use the two launch buttons. They reach the same page; one passes a name and values, the other calls a method the
+                compiler checks.</li>
+        </ol>
+    </Try>
+    <Stage>
+        <div class="forge">
+            <div class="forge-pick">
+                <label for="forge-route">Route name</label>
+                <select id="forge-route" value="@Selected" @onchange="OnPick">
+                    @foreach (var name in Names)
+                    {
+                        <option value="@name">@name</option>
+                    }
+                </select>
+                <span class="forge-template mono">@Template</span>
+            </div>
+
+            @if (Parameters.Count == 0)
+            {
+                <p class="dim">This route has no values to fill in.</p>
+            }
+            else
+            {
+                <div class="forge-values">
+                    @foreach (var parameter in Parameters)
+                    {
+                        <label class="forge-field">
+                            <span>@parameter.Name <small>@parameter.Rule</small></span>
+                            <input type="text" value="@Values.GetValueOrDefault(parameter.Name)"
+                                   placeholder="@(parameter.Optional ? "optional" : "required")"
+                                   @oninput="e => SetValue(parameter.Name, e.Value?.ToString())" />
+                        </label>
+                    }
+                </div>
+            }
+
+            <div class="forge-out @(Error is null ? "ok" : "bad")" aria-live="polite">
+                @if (Error is null)
+                {
+                    <span class="forge-label">Built URL</span>
+                    <code class="forge-url">@Url</code>
+                }
+                else
+                {
+                    <span class="forge-label">Refused</span>
+                    <span class="forge-error">@Error</span>
+                }
+            </div>
+
+            <div class="forge-actions">
+                <button class="btn" disabled="@(Error is not null)" @onclick="Launch">Launch with the name</button>
+                <button class="btn btn-quiet" @onclick="LaunchTyped">Dock 4, the typed way</button>
+            </div>
+            <p class="dim forge-note">
+                The typed way is <code>await Navigation.NavigateToDockAsync(4)</code>. It exists because the page <code>L2Dock</code> declares
+                <code>[RouteName("dock")]</code>; a mistake in the name or the value type is a compile error.
+            </p>
+        </div>
+
+        <XRay Name="Lesson2Page" Level="0">
+            <ModRouterOutlet>
+                <EmptyContent><p class="dim">Launch a route to see its page here.</p></EmptyContent>
+            </ModRouterOutlet>
+        </XRay>
+    </Stage>
+    <Code>
+        <CodeRef File="Lessons/L2/Lesson2Page.razor">a page that declares its route with <code>@@page</code> and <code>[RouteName]</code></CodeRef>
+        <CodeRef File="Lessons/L2/Lesson2Page.razor.cs"><code>TryGetRouteUrl</code>, <code>NavigateToRoute</code> and the generated typed helper</CodeRef>
+        <CodeRef File="Lessons/L2/L2Dock.razor">a child page that nests under its parent with <code>[RouteParent]</code></CodeRef>
+        <CodeRef File="LabRoutes.cs"><code>AddPages</code> finds the attribute pages next to the fluent routes</CodeRef>
+    </Code>
+</LessonFrame>

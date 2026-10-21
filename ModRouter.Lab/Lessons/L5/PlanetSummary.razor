@@ -1,0 +1,16 @@
+@* This level has no loader of its own. It reads the nearest ancestor's data, the planet that PlanetLoader returned. *@
+<XRay Name="PlanetSummary" Level="2">
+    <dl class="facts">
+        <dt>Name</dt><dd>@Reading.Name</dd>
+        <dt>Surface</dt><dd>@Reading.Surface</dd>
+        <dt>Surveyed</dt><dd>@Reading.LoadedAt.ToString("HH:mm:ss")</dd>
+    </dl>
+    <p class="dim">Open the live feed: its loader returns a moon count that arrives later and a telemetry stream.</p>
+</XRay>
+
+@code {
+    [CascadingParameter]
+    ModRouteData Data { get; set; } = default!;
+
+    PlanetReading Reading => Data.GetFromAncestor<PlanetReading>()!;
+}

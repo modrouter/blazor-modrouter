@@ -1,0 +1,20 @@
+@page "/lessons/names/beacon/{Code}/{Channel:int?}"
+@attribute [RouteParent(typeof(Lesson2Page))]
+@attribute [RouteName("beacon")]
+@attribute [RouteTitle("Beacon")]
+
+<XRay Name="L2Beacon" Level="1">
+    <h2>Beacon @Code</h2>
+    <p>
+        Channel: <b>@(Channel?.ToString() ?? "not set")</b>.
+        An optional value must bind to a nullable property, here <code>int?</code>. When it is left out, it is left out of the URL too.
+    </p>
+</XRay>
+
+@code {
+    [Parameter]
+    public string Code { get; set; } = string.Empty;
+
+    [Parameter]
+    public int? Channel { get; set; }
+}

@@ -1,0 +1,22 @@
+<LessonFrame Number="6">
+    <Try>
+        <ol class="steps">
+            <li>Type something in the log. The editor starts to glow: there is unsaved work.</li>
+            <li>Click another lesson on the line, or open the archive. A question appears before anything moves.</li>
+            <li>Answer <b>Stay on this page</b>. The page, the URL and your text are exactly as they were.</li>
+            <li>Ask again and answer <b>Leave</b>. The navigation goes on.</li>
+            <li>Press <b>Save</b> first, then leave. With nothing unsaved the guard does not ask.</li>
+        </ol>
+        <p class="dim">A leave guard is asked about the page on screen. A normal guard is asked about the page you are going to.</p>
+    </Try>
+    <Stage>
+        <XRay Name="Lesson6Page" Level="0">
+            <ModRouterOutlet />
+        </XRay>
+    </Stage>
+    <Code>
+        <CodeRef File="Lessons/L6/UnsavedDraftGuard.cs"><code>IRouteLeaveGuard</code>: ask, then allow or cancel</CodeRef>
+        <CodeRef File="Services/ConfirmDialog.cs">a dialog service the guard can <code>await</code></CodeRef>
+        <CodeRef File="LabRoutes.cs"><code>.LeaveGuard&lt;T&gt;()</code> on the editor route</CodeRef>
+    </Code>
+</LessonFrame>

@@ -1,0 +1,40 @@
+@implements IDisposable
+
+@if (Dialog.IsOpen)
+{
+    <div class="scrim" role="presentation">
+        <div class="confirm" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title">
+            <h2 id="confirm-title">Hold on</h2>
+            <p>@Dialog.Question</p>
+            <div class="confirm-actions">
+                <button class="btn btn-quiet" @onclick="() => Dialog.Answer(true)">Leave</button>
+                <button class="btn" @onclick="() => Dialog.Answer(false)" @ref="_stay">Stay on this page</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    ElementReference _stay;
+    bool _wasOpen;
+
+    [Inject]
+    ConfirmDialog Dialog { get; set; } = default!;
+
+    protected override void OnInitialized() => Dialog.Changed += OnDialogChanged;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Move keyboard focus into the dialog when it opens, so the keyboard answers it.
+        if (Dialog.IsOpen && !_wasOpen)
+        {
+            await _stay.FocusAsync();
+        }
+
+        _wasOpen = Dialog.IsOpen;
+    }
+
+    public void Dispose() => Dialog.Changed -= OnDialogChanged;
+
+    void OnDialogChanged() => _ = InvokeAsync(StateHasChanged);
+}

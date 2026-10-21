@@ -1,0 +1,29 @@
+@* The root of the lab: ModRouter replaces the built-in Router. Everything the router can render around a page is declared here. *@
+<ModRouter DefaultLayout="typeof(LabLayout)">
+    <Loading>
+        <div class="boot"><span class="boot-mark"></span><p>Locking the first route...</p></div>
+    </Loading>
+    <NotFound>
+        <section class="notice notice-lost">
+            <h1>No route here</h1>
+            <p>Nothing in the route table matches this address. Pick a lesson from the line on the left.</p>
+        </section>
+    </NotFound>
+    <NotAuthorized Context="error">
+        <section class="notice notice-deny">
+            <h1>Gate closed</h1>
+            <p>@error.Message</p>
+            <button class="btn" @onclick="error.Retry">Check clearance again</button>
+        </section>
+    </NotAuthorized>
+    <Error Context="error">
+        <section class="notice notice-fail" role="alert">
+            <h1>The data did not arrive</h1>
+            <p>@error.Message</p>
+            @if (error.IsChainLevel)
+            {
+                <button class="btn" @onclick="error.Retry">Try again</button>
+            }
+        </section>
+    </Error>
+</ModRouter>

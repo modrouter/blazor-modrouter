@@ -1,0 +1,33 @@
+@* Draws a labelled frame around a route component and counts how often it was created and updated.
+   It is how lesson 1 shows that a parent component survives while only its child changes. *@
+<div class="xray" data-level="@Level">
+    <span class="xray-tag">
+        <b>@Name</b>
+        <small>instance @_instance, updated @_updates&times;</small>
+    </span>
+    @ChildContent
+</div>
+
+@code {
+    static readonly Dictionary<string, int> Created = [];
+
+    int _instance;
+    int _updates;
+
+    [Parameter, EditorRequired]
+    public string Name { get; set; } = string.Empty;
+
+    [Parameter]
+    public int Level { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Created[Name] = Created.GetValueOrDefault(Name) + 1;
+        _instance = Created[Name];
+    }
+
+    protected override void OnParametersSet() => _updates++;
+}
