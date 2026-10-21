@@ -13,11 +13,16 @@ read [Concepts](docs/concepts.md) for the picture, or see [Why ModRouter](docs/w
 
 ## Install and register
 
-Reference the project and register the router in `Program.cs`:
+Add the [`ModRouter`](https://www.nuget.org/packages/ModRouter) package to your Blazor app and register the router in `Program.cs`. ModRouter is a
+preview, so ask for the pre-release:
 
-```xml
-<ProjectReference Include="..\ModRouter\ModRouter.csproj" />
+```bash
+dotnet add package ModRouter --prerelease
 ```
+
+Or pin the version in the project file: `<PackageReference Include="ModRouter" Version="0.1.0-preview.1" />`. An app that renders on the server also adds
+[`ModRouter.AspNetCore`](https://www.nuget.org/packages/ModRouter.AspNetCore) (see [Hosting](docs/hosting.md)). To build from source instead, clone the
+repository and reference `ModRouter/ModRouter.csproj`.
 
 ```csharp
 // Program.cs

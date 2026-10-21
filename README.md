@@ -7,6 +7,12 @@ precedence-based matcher. The route table is compiled once, precedence never dep
 ambiguous or invalid routes fails at startup with a code and a message. A compatibility layer (a drop-in `Router`,
 `RouteView` and `AuthorizeRouteView`) lets an app adopt it without rewriting its `App.razor` or its `@page` components.
 
+[![NuGet](https://img.shields.io/nuget/vpre/ModRouter?label=ModRouter)](https://www.nuget.org/packages/ModRouter) [![NuGet](https://img.shields.io/nuget/vpre/ModRouter.AspNetCore?label=ModRouter.AspNetCore)](https://www.nuget.org/packages/ModRouter.AspNetCore)
+
+```bash
+dotnet add package ModRouter --prerelease
+```
+
 Targets .NET 8, 9 and 10. Read the [documentation site](https://modrouter.github.io/blazor-modrouter/) (guide and API reference), or start with the
 [ModRouter README](ModRouter/README.md) for installation, a quick start and the documentation index.
 

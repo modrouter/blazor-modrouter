@@ -43,7 +43,7 @@ Each step stands alone. You can stop after any of them.
 
 - Your app has a handful of pages, no guards, no shared data loading and no nested pages. The built-in router is enough, and one less moving part is a real benefit.
 - You build a Blazor Hybrid app. ModRouter does not handle it.
-- You cannot take a preview dependency. ModRouter is at `0.1.0-preview.1`: the API can still change before 1.0 (see [Versioning](versioning.md)), and it is not published to NuGet yet.
+- You cannot take a preview dependency. ModRouter is at `0.1.0-preview.1`: the API can still change before 1.0 (see [Versioning](versioning.md)), and it is published as a pre-release package, which some tools only show when you ask for pre-releases.
 
 ## What it costs
 

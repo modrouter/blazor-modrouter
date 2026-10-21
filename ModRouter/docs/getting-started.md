@@ -2,7 +2,7 @@
 
 Put ModRouter into a new Blazor WebAssembly app in about ten minutes, with a nested page and a named link. Back to the [README](../README.md).
 
-You need the .NET 8, 9 or 10 SDK. ModRouter is a preview and is not on NuGet yet, so you reference the project from a clone of this repository.
+You need the .NET 8, 9 or 10 SDK. ModRouter is a preview, so you ask NuGet for the pre-release.
 
 ## 1. Create an app
 
@@ -13,13 +13,14 @@ cd Hello
 
 The template comes with the built-in `Router` in `App.razor`. You will swap it for ModRouter.
 
-## 2. Reference ModRouter
-
-Clone the repository next to your app, then add the project reference:
+## 2. Add the package
 
 ```bash
-dotnet add reference ../blazor-modrouter/ModRouter/ModRouter.csproj
+dotnet add package ModRouter --prerelease
 ```
+
+This adds the [`ModRouter`](https://www.nuget.org/packages/ModRouter) package. To use a clone of the repository instead (to try a change of your own), add
+`<ProjectReference Include="..\blazor-modrouter\ModRouter\ModRouter.csproj" />` to the project file.
 
 ## 3. Swap the router
 

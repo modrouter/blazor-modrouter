@@ -10,6 +10,7 @@ A router for Blazor: a replacement for the built-in `Router` with nested and nam
 precedence-based matcher, guards, loaders with caching, redirects and typed routes. A compatibility layer lets an existing app adopt
 it without rewriting its `App.razor` or its `@page` components. Targets .NET 8, 9 and 10; currently a preview.
 
+- Install: `dotnet add package ModRouter --prerelease` ([ModRouter on NuGet](https://www.nuget.org/packages/ModRouter))
 - [Lab](https://modrouter.github.io/blazor-modrouter/lab/): nine interactive lessons that show the router working
 - [Getting started](../ModRouter/docs/getting-started.md): put ModRouter in an app in ten minutes
 - [Guide](../ModRouter/README.md): installation, a quick start and the documentation index
