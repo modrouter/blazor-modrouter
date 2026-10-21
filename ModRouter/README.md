@@ -4,7 +4,7 @@ An alternative to the built-in Blazor `Router` with nested routes, named routes,
 precedence-based matcher: the route table is compiled once, precedence never depends on declaration order, and a table with
 ambiguous or invalid routes fails at startup with a code and a message. It also ships a compatibility layer (a drop-in `Router`,
 `RouteView` and `AuthorizeRouteView`), so an app can adopt it without rewriting its `App.razor` or its `@page` components.
-It is for Blazor WebAssembly apps that need nested layouts, guards and loaders, named routes or readable routing
+It is for Blazor WebAssembly apps, and Blazor Web Apps with server rendering, that need nested layouts, guards and loaders, named routes or readable routing
 diagnostics. The router needs nothing but Blazor.
 
 **New here?** Try the **[interactive lab](https://modrouter.github.io/blazor-modrouter/lab/)**, nine short lessons you can click through, then
