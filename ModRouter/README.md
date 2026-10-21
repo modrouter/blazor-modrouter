@@ -41,6 +41,8 @@ compatibility `Router`.
 
 ## Documentation
 
+The full documentation, with a searchable API reference, is at **[https://modrouter.github.io/blazor-modrouter/](https://modrouter.github.io/blazor-modrouter/)**. The pages below are the same guide.
+
 | Page | What it covers |
 |---|---|
 | [Routing](docs/routing.md) | Templates, constraints, precedence, the compiled table, matching, URL generation, `Explain` and how the router renders a chain |
