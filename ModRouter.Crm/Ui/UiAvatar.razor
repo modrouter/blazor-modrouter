@@ -1,0 +1,4 @@
+@* A round or rounded tile with a person's or company's initials. The colour comes from the name, so it is the same every time. *@
+<span class="inline-flex shrink-0 select-none items-center justify-center font-semibold text-white @(Shape == Shape.Circular ? "rounded-circular" : "rounded-large")"
+      style="width:@(Px)px;height:@(Px)px;font-size:@(FontPx)px;background:hsl(@Hue 42% 42%)"
+      role="img" aria-label="@Name">@Initials</span>

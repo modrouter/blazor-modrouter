@@ -1,0 +1,36 @@
+@implements IDisposable
+
+@* The account level: the loader has already run, so View is ready the first time this renders. The tabs are child routes and the outlet shows the one that matches. *@
+<CascadingValue Value="View">
+    <CrmHeading Title="@View.Account.Name" Subtitle="@($"{View.Account.Industry} · {View.Account.City} · owned by {View.Account.Owner}")">
+        <Actions>
+            <StageBadge Stage="View.Account.Stage" />
+            @if (Tour.Has(7))
+            {
+                <RouteLink Route="account-edit" Parameters="@(new { id = View.Account.Id })" Class="inline-flex items-center gap-1.5 rounded-medium border border-stroke bg-background px-3 py-1.5 text-sm font-semibold text-foreground no-underline hover:bg-subtleBackgroundHover">
+                    <UiIcon Icon="@Icons.Outlined.Edit" Size="Size.Small" /> Edit
+                </RouteLink>
+            }
+        </Actions>
+    </CrmHeading>
+
+    @if (Tour.Has(6))
+    {
+        <p class="-mt-3 mb-4 flex items-center gap-2 text-xs text-foreground3">
+            <span class="inline-flex items-center gap-1 rounded-circular px-2 py-0.5 font-medium @Freshness.Class">@Freshness.Kind</span>
+            Loaded @Age.TotalSeconds.ToString("0") s ago.
+            <button type="button" class="crm-link text-xs" @onclick="Refresh">Refresh now</button>
+        </p>
+    }
+
+    @if (Tour.Has(3))
+    {
+        <nav class="mb-5 flex border-b border-stroke2" aria-label="Account sections">
+            <RouteLink Route="account-overview" Parameters="@(new { id = View.Account.Id })" Match="RouteLinkMatch.Exact" Class="crm-tab">Overview</RouteLink>
+            <RouteLink Route="account-contacts" Parameters="@(new { id = View.Account.Id })" Class="crm-tab">Contacts <span class="ml-1 rounded-circular bg-background3 px-1.5 text-xs">@View.Contacts.Count</span></RouteLink>
+            <RouteLink Route="account-activity" Parameters="@(new { id = View.Account.Id })" Class="crm-tab">Activity</RouteLink>
+        </nav>
+    }
+
+    <ModRouterOutlet />
+</CascadingValue>

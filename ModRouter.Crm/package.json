@@ -1,0 +1,11 @@
+{
+  "name": "modrouter-crm",
+  "private": true,
+  "description": "Builds the Tailwind stylesheet of the sample CRM. The generated wwwroot/css/output.css is checked in, so running the CRM needs no Node.",
+  "scripts": {
+    "css": "tailwindcss -c tailwind.config.js -i wwwroot/css/input.css -o wwwroot/css/output.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17"
+  }
+}

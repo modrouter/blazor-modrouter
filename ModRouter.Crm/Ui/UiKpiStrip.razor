@@ -1,0 +1,12 @@
+<ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    @foreach (var item in Items)
+    {
+        <li class="flex items-center gap-3 rounded-xlarge border border-stroke2 bg-background p-4 shadow-card">
+            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-large @Chip(item.State)"><UiIcon Icon="@item.Icon" /></span>
+            <span class="min-w-0">
+                <span class="block truncate text-xl font-semibold tabular-nums">@item.Value</span>
+                <span class="block truncate text-xs text-foreground3">@item.Label</span>
+            </span>
+        </li>
+    }
+</ul>

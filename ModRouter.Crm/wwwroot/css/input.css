@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html, body {
+        font-family: Inter, ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+        font-size: 1rem; font-weight: 400;
+    }
+    html { -webkit-font-smoothing: antialiased; }
+}
+
+/* Scrollbars: thin, token-coloured. */
+::-webkit-scrollbar { height: 14px; width: 14px; }
+::-webkit-scrollbar-track { background-color: transparent; }
+::-webkit-scrollbar-thumb { background-color: hsl(var(--foreground3) / .55); border-radius: 9px; border: 4px solid transparent; background-clip: content-box; }
+
+:not(:defined) { visibility: hidden; }
+
+#blazor-error-ui { background: hsl(var(--statusWarningBackground)); color: hsl(var(--foreground)); bottom: 0; box-shadow: 0 -1px 2px rgba(0,0,0,.2); display: none; left: 0; padding: .6rem 1.25rem .7rem; position: fixed; width: 100%; z-index: 1000; }
+#blazor-error-ui .dismiss { cursor: pointer; position: absolute; right: .75rem; top: .5rem; }
+
+/* ModRouter marks the active RouteLink; the CRM styles that mark with theme tokens. */
+.crm-nav-link { display: flex; align-items: center; gap: .625rem; padding: .4375rem .75rem; border-radius: var(--radius-large); color: hsl(var(--foreground2)); font-size: .875rem; font-weight: 500; text-decoration: none; transition: background-color var(--duration-fast), color var(--duration-fast); }
+.crm-nav-link:hover { background-color: hsl(var(--subtleBackgroundHover)); color: hsl(var(--foreground)); }
+.crm-nav-link.mod-route-link-active { background-color: hsl(var(--brandBackground) / .12); color: hsl(var(--brandForegroundLink)); }
+.crm-tab { position: relative; padding: .5rem .25rem; margin-right: 1.25rem; font-size: .875rem; font-weight: 500; color: hsl(var(--foreground3)); text-decoration: none; }
+.crm-tab:hover { color: hsl(var(--foreground)); }
+.crm-tab.mod-route-link-active { color: hsl(var(--foreground)); font-weight: 600; }
+.crm-tab.mod-route-link-active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; border-radius: 2px; background: hsl(var(--brandBackground)); }
+.crm-link { color: hsl(var(--brandForegroundLink)); font-weight: 600; text-decoration: none; }
+.crm-link:hover { text-decoration: underline; }
+.crm-row-link { color: hsl(var(--foreground)); font-weight: 600; text-decoration: none; }
+.crm-row-link:hover { color: hsl(var(--brandForegroundLink)); text-decoration: underline; }
+
+/* The guide's code samples and the route log. */
+.code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .75rem; line-height: 1.55; }
+.hl-k { color: hsl(var(--brandForeground)); }
+.hl-s { color: hsl(var(--statusGreen)); }
+.hl-c { color: hsl(var(--foreground3)); }
+
+/* Stage fade-in: the page behind the frame is a soft wash, not a flat colour. */
+.stage-wash { background: radial-gradient(1200px 600px at 70% -10%, hsl(var(--brandBackground) / .10), transparent 60%), radial-gradient(900px 500px at 0% 110%, hsl(var(--statusViolet) / .08), transparent 60%), hsl(var(--backgroundMain)); }
+
+@keyframes crm-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.crm-in { animation: crm-in .28s ease-out both; }
+
+/* The progress bar in the browser frame. */
+.crm-bar { height: 100%; width: 0; opacity: 0; background: hsl(var(--brandBackground)); }
+.crm-bar-run { width: 82%; opacity: 1; transition: width 5s cubic-bezier(.08, .6, .2, 1); }
+.crm-bar-done { width: 100%; opacity: 1; transition: width .2s ease-out; }
+.crm-bar-fade { width: 100%; opacity: 0; transition: opacity .3s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+.crm-crumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem; margin: 0; padding: 0; list-style: none; font-size: .8125rem; color: hsl(var(--foreground3)); }
+.crm-crumbs li > [aria-hidden="true"] { margin-left: .375rem; color: hsl(var(--foreground3)); }
+.crm-crumbs a { color: hsl(var(--brandForegroundLink)); text-decoration: none; }
+.crm-crumbs a:hover { text-decoration: underline; }
+.crm-crumbs [aria-current="page"] { color: hsl(var(--foreground)); font-weight: 600; }
+
+/* Native dialog (the confirm dialog) and its backdrop. */
+dialog.crm-dialog { padding: 0; border: 1px solid hsl(var(--stroke2)); border-radius: var(--radius-xlarge); background: hsl(var(--background)); color: hsl(var(--foreground)); box-shadow: 0 32px 64px rgb(0 0 0 / 28%); width: min(26rem, calc(100vw - 2rem)); }
+dialog.crm-dialog::backdrop { background: rgb(0 0 0 / 42%); backdrop-filter: blur(2px); }
+dialog.crm-dialog[open] { animation: crm-in .18s ease-out both; }
+
+/* Visible keyboard focus for buttons and links. */
+button:focus-visible, a:focus-visible { outline: 2px solid hsl(var(--strokeFocus)); outline-offset: 2px; }

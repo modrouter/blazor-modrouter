@@ -1,0 +1,94 @@
+@implements IDisposable
+
+<div class="flex h-full flex-col">
+    <header class="flex items-center gap-3 border-b border-stroke2 px-5 py-3.5">
+        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-large bg-brandBackground text-foregroundOnBrand" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18V7l6 6 6-6v11" /></svg>
+        </span>
+        <div class="min-w-0 flex-1 leading-tight">
+            <p class="text-sm font-semibold text-foreground">ModRouter</p>
+            <p class="text-xs text-foreground3">A guided tour in eight short chapters</p>
+        </div>
+        <nav class="flex items-center gap-1.5" aria-label="Chapters">
+            @foreach (var chapter in Chapters.All)
+            {
+                var number = chapter.Number;
+                <button type="button"
+                        class="h-2 rounded-circular transition-all duration-fast @(number == Tour.Current ? "w-6 bg-brandBackground" : number < Tour.Current ? "w-2 bg-brandBackground/50" : "w-2 bg-stroke")"
+                        title="Chapter @number: @chapter.Title"
+                        aria-label="Chapter @number: @chapter.Title"
+                        aria-current="@(number == Tour.Current ? "step" : null)"
+                        @onclick="() => Open(number)"></button>
+            }
+        </nav>
+    </header>
+
+    <div class="min-h-0 flex-1 overflow-y-auto px-5 py-5">
+        <div class="crm-in" @key="Tour.Current">
+            <p class="text-xs font-semibold text-brandForeground">Chapter @Tour.Current of @Tour.Total</p>
+            <h2 class="mt-1 text-2xl font-semibold leading-tight text-foreground">@Chapter.Title</h2>
+            <p class="mt-1 text-base text-foreground3">@Chapter.Hook</p>
+
+            <div class="mt-4 space-y-3">
+                @foreach (var paragraph in Chapter.Paragraphs)
+                {
+                    <p class="text-sm leading-relaxed text-foreground2">@paragraph</p>
+                }
+            </div>
+
+            <h3 class="mb-2 mt-6 text-xs font-semibold text-foreground3">Try it</h3>
+            <ol class="space-y-1.5">
+                @foreach (var step in Chapter.Steps)
+                {
+                    var current = step;
+                    <li>
+                        <button type="button" class="group flex w-full items-center gap-3 rounded-large border border-stroke2 bg-background px-3 py-2 text-left text-sm text-foreground transition-colors duration-fast hover:border-brandStroke hover:bg-subtleBackgroundHover" @onclick="() => Run(current)">
+                            <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-circular bg-brandBackground/10 text-brandForeground">
+                                <UiIcon Icon="@(current.SignIn is null ? Icons.Outlined.ChevronRight : Icons.Outlined.Person)" Size="Size.Small" />
+                            </span>
+                            <span class="min-w-0 flex-1">
+                                <span class="block font-medium">@current.Label</span>
+                                @if (current.Url is not null)
+                                {
+                                    <span class="code block truncate text-foreground3">@current.Url</span>
+                                }
+                            </span>
+                        </button>
+                    </li>
+                }
+            </ol>
+
+            @if (Tour.Current == 6)
+            {
+                <div class="mt-4 rounded-large border border-stroke2 bg-background2 p-3">
+                    <p class="mb-2 text-xs font-semibold text-foreground3">The pretend network</p>
+                    <div class="flex items-center gap-3 text-sm text-foreground2">
+                        <label for="latency" class="shrink-0">Latency</label>
+                        <input id="latency" type="range" min="0" max="2500" step="100" class="min-w-0 flex-1" value="@Network.LatencyMs" @oninput="SetLatency" />
+                        <span class="w-14 shrink-0 text-right tabular-nums">@Network.LatencyMs ms</span>
+                    </div>
+                    <div class="mt-2 flex items-center justify-between text-sm text-foreground2">
+                        <label for="offline" class="flex items-center gap-2"><input id="offline" type="checkbox" checked="@Network.Offline" @onchange="SetOffline" /> Offline: loaders fail</label>
+                        <span class="tabular-nums text-foreground3">@Network.Calls loader calls</span>
+                    </div>
+                </div>
+            }
+
+            <h3 class="mb-2 mt-6 text-xs font-semibold text-foreground3">The code</h3>
+            <pre class="code overflow-x-auto rounded-large border border-stroke2 bg-background3 p-3 text-foreground2">@Chapter.Code</pre>
+
+            <div class="mt-4 flex gap-2.5 rounded-large bg-brandBackground/10 p-3 text-sm text-foreground2">
+                <span class="mt-0.5 shrink-0 text-brandForeground"><UiIcon Icon="@Icons.Outlined.Info" Size="Size.Small" /></span>
+                <p><b class="font-semibold text-foreground">Watch:</b> @Chapter.Watch</p>
+            </div>
+        </div>
+    </div>
+
+    <RouterLog />
+
+    <footer class="flex items-center justify-between gap-3 border-t border-stroke2 px-5 py-3">
+        <UiButton ButtonStyle="ButtonStyle.Outline" Disabled="@(Tour.Current == 1)" OnClick="Previous">Back</UiButton>
+        <span class="text-xs text-foreground3">@Tour.Current / @Tour.Total</span>
+        <UiButton ButtonStyle="ButtonStyle.Primary" Disabled="@(Tour.Current == Tour.Total)" OnClick="Next">Next chapter</UiButton>
+    </footer>
+</div>

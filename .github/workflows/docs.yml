@@ -7,14 +7,14 @@ on:
     branches: [main]
     paths:
       - "ModRouter/**"
-      - "ModRouter.Lab/**"
+      - "ModRouter.Crm/**"
       - "docs-site/**"
       - "dotnet-tools.json"
       - ".github/workflows/docs.yml"
   pull_request:
     paths:
       - "ModRouter/**"
-      - "ModRouter.Lab/**"
+      - "ModRouter.Crm/**"
       - "docs-site/**"
       - "dotnet-tools.json"
       - ".github/workflows/docs.yml"
@@ -39,18 +39,19 @@ jobs:
             8.0.x
             9.0.x
             10.0.x
+            11.0.x
       - name: Restore tools
         run: dotnet tool restore
       - name: Build the site
         run: dotnet docfx docs-site/docfx.json --warningsAsErrors false
-      - name: Publish the lab into the site
-        # The lab is a Blazor WebAssembly app served from /blazor-modrouter/lab/, so its base address changes. Deep links into it
+      - name: Publish the sample CRM into the site
+        # The CRM is a Blazor WebAssembly app served from /blazor-modrouter/crm/, so its base address changes. Deep links into it
         # come back through docs-site/404.html.
         run: |
-          dotnet publish ModRouter.Lab/ModRouter.Lab.csproj -c Release -o lab-out
-          sed -i 's#<base href="/" />#<base href="/blazor-modrouter/lab/" />#' lab-out/wwwroot/index.html
-          mkdir -p docs-site/_site/lab
-          cp -r lab-out/wwwroot/. docs-site/_site/lab/
+          dotnet publish ModRouter.Crm/ModRouter.Crm.csproj -c Release -o crm-out
+          sed -i 's#<base href="/" />#<base href="/blazor-modrouter/crm/" />#' crm-out/wwwroot/index.html
+          mkdir -p docs-site/_site/crm
+          cp -r crm-out/wwwroot/. docs-site/_site/crm/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs-site/_site

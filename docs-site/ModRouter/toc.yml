@@ -10,24 +10,24 @@
 - name: Guided lessons
   href: ../../ModRouter/docs/lessons.md
   items:
-    - name: 1. Pages inside pages
-      href: ../../ModRouter/docs/lessons/01-pages-inside-pages.md
-    - name: 2. Names instead of URLs
-      href: ../../ModRouter/docs/lessons/02-names-instead-of-urls.md
-    - name: 3. Which route wins?
-      href: ../../ModRouter/docs/lessons/03-which-route-wins.md
-    - name: 4. Gates
-      href: ../../ModRouter/docs/lessons/04-gates.md
-    - name: 5. Data in flight
-      href: ../../ModRouter/docs/lessons/05-data-in-flight.md
-    - name: 6. Are you sure?
-      href: ../../ModRouter/docs/lessons/06-are-you-sure.md
-    - name: 7. Shared layouts and side panels
-      href: ../../ModRouter/docs/lessons/07-shared-layouts-and-side-panels.md
-    - name: 8. Pages that stay alive
-      href: ../../ModRouter/docs/lessons/08-pages-that-stay-alive.md
-    - name: 9. The flight recorder
-      href: ../../ModRouter/docs/lessons/09-the-flight-recorder.md
+    - name: 1. A URL is a screen
+      href: ../../ModRouter/docs/lessons/01-a-url-is-a-screen.md
+    - name: 2. Parameters
+      href: ../../ModRouter/docs/lessons/02-parameters.md
+    - name: 3. Nested routes
+      href: ../../ModRouter/docs/lessons/03-nested-routes.md
+    - name: 4. The query string
+      href: ../../ModRouter/docs/lessons/04-the-query-string.md
+    - name: 5. Guards
+      href: ../../ModRouter/docs/lessons/05-guards.md
+    - name: 6. Loaders
+      href: ../../ModRouter/docs/lessons/06-loaders.md
+    - name: 7. Leave guards
+      href: ../../ModRouter/docs/lessons/07-leave-guards.md
+    - name: 8. Names and redirects
+      href: ../../ModRouter/docs/lessons/08-names-and-redirects.md
+    - name: 9. The route log
+      href: ../../ModRouter/docs/lessons/09-the-route-log.md
 - name: Glossary
   href: ../../ModRouter/docs/glossary.md
 # Reference

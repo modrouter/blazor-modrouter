@@ -49,6 +49,7 @@ jobs:
             8.0.x
             9.0.x
             10.0.x
+            11.0.x
 
       - name: Test on every framework
         run: dotnet test ModRouter.Test/ModRouter.Test.csproj -c Release
@@ -62,11 +63,11 @@ jobs:
         run: |
           package=$(ls artifacts/ModRouter.[0-9]*.nupkg)
           listing=$(unzip -Z1 "$package")
-          for entry in lib/net8.0/ModRouter.dll lib/net9.0/ModRouter.dll lib/net10.0/ModRouter.dll analyzers/dotnet/cs/ModRouter.Generators.dll staticwebassets/mod-router.js README.md icon.png; do
+          for entry in lib/net8.0/ModRouter.dll lib/net9.0/ModRouter.dll lib/net10.0/ModRouter.dll lib/net11.0/ModRouter.dll analyzers/dotnet/cs/ModRouter.Generators.dll staticwebassets/mod-router.js README.md icon.png; do
             echo "$listing" | grep -qx "$entry" || { echo "missing $entry in $package"; exit 1; }
           done
           adapter=$(ls artifacts/ModRouter.AspNetCore.[0-9]*.nupkg)
-          for entry in lib/net8.0/ModRouter.AspNetCore.dll lib/net10.0/ModRouter.AspNetCore.dll README.md icon.png; do
+          for entry in lib/net8.0/ModRouter.AspNetCore.dll lib/net10.0/ModRouter.AspNetCore.dll lib/net11.0/ModRouter.AspNetCore.dll README.md icon.png; do
             unzip -Z1 "$adapter" | grep -qx "$entry" || { echo "missing $entry in $adapter"; exit 1; }
           done
           ls artifacts/*.snupkg > /dev/null || { echo "no symbol packages"; exit 1; }

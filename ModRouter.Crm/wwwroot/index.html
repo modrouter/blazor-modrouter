@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ModRouter CRM</title>
+    <base href="/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="color-scheme" content="light dark">
+    <link href="css/theme.css" rel="stylesheet" />
+    <link href="css/output.css" rel="stylesheet" />
+    <link href="ModRouter.Crm.styles.css" rel="stylesheet" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <script>
+        // GitHub Pages serves a 404 for a deep link; the site's 404.html sends it back here as ?/path and this puts the
+        // path back before Blazor starts, so the CRM can be opened on any address.
+        (function (l) {
+            if (l.search[1] === '/') {
+                var decoded = l.search.slice(1).split('&').map(function (s) { return s.replace(/~and~/g, '&'); }).join('?');
+                window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+            }
+        }(window.location));
+    </script>
+</head>
+<body class="antialiased h-screen">
+    <div id="app" class="h-screen">
+        <div style="display:flex;height:100vh;align-items:center;justify-content:center;font:500 14px Inter,system-ui,sans-serif;opacity:.6">Loading the CRM…</div>
+    </div>
+    <div id="blazor-error-ui">An unhandled error has occurred. <a href="" class="reload">Reload</a> <a class="dismiss">🗙</a></div>
+    <script src="js/crm.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+</html>

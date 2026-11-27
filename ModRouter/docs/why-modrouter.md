@@ -53,4 +53,4 @@ Each step stands alone. You can stop after any of them.
 
 ## Where to go next
 
-Read [Concepts](concepts.md) for the picture, or open the [interactive lab](https://modrouter.github.io/blazor-modrouter/lab/) and start the first lesson.
+Read [Concepts](concepts.md) for the picture, or run the [sample CRM](https://modrouter.github.io/blazor-modrouter/crm/) and start its first chapter.

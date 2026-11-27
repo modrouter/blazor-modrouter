@@ -1,0 +1,14 @@
+<div class="mx-auto flex max-w-sm flex-col items-center text-center">
+    <span class="mb-3 flex h-12 w-12 items-center justify-center rounded-circular @(Kind == EmptyStateKind.Error ? "bg-statusDangerBackground2 text-statusDangerForeground" : "bg-background3 text-foreground2")">
+        <UiIcon Icon="@(Icon ?? DefaultIcon)" Size="Size.Large" />
+    </span>
+    <h2 class="text-base font-semibold">@Title</h2>
+    @if (!string.IsNullOrEmpty(Description))
+    {
+        <p class="mt-1 text-sm text-foreground3">@Description</p>
+    }
+    @if (Actions is not null)
+    {
+        <div class="mt-4 flex items-center gap-4">@Actions</div>
+    }
+</div>

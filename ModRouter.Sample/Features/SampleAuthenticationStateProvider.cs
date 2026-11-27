@@ -39,5 +39,8 @@ public sealed class SampleAuthenticationStateProvider : AuthenticationStateProvi
         return new ClaimsPrincipal(new ClaimsIdentity(claims, "sample"));
     }
 
+    // BL0013: the provider is announcing its own change, so it has no one to subscribe on behalf of.
+#pragma warning disable BL0013
     void OnChanged() => NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+#pragma warning restore BL0013
 }

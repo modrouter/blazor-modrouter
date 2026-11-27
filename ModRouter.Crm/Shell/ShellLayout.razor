@@ -1,0 +1,14 @@
+@inherits LayoutComponentBase
+
+@* The page around the demo: the guide on one side, the CRM in a browser frame on the other. The CRM is the router's @Body. *@
+<div class="flex h-screen w-full flex-col overflow-hidden bg-backgroundMain text-foreground lg:flex-row">
+    <aside class="h-[46vh] shrink-0 border-b border-stroke2 bg-background lg:h-full lg:w-[25rem] lg:border-b-0 lg:border-r" aria-label="Guide">
+        <GuidePanel />
+    </aside>
+
+    <div class="stage-wash relative flex min-h-0 flex-1 items-center justify-center p-3 lg:p-6">
+        <BrowserFrame>@Body</BrowserFrame>
+    </div>
+</div>
+
+<UiDialogHost />

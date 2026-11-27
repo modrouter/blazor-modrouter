@@ -1,8 +1,8 @@
 using System.Reflection;
 using ModRouter.Sample.Extra;
+using ModRouter.Sample.Features;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.JSInterop;
 
 namespace ModRouter.Sample;
 
@@ -17,7 +17,7 @@ public partial class AppCompat
     bool _slow;
 
     [Inject]
-    IJSRuntime Js { get; set; } = default!;
+    NavigationManager Navigation { get; set; } = default!;
 
     /// <summary>How many times OnNavigate ran, the last path it received and how many runs were canceled (superseded); the state panel shows them.</summary>
     public static int OnNavigateCalls { get; private set; }
@@ -27,7 +27,7 @@ public partial class AppCompat
     public static int OnNavigateCanceled { get; private set; }
 
     protected override void OnInitialized()
-        => _slow = Js is IJSInProcessRuntime inProcess && inProcess.Invoke<bool>("sampleSlowNav");
+        => _slow = SampleQuery.Has(Navigation, "slownav");
 
     async Task OnNavigate(NavigationContext context)
     {

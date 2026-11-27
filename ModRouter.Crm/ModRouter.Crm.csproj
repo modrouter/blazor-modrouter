@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+	<!--
+	  A sample CRM that teaches ModRouter. It has no UI library: the components are in Ui/, the look is Tailwind plus the tokens
+	  in wwwroot/css/theme.css. The stylesheet wwwroot/css/output.css is checked in, so running the CRM needs only the .NET SDK;
+	  when Node is installed the build regenerates it from the markup.
+	-->
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<RootNamespace>ModRouter.Crm</RootNamespace>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.14" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.14" PrivateAssets="all" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ModRouter\ModRouter.csproj" />
+	</ItemGroup>
+	<!-- Rebuild the stylesheet when Tailwind is installed (npm install). Without it the checked-in output.css is used as it is. -->
+	<Target Name="RunTailwind" BeforeTargets="BeforeBuild" Condition="Exists('$(MSBuildProjectDirectory)\node_modules\.bin\tailwindcss.cmd') Or Exists('$(MSBuildProjectDirectory)/node_modules/.bin/tailwindcss')">
+		<Exec Command="npm run css --silent" WorkingDirectory="$(MSBuildProjectDirectory)" />
+	</Target>
+</Project>

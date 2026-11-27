@@ -126,7 +126,10 @@ public sealed class RouterModuleLifecycleTests
 
         public int Imports { get; set; }
 
+        // BL0016: this is the fake runtime itself; the overload forwards to the one below, which a test controls.
+#pragma warning disable BL0016
         public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object?[]? args) => InvokeAsync<TValue>(identifier, CancellationToken.None, args);
+#pragma warning restore BL0016
 
         public async ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object?[]? args)
         {
@@ -149,7 +152,10 @@ public sealed class RouterModuleLifecycleTests
 
         public TaskCompletionSource? Gate { get; set; }
 
+        // BL0016: this is the fake runtime itself; the overload forwards to the one below, which a test controls.
+#pragma warning disable BL0016
         public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object?[]? args) => InvokeAsync<TValue>(identifier, CancellationToken.None, args);
+#pragma warning restore BL0016
 
         public async ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object?[]? args)
         {

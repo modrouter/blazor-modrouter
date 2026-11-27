@@ -1,0 +1,61 @@
+<CrmHeading Title="Accounts" Subtitle="@($"{Rows.Count} of {CrmData.Accounts.Count} accounts")" />
+
+@if (Tour.Has(4))
+{
+    @* Chapter 4: the filters are the query string. Each chip is a link, so Back undoes a filter and a copied address restores it. *@
+    <div class="mb-4 flex flex-wrap items-center gap-3">
+        <div class="flex items-center gap-2 rounded-circular border border-stroke bg-background px-3 py-1.5 focus-within:border-brandStroke">
+            <span class="text-foreground3"><UiIcon Icon="@Icons.Outlined.Search" Size="Size.Small" /></span>
+            <input class="w-44 border-0 bg-transparent p-0 text-sm outline-none focus:ring-0" placeholder="Search accounts" aria-label="Search accounts"
+                   value="@Q" @onchange="Search" />
+        </div>
+        <nav class="flex flex-wrap gap-1.5" aria-label="Stage">
+            <RouteLink Route="accounts" Query="@WithStage(null)" Class="@Chip(Stage is null)">All</RouteLink>
+            @foreach (var stage in Enum.GetValues<Stage>())
+            {
+                <RouteLink Route="accounts" Query="@WithStage(stage.ToString())" Class="@Chip(string.Equals(Stage, stage.ToString(), StringComparison.OrdinalIgnoreCase))">@stage</RouteLink>
+            }
+        </nav>
+        <span class="flex-1"></span>
+        <span class="flex items-center gap-1.5 text-sm text-foreground3">
+            Sort
+            <RouteLink Route="accounts" Query="@WithSort(null)" Class="@Chip(Sort is null)">Name</RouteLink>
+            <RouteLink Route="accounts" Query="@WithSort("revenue")" Class="@Chip(Sort == "revenue")">Revenue</RouteLink>
+        </span>
+    </div>
+}
+
+<div class="overflow-hidden rounded-xlarge border border-stroke2 bg-background shadow-card">
+    <table class="w-full text-left text-sm">
+        <thead class="bg-background2 text-xs font-semibold text-foreground3">
+            <tr>
+                <th class="px-4 py-2.5">Account</th>
+                <th class="hidden px-4 py-2.5 sm:table-cell">Industry</th>
+                <th class="px-4 py-2.5">Stage</th>
+                <th class="hidden px-4 py-2.5 md:table-cell">Owner</th>
+                <th class="px-4 py-2.5 text-right">Revenue</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-stroke2">
+            @foreach (var account in Rows)
+            {
+                <tr class="hover:bg-subtleBackgroundHover">
+                    <td class="px-4 py-2.5">
+                        <div class="flex items-center gap-3">
+                            <UiAvatar Name="@account.Name" Size="Size.Small" Shape="Shape.Rounded" />
+                            <RouteLink Route="account" Parameters="@(new { id = account.Id })" Class="crm-row-link">@account.Name</RouteLink>
+                        </div>
+                    </td>
+                    <td class="hidden px-4 py-2.5 text-foreground2 sm:table-cell">@account.Industry</td>
+                    <td class="px-4 py-2.5"><StageBadge Stage="account.Stage" /></td>
+                    <td class="hidden px-4 py-2.5 text-foreground2 md:table-cell">@account.Owner</td>
+                    <td class="px-4 py-2.5 text-right tabular-nums">@account.Revenue.ToString("C0")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Rows.Count == 0)
+    {
+        <UiEmptyState Kind="EmptyStateKind.NoResults" Title="No accounts match" Description="Try a different search or clear the stage filter." />
+    }
+</div>

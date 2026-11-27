@@ -98,4 +98,4 @@ Run the app and open `/team`, then click Ada. The address becomes `/team/1`, the
 
 ## Where next
 
-The [guided lessons](lessons.md) start from here and add one feature at a time (guards, loaders, caching, leave guards, layouts and more), each with a live demo you can run. If you want the big picture first, read [Concepts](concepts.md). Words you do not know are in the [glossary](glossary.md).
+The [guided lessons](lessons.md) start from here and add one feature at a time (guards, loaders, caching, leave guards, layouts and more), each with the sample CRM to try it in. If you want the big picture first, read [Concepts](concepts.md). Words you do not know are in the [glossary](glossary.md).

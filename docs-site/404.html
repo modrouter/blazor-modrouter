@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Page not found - ModRouter</title>
     <script>
-        // GitHub Pages answers an address inside the lab (a Blazor app with its own routes) with this page. Send it to the lab's
-        // index.html with the path in the query string; the lab's own script puts the path back before Blazor starts.
+        // GitHub Pages answers an address inside the CRM (a Blazor app with its own routes) with this page. Send it to the CRM's
+        // index.html with the path in the query string; the CRM's own script puts the path back before Blazor starts.
         (function (l) {
-            var lab = '/blazor-modrouter/lab/';
+            var lab = '/blazor-modrouter/crm/';
             if (l.pathname.indexOf(lab) === 0) {
                 var path = l.pathname.slice(lab.length);
                 var query = l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '';
@@ -25,6 +25,6 @@
 <body>
     <h1>Page not found</h1>
     <p>There is no page at this address. Try the <a href="/blazor-modrouter/">ModRouter documentation</a>
-        or the <a href="/blazor-modrouter/lab/">interactive lab</a>.</p>
+        or the <a href="/blazor-modrouter/crm/">sample CRM</a>.</p>
 </body>
 </html>

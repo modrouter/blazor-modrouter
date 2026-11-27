@@ -1,0 +1,25 @@
+@* The loader deferred this feed: the account page appeared first, and the feed fills in when it arrives. *@
+<ModDeferred T="IReadOnlyList<Activity>" Value="Feed">
+    <Fallback>
+        <div class="space-y-3" aria-busy="true" aria-label="Loading activity">
+            @for (var i = 0; i < 3; i++)
+            {
+                <div class="h-12 animate-pulse rounded-large bg-background3"></div>
+            }
+        </div>
+    </Fallback>
+    <ChildContent Context="items">
+        <ol class="space-y-0 rounded-xlarge border border-stroke2 bg-background p-4 shadow-card">
+            @foreach (var item in items)
+            {
+                <li class="flex gap-3 border-l-2 border-stroke2 pb-4 pl-4 last:pb-0">
+                    <div>
+                        <p class="text-sm text-foreground"><b class="font-semibold">@item.Kind</b> · @item.Text</p>
+                        <p class="text-xs text-foreground3">@item.When</p>
+                    </div>
+                </li>
+            }
+        </ol>
+    </ChildContent>
+    <Error Context="error"><p class="text-sm text-statusDangerForeground">@error.Message</p></Error>
+</ModDeferred>

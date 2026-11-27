@@ -1,0 +1,11 @@
+@* A page heading: the title (the h1 that keyboard focus moves to after a navigation), a line of context and room for actions. *@
+<header class="mb-5 flex flex-wrap items-end justify-between gap-3">
+    <div class="min-w-0">
+        <h1 class="text-2xl font-semibold leading-tight text-foreground focus:outline-none" tabindex="-1">@Title</h1>
+        @if (!string.IsNullOrEmpty(Subtitle))
+        {
+            <p class="mt-1 text-sm text-foreground3">@Subtitle</p>
+        }
+    </div>
+    <div class="flex items-center gap-2">@Actions</div>
+</header>

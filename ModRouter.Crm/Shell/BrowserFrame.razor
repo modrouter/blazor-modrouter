@@ -1,0 +1,40 @@
+@implements IDisposable
+
+@* A pretend browser window. The address bar shows the router's committed path and query, and typing in it navigates, so the address can be edited like a real one. *@
+<div class="flex h-full max-h-[880px] w-full max-w-[1320px] flex-col overflow-hidden rounded-xlarge border border-stroke2 bg-background shadow-elevation64" role="group" aria-label="Browser window showing the CRM">
+    <div class="relative bg-background3">
+        <div class="flex items-center gap-3 px-3 pt-2.5">
+            <span class="flex shrink-0 gap-2" aria-hidden="true">
+                <i class="block h-3 w-3 rounded-circular bg-statusRed"></i>
+                <i class="block h-3 w-3 rounded-circular bg-statusYellow"></i>
+                <i class="block h-3 w-3 rounded-circular bg-statusGreen"></i>
+            </span>
+            <div class="ml-2 flex min-w-0 max-w-[16rem] items-center gap-2 rounded-t-large bg-background px-3 py-1.5 text-xs font-medium text-foreground">
+                <span class="flex h-4 w-4 shrink-0 items-center justify-center rounded-small bg-brandBackground text-[9px] font-semibold text-foregroundOnBrand" aria-hidden="true">N</span>
+                <span class="truncate">@(Title)</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-1.5 bg-background px-3 py-2">
+            <UiIconButton Icon="@Icons.Outlined.ArrowLeft" OnClick="Back" title="Back" aria-label="Back" />
+            <span class="inline-flex rotate-180"><UiIconButton Icon="@Icons.Outlined.ArrowLeft" OnClick="Forward" title="Forward" aria-label="Forward" /></span>
+            <UiIconButton Icon="@Icons.Outlined.ArrowClockwise" OnClick="Reload" title="Reload" aria-label="Reload" />
+            <div class="mx-1 flex min-w-0 flex-1 items-center gap-2 rounded-circular border border-stroke bg-background3 px-3.5 py-1.5 focus-within:border-brandStroke focus-within:bg-background">
+                <span class="text-foreground3"><UiIcon Icon="@Icons.Outlined.LockClosed" Size="Size.Small" /></span>
+                <span class="shrink-0 text-sm text-foreground3">northwind-crm.app</span>
+                <input class="min-w-0 flex-1 border-0 bg-transparent p-0 text-sm text-foreground outline-none focus:ring-0"
+                       aria-label="Address"
+                       spellcheck="false"
+                       @bind="Address" @bind:event="oninput"
+                       @onkeydown="OnKey" />
+            </div>
+            <span class="w-5 shrink-0 text-foreground3" aria-hidden="true">@if (Busy) { <UiSpinner /> }</span>
+        </div>
+        <div class="absolute inset-x-0 bottom-0 h-0.5 overflow-hidden" aria-hidden="true">
+            <div class="crm-bar @BarClass"></div>
+        </div>
+    </div>
+
+    <main class="min-h-0 flex-1 overflow-hidden border-t border-stroke2" tabindex="-1">
+        @ChildContent
+    </main>
+</div>

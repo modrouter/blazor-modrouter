@@ -2,7 +2,7 @@
 
 The big picture of ModRouter in plain words, with pictures: what a route is, how an address becomes a page, and what happens during a navigation. Back to the [README](../README.md).
 
-If you would rather click than read, the [interactive lab](https://modrouter.github.io/blazor-modrouter/lab/) shows each idea working, and the [guided lessons](lessons.md) walk through it. Unfamiliar word? See the [glossary](glossary.md).
+If you would rather click than read, the [sample CRM](https://modrouter.github.io/blazor-modrouter/crm/) shows each idea working, and the [guided lessons](lessons.md) walk through it. Unfamiliar word? See the [glossary](glossary.md).
 
 ## The idea in one paragraph
 
@@ -32,7 +32,7 @@ You can declare routes in code, on the pages themselves with `@page`, in markup,
 
 ## Pages inside pages
 
-Routes nest. A route can have **children**, and a child shows inside its parent at a spot the parent chooses, called an **outlet**. This is how a ship page can live inside a fleet page, which lives inside a lesson page.
+Routes nest. A route can have **children**, and a child shows inside its parent at a spot the parent chooses, called an **outlet**. This is how an account page can live inside the list of accounts, with its tabs inside it.
 
 For the address `/customers/42/orders`, three routes match, one inside the next. That list of matches is the **chain**, and each match is a **level** of it:
 
@@ -45,7 +45,7 @@ flowchart TB
     end
 ```
 
-Each level is a component. The parent places a `<ModRouterOutlet />` where the next level should appear. When only the child changes (the visitor opens a different tab of the same customer), the parent is **not rebuilt**. It stays on screen, keeps its state, and is updated in place. [Lesson 1](lessons/01-pages-inside-pages.md) lets you watch this happen.
+Each level is a component. The parent places a `<ModRouterOutlet />` where the next level should appear. When only the child changes (the visitor opens a different tab of the same customer), the parent is **not rebuilt**. It stays on screen, keeps its state, and is updated in place. [Lesson 3](lessons/03-nested-routes.md) lets you watch this happen.
 
 Layouts work the same way. A layout is just a component with an outlet. To share one between routes whose addresses have no common start, use a **group**, described next.
 
@@ -120,7 +120,7 @@ A rule of thumb: if the addresses share a start, nest. If they do not and you st
 - A guard on a group runs for every route in it, so its redirect target must not be inside the group, or the redirect is guarded too and loops.
 - An index route inside a group is the default page of the group's *parent* path, not of the group. Adding one changes what that parent path shows.
 
-[Lesson 7](lessons/07-shared-layouts-and-side-panels.md) shows a group live. [Routing](routing.md#pathless-groups-and-named-outlets) has the full rules, including the markup form and named outlets.
+[Lesson 1](lessons/01-a-url-is-a-screen.md) shows a group in the CRM. [Routing](routing.md#pathless-groups-and-named-outlets) has the full rules, including the markup form and named outlets.
 
 ## An example: columns that follow the address
 
@@ -178,7 +178,7 @@ flowchart TB
     c --> d["4. Catch-all<br/>/atlas/{*rest}"]
 ```
 
-The address `/atlas/42` fits routes 2, 3 and 4. Route 2 wins because a rule is more specific than no rule. The address `/atlas/andromeda` fails the `int` rule, so route 3 wins. You can ask the router to explain any decision with `Explain`, and [Lesson 3](lessons/03-which-route-wins.md) draws that explanation as a ladder.
+The address `/atlas/42` fits routes 2, 3 and 4. Route 2 wins because a rule is more specific than no rule. The address `/atlas/andromeda` fails the `int` rule, so route 3 wins. You can ask the router to explain any decision with `Explain`, and [Lesson 2](lessons/02-parameters.md) covers the order.
 
 ## One path for every navigation
 
@@ -211,7 +211,7 @@ The new page is shown only at the last step. This is the **commit**. Everything 
 - A **leave guard** is asked before the page that is on screen goes away. It is how you ask "you have unsaved changes, leave anyway?".
 - A **redirect rule** forwards one address to another route. It needs no component.
 
-[Lesson 4](lessons/04-gates.md) and [Lesson 6](lessons/06-are-you-sure.md) cover them.
+[Lesson 5](lessons/05-guards.md) and [Lesson 7](lessons/07-leave-guards.md) cover them.
 
 ## Data: loaders
 
@@ -235,15 +235,15 @@ sequenceDiagram
 - A **deferred value** arrives after the page is shown. The page shows a placeholder until then.
 - A **stream** is a sequence of items that keeps arriving, such as live readings.
 
-Plain critical data can also be **cached**: it stays fresh for a while, is then shown instantly while a refresh runs in the background, and finally expires. See [Lesson 5](lessons/05-data-in-flight.md).
+Plain critical data can also be **cached**: it stays fresh for a while, is then shown instantly while a refresh runs in the background, and finally expires. See [Lesson 6](lessons/06-loaders.md).
 
 ## What the router remembers
 
-After every commit the router publishes its **route state**: the address, the chain of matched levels, the page title, how the navigation began, and any error. Your components can read it and react to changes through `INavigationService`. The router also keeps a short history of finished navigations (which stage ran, how long, how it ended) that the [flight recorder lesson](lessons/09-the-flight-recorder.md) draws.
+After every commit the router publishes its **route state**: the address, the chain of matched levels, the page title, how the navigation began, and any error. Your components can read it and react to changes through `INavigationService`. The router also keeps a short history of finished navigations (which stage ran, how long, how it ended) that the [route log lesson](lessons/09-the-route-log.md) shows.
 
 ## Pages that stay alive, and fades
 
-Normally a page is thrown away when the visitor leaves it. A route can ask the router to **keep it alive**: the page stays in memory, hidden, with its state, and returns exactly as it was. The router can also cross-fade between pages with the browser's view transitions. See [Lesson 8](lessons/08-pages-that-stay-alive.md).
+Normally a page is thrown away when the visitor leaves it. A route can ask the router to **keep it alive**: the page stays in memory, hidden, with its state, and returns exactly as it was. The router can also cross-fade between pages with the browser's view transitions. See [Navigation](navigation.md#keeping-pages-alive).
 
 ## How the pieces fit
 

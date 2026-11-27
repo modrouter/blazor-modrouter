@@ -1,0 +1,19 @@
+@implements IDisposable
+
+@* The one place a confirm dialog is drawn. It uses the browser's own <dialog>, so focus is trapped, Escape works and the page behind is inert. *@
+@if (Current is { } request)
+{
+    <dialog @ref="_dialog" class="crm-dialog" aria-labelledby="crm-dialog-title" aria-describedby="crm-dialog-body" @oncancel="Cancel">
+        <div class="p-5">
+            <h2 id="crm-dialog-title" class="flex items-center gap-2 text-base font-semibold">
+                <span class="@(request.Options.Destructive ? "text-statusDangerForeground" : "text-brandForeground")"><UiIcon Icon="@Icons.Outlined.Info" /></span>
+                @request.Title
+            </h2>
+            <p id="crm-dialog-body" class="mt-2 text-sm text-foreground2">@request.Message</p>
+        </div>
+        <div class="flex justify-end gap-2 border-t border-stroke2 bg-background2 px-5 py-3">
+            <UiButton ButtonStyle="@(request.Options.Destructive ? ButtonStyle.Danger : ButtonStyle.Primary)" OnClick="Confirm">@request.Options.ConfirmText</UiButton>
+            <UiButton ButtonStyle="ButtonStyle.Outline" OnClick="Cancel" autofocus>@request.Options.CancelText</UiButton>
+        </div>
+    </dialog>
+}

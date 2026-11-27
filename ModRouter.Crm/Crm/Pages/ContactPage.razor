@@ -1,0 +1,25 @@
+@if (Contact is null)
+{
+    <CrmNotice Tone="Notice.Lost" Title="@($"There is no contact {Id}")" Hint="The address matched a route, so the router called this page. The page then found no such contact." />
+}
+else
+{
+    <CrmHeading Title="@Contact.Name" Subtitle="@Contact.Title">
+        <Actions>
+            <RouteLink Route="account-overview" Parameters="@(new { id = Contact.AccountId })" Class="crm-link text-sm">@CrmData.Account(Contact.AccountId)?.Name</RouteLink>
+        </Actions>
+    </CrmHeading>
+
+    <div class="max-w-xl rounded-xlarge border border-stroke2 bg-background p-5 shadow-card">
+        <div class="mb-4 flex items-center gap-4">
+            <UiAvatar Name="@Contact.Name" Size="Size.ExtraLarge" />
+            <p class="text-sm text-foreground2">The address held <span class="code rounded-small bg-background3 px-1.5 py-0.5">id = @Id</span>. It reached this page as an <b>int</b>, converted by the router.</p>
+        </div>
+        <dl class="grid grid-cols-[7rem_1fr] gap-y-2 text-sm">
+            <dt class="text-foreground3">Email</dt>
+            <dd class="text-foreground">@Contact.Email</dd>
+            <dt class="text-foreground3">Phone</dt>
+            <dd class="text-foreground">@Contact.Phone</dd>
+        </dl>
+    </div>
+}

@@ -1,0 +1,15 @@
+@* Chapter 7. The page keeps its unsaved text in EditDraft; the leave guard on this route asks the draft whether anything is unsaved. *@
+<section class="max-w-xl rounded-xlarge border border-stroke2 bg-background p-5 shadow-card">
+    <h2 class="text-base font-semibold">Edit account</h2>
+    <p class="mt-1 text-sm text-foreground3">Change the name, then click any link or the Back button of the frame.</p>
+
+    <label for="account-name" class="mt-4 block text-xs font-semibold text-foreground3">Account name</label>
+    <input id="account-name" class="mt-1 w-full rounded-medium border border-stroke bg-background px-3 py-2 text-sm text-foreground focus:border-brandStroke focus:ring-0"
+           @bind="Draft.Name" @bind:event="oninput" />
+
+    <div class="mt-4 flex items-center gap-3">
+        <UiButton ButtonStyle="ButtonStyle.Primary" Disabled="@(!Draft.IsDirty)" OnClick="Save">Save</UiButton>
+        <RouteLink Route="account-overview" Parameters="@(new { id = View.Account.Id })" Class="crm-link text-sm">Cancel</RouteLink>
+        <span class="text-xs @(Draft.IsDirty ? "text-statusWarningForeground" : "text-foreground3")">@(Saved ? "Saved." : Draft.IsDirty ? "Unsaved changes" : "No changes")</span>
+    </div>
+</section>

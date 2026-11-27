@@ -33,7 +33,10 @@ internal sealed class FakeAuthenticationStateProvider : AuthenticationStateProvi
         return Pending ?? Task.FromResult(new AuthenticationState(User));
     }
 
+    // BL0013: the provider is announcing its own change, so it has no one to subscribe on behalf of.
+#pragma warning disable BL0013
     public void Notify() => NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+#pragma warning restore BL0013
 }
 
 /// <summary>The principals of the authorization tests (the spike's thirteen users).</summary>

@@ -1,0 +1,134 @@
+/* The CRM's design tokens, in the spirit of Fluent 2: neutral surfaces, one blue brand colour, and light and dark sets.
+   Colours are HSL triplets so Tailwind can add opacity (bg-brandBackground/10). Dark follows the system unless <html data-theme> says otherwise. */
+:root {
+    color-scheme: light;
+    --radius-small: 2px;
+    --radius-medium: 4px;
+    --radius-large: 8px;
+    --radius-xlarge: 12px;
+    --duration-fast: 120ms;
+    --foreground: 0 0% 14%;
+    --foreground2: 0 0% 26%;
+    --foreground3: 0 0% 38%;
+    --foregroundOnBrand: 0 0% 100%;
+    --foregroundOnAppHeader: 0 0% 100%;
+    --background: 0 0% 100%;
+    --background2: 0 0% 98%;
+    --background3: 0 0% 96%;
+    --backgroundMain: 210 20% 97%;
+    --backgroundAppHeader: 206 85% 40%;
+    --subtleBackgroundHover: 0 0% 96%;
+    --brandBackground: 206 85% 40%;
+    --brandBackgroundHover: 207 81% 35%;
+    --brandBackgroundPressed: 205 80% 30%;
+    --brandForeground: 206 85% 40%;
+    --brandForegroundLink: 206 85% 40%;
+    --brandStroke: 206 85% 40%;
+    --stroke: 0 0% 82%;
+    --stroke2: 0 0% 88%;
+    --strokeFocus: 206 85% 40%;
+    --foregroundDisabled: 0 0% 74%;
+    --backgroundDisabled: 0 0% 94%;
+    --statusSuccessBackground: 113 55% 96%;
+    --statusSuccessBackground2: 113 62% 92%;
+    --statusSuccessForeground: 120 77% 27%;
+    --statusSuccessForeground2: 120 78% 24%;
+    --statusWarningBackground: 30 100% 97%;
+    --statusWarningBackground2: 30 100% 93%;
+    --statusWarningForeground: 24 90% 39%;
+    --statusWarningForeground2: 24 90% 29%;
+    --statusDangerBackground: 355 60% 97%;
+    --statusDangerBackground2: 355 70% 94%;
+    --statusDangerForeground: 355 85% 38%;
+    --statusDangerForeground2: 355 85% 30%;
+    --statusRed: 359 64% 51%;
+    --statusYellow: 48 100% 50%;
+    --statusGreen: 117 84% 35%;
+    --statusViolet: 265 33% 55%;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --foreground: 0 0% 100%;
+        --foreground2: 0 0% 84%;
+        --foreground3: 0 0% 68%;
+        --foregroundOnBrand: 0 0% 100%;
+        --foregroundOnAppHeader: 0 0% 100%;
+        --background: 0 0% 16%;
+        --background2: 0 0% 13%;
+        --background3: 0 0% 20%;
+        --backgroundMain: 0 0% 9%;
+        --backgroundAppHeader: 207 70% 26%;
+        --subtleBackgroundHover: 0 0% 22%;
+        --brandBackground: 207 81% 35%;
+        --brandBackgroundHover: 207 80% 40%;
+        --brandBackgroundPressed: 207 80% 30%;
+        --brandForeground: 210 90% 66%;
+        --brandForegroundLink: 210 90% 66%;
+        --brandStroke: 210 90% 62%;
+        --stroke: 0 0% 40%;
+        --stroke2: 0 0% 24%;
+        --strokeFocus: 210 90% 62%;
+        --foregroundDisabled: 0 0% 40%;
+        --backgroundDisabled: 0 0% 20%;
+        --statusSuccessBackground: 120 30% 14%;
+        --statusSuccessBackground2: 120 30% 18%;
+        --statusSuccessForeground: 120 45% 58%;
+        --statusSuccessForeground2: 120 45% 68%;
+        --statusWarningBackground: 24 40% 15%;
+        --statusWarningBackground2: 24 50% 20%;
+        --statusWarningForeground: 28 90% 62%;
+        --statusWarningForeground2: 28 90% 72%;
+        --statusDangerBackground: 355 35% 16%;
+        --statusDangerBackground2: 355 40% 22%;
+        --statusDangerForeground: 355 85% 68%;
+        --statusDangerForeground2: 355 85% 76%;
+        --statusRed: 359 70% 60%;
+        --statusYellow: 48 100% 50%;
+        --statusGreen: 117 50% 50%;
+        --statusViolet: 265 50% 70%;
+    }
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --foreground: 0 0% 100%;
+    --foreground2: 0 0% 84%;
+    --foreground3: 0 0% 68%;
+    --foregroundOnBrand: 0 0% 100%;
+    --foregroundOnAppHeader: 0 0% 100%;
+    --background: 0 0% 16%;
+    --background2: 0 0% 13%;
+    --background3: 0 0% 20%;
+    --backgroundMain: 0 0% 9%;
+    --backgroundAppHeader: 207 70% 26%;
+    --subtleBackgroundHover: 0 0% 22%;
+    --brandBackground: 207 81% 35%;
+    --brandBackgroundHover: 207 80% 40%;
+    --brandBackgroundPressed: 207 80% 30%;
+    --brandForeground: 210 90% 66%;
+    --brandForegroundLink: 210 90% 66%;
+    --brandStroke: 210 90% 62%;
+    --stroke: 0 0% 40%;
+    --stroke2: 0 0% 24%;
+    --strokeFocus: 210 90% 62%;
+    --foregroundDisabled: 0 0% 40%;
+    --backgroundDisabled: 0 0% 20%;
+    --statusSuccessBackground: 120 30% 14%;
+    --statusSuccessBackground2: 120 30% 18%;
+    --statusSuccessForeground: 120 45% 58%;
+    --statusSuccessForeground2: 120 45% 68%;
+    --statusWarningBackground: 24 40% 15%;
+    --statusWarningBackground2: 24 50% 20%;
+    --statusWarningForeground: 28 90% 62%;
+    --statusWarningForeground2: 28 90% 72%;
+    --statusDangerBackground: 355 35% 16%;
+    --statusDangerBackground2: 355 40% 22%;
+    --statusDangerForeground: 355 85% 68%;
+    --statusDangerForeground2: 355 85% 76%;
+    --statusRed: 359 70% 60%;
+    --statusYellow: 48 100% 50%;
+    --statusGreen: 117 50% 50%;
+    --statusViolet: 265 50% 70%;
+}

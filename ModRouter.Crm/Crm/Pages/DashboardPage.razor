@@ -1,0 +1,42 @@
+@implements IDisposable
+
+<CrmHeading Title="@($"Good morning, {Session.Name.Split(' ')[0]}")" Subtitle="Here is where the pipeline stands today." />
+
+<UiKpiStrip Items="@Kpis" />
+
+<div class="mt-5 grid gap-4 lg:grid-cols-5">
+    <section class="rounded-xlarge border border-stroke2 bg-background p-4 shadow-card lg:col-span-3">
+        <div class="mb-3 flex items-center justify-between">
+            <h2 class="text-base font-semibold">Top accounts</h2>
+            <RouteLink Route="accounts" Class="crm-link text-sm">All accounts</RouteLink>
+        </div>
+        <ul class="divide-y divide-stroke2">
+            @foreach (var account in Top)
+            {
+                <li class="flex items-center gap-3 py-2.5">
+                    <UiAvatar Name="@account.Name" Size="Size.Medium" Shape="Shape.Rounded" />
+                    <div class="min-w-0 flex-1">
+                        <RouteLink Route="account" Parameters="@(new { id = account.Id })" Class="crm-row-link truncate text-sm">@account.Name</RouteLink>
+                        <p class="text-xs text-foreground3">@account.Industry · @account.City</p>
+                    </div>
+                    <span class="text-sm font-medium tabular-nums">@account.Revenue.ToString("C0")</span>
+                    <StageBadge Stage="account.Stage" />
+                </li>
+            }
+        </ul>
+    </section>
+
+    <section class="rounded-xlarge border border-stroke2 bg-background p-4 shadow-card lg:col-span-2">
+        <h2 class="mb-3 text-base font-semibold">Pipeline by stage</h2>
+        <ul class="space-y-3">
+            @foreach (var stage in Enum.GetValues<Stage>())
+            {
+                var sum = CrmData.Accounts.Where(a => a.Stage == stage).Sum(a => a.Revenue);
+                <li>
+                    <div class="mb-1 flex justify-between text-xs text-foreground2"><span>@stage</span><span class="tabular-nums">@sum.ToString("C0")</span></div>
+                    <div class="h-2 overflow-hidden rounded-circular bg-background3"><div class="h-full rounded-circular bg-brandBackground" style="width:@(Percent(sum))%"></div></div>
+                </li>
+            }
+        </ul>
+    </section>
+</div>

@@ -1,0 +1,57 @@
+@implements IDisposable
+
+@* The CRM's own chrome: the app bar, the navigation and the page area. Declared as a group in the route table, so every CRM page renders inside it. *@
+<div class="flex h-full flex-col bg-backgroundMain text-foreground">
+    <header class="flex h-12 shrink-0 items-center gap-3 bg-backgroundAppHeader px-4 text-foregroundOnAppHeader">
+        <span class="flex h-7 w-7 items-center justify-center rounded-medium bg-foregroundOnAppHeader/15" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3" /><path d="M12 3v3M12 18v3M3 12h3M18 12h3" /></svg>
+        </span>
+        <span class="text-sm font-semibold">Northwind CRM</span>
+        <span class="flex-1"></span>
+        @if (Tour.Has(5))
+        {
+            <label class="flex items-center gap-2 text-xs text-foregroundOnAppHeader/80">
+                Signed in as
+                <select class="rounded-medium border border-foregroundOnAppHeader/30 bg-foregroundOnAppHeader/10 py-1 pl-2 pr-7 text-xs font-medium text-foregroundOnAppHeader focus:border-foregroundOnAppHeader focus:ring-0"
+                        aria-label="Role"
+                        @onchange="OnRole">
+                    @foreach (var role in Roles)
+                    {
+                        <option class="text-foreground" value="@role" selected="@(Session.Role == role)">@Label(role)</option>
+                    }
+                </select>
+            </label>
+        }
+        @if (Session.Role != Role.SignedOut)
+        {
+            <UiAvatar Name="@Session.Name" Size="Size.Small" />
+        }
+    </header>
+
+    <div class="flex min-h-0 flex-1">
+        <nav class="hidden w-56 shrink-0 overflow-y-auto border-r border-stroke2 bg-background p-2 md:block" aria-label="CRM">
+            @* The navigation links are RouteLinks: they ask the route table for each address by name and mark the current one. *@
+            <ul class="space-y-0.5">
+                <li><RouteLink Route="home" Match="RouteLinkMatch.Exact" Class="crm-nav-link"><UiIcon Icon="@Icons.Outlined.Home" />Dashboard</RouteLink></li>
+                <li><RouteLink Route="accounts" Class="crm-nav-link"><UiIcon Icon="@Icons.Outlined.Building" />Accounts</RouteLink></li>
+                <li><RouteLink Route="contacts" Class="crm-nav-link"><UiIcon Icon="@Icons.Outlined.People" />Contacts</RouteLink></li>
+                @if (Tour.Has(5))
+                {
+                    <li><RouteLink Route="settings" Class="crm-nav-link"><UiIcon Icon="@Icons.Outlined.Settings" />Settings</RouteLink></li>
+                }
+            </ul>
+        </nav>
+
+        <div class="min-w-0 flex-1 overflow-y-auto">
+            <div class="mx-auto max-w-5xl px-6 py-5">
+                @if (Tour.Has(8))
+                {
+                    <RouteBreadcrumb Home="Dashboard" Class="crm-crumbs mb-3" />
+                }
+                <div class="crm-in" @key="Navigation.Current?.NavigationId">
+                    <ModRouterOutlet />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,8 @@
 - name: Guide
   href: ModRouter/
   homepage: ../ModRouter/README.md
-- name: Lab
-  href: https://modrouter.github.io/blazor-modrouter/lab/
+- name: Sample CRM
+  href: https://modrouter.github.io/blazor-modrouter/crm/
 - name: API reference
   href: api/
 - name: GitHub

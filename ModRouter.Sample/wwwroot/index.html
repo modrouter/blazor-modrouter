@@ -16,8 +16,7 @@
         window.sampleUsesScroller = () => new URLSearchParams(location.search).has('scroller');
         // ?mode=pages | markup | markup-dup | compat picks the route source (see Program.cs); the default is the fluent map.
         window.sampleMode = () => new URLSearchParams(location.search).get('mode') ?? '';
-        // ?slownav=1 (compat mode) makes OnNavigateAsync take 1.5 s.
-        window.sampleSlowNav = () => new URLSearchParams(location.search).has('slownav');
+        // ?slownav=1 (compat mode, read by AppCompat) makes OnNavigateAsync take 1.5 s.
         // What the user sees, in order, from the moment Blazor boots: every change of these milestones. The mode checks
         // read it to prove that a deep link never shows not-found, and that only a slow first navigation shows Loading.
         window.__domLog = [];

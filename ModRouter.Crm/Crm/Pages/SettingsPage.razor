@@ -1,0 +1,10 @@
+@implements IDisposable
+
+<CrmHeading Title="Settings" Subtitle="@($"Signed in as {Session.Name}, {Session.Label}")" />
+
+<nav class="mb-5 flex border-b border-stroke2" aria-label="Settings sections">
+    <RouteLink Route="settings-general" Match="RouteLinkMatch.Exact" Class="crm-tab">General</RouteLink>
+    <RouteLink Route="settings-billing" Class="crm-tab">Billing <span class="ml-1 text-foreground3"><UiIcon Icon="@Icons.Outlined.LockClosed" Size="Size.Small" /></span></RouteLink>
+</nav>
+
+<ModRouterOutlet />

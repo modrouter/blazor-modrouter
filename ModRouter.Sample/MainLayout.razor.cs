@@ -1,7 +1,6 @@
 using ModRouter.Navigation;
 using ModRouter.Sample.Features;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 
 namespace ModRouter.Sample;
 
@@ -17,7 +16,7 @@ public partial class MainLayout : IDisposable
     SampleSession Session { get; set; } = default!;
 
     [Inject]
-    IJSRuntime Js { get; set; } = default!;
+    NavigationManager Location { get; set; } = default!;
 
     bool _useScroller;
 
@@ -29,7 +28,7 @@ public partial class MainLayout : IDisposable
     protected override void OnInitialized()
     {
         Session.Changed += OnSessionChanged;
-        _useScroller = Js is IJSInProcessRuntime inProcess && inProcess.Invoke<bool>("sampleUsesScroller");
+        _useScroller = SampleQuery.Has(Location, "scroller");
     }
 
     public void Dispose() => Session.Changed -= OnSessionChanged;

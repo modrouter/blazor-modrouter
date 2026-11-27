@@ -23,7 +23,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, SampleAuthenticationStat
 // discovers the @page components of the sample and of the Extra class library instead; "markup" declares the customers
 // tree and the slice 3b pages in App markup (<Routes>); "markup-dup" makes that markup fail to compile (a duplicate name);
 // "compat" is a real site's App.razor over the compatibility Router (the pages are discovered by the Router itself).
-var mode = builder.Services.BuildServiceProvider().GetRequiredService<IJSRuntime>() is IJSInProcessRuntime early ? early.Invoke<string>("sampleMode") : string.Empty;
+var mode = SampleJs.Read(builder.Services.BuildServiceProvider().GetRequiredService<IJSRuntime>(), "sampleMode", string.Empty);
 var markup = mode.StartsWith("markup", StringComparison.Ordinal);
 
 switch (mode)
@@ -124,7 +124,7 @@ static void FluentOnly(RouteMap routes)
 var host = builder.Build();
 
 // ?scroller=1 puts the content in a scrolling container, and the router is told to manage that container's scroll.
-if (host.Services.GetRequiredService<IJSRuntime>() is IJSInProcessRuntime js && js.Invoke<bool>("sampleUsesScroller"))
+if (SampleJs.Read(host.Services.GetRequiredService<IJSRuntime>(), "sampleUsesScroller", false))
 {
     host.Services.GetRequiredService<ModRouterOptions>().Scroll.Container = "#scroller";
 }

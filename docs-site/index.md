@@ -11,7 +11,7 @@ precedence-based matcher, guards, loaders with caching, redirects and typed rout
 it without rewriting its `App.razor` or its `@page` components. Targets .NET 8, 9 and 10; currently a preview.
 
 - Install: `dotnet add package ModRouter --prerelease` ([ModRouter on NuGet](https://www.nuget.org/packages/ModRouter))
-- [Lab](https://modrouter.github.io/blazor-modrouter/lab/): nine interactive lessons that show the router working
+- [Sample CRM](https://modrouter.github.io/blazor-modrouter/crm/): a guided tour of the router in a browser-style frame
 - [Getting started](../ModRouter/docs/getting-started.md): put ModRouter in an app in ten minutes
 - [Guide](../ModRouter/README.md): installation, a quick start and the documentation index
 - [API reference](api/index.md): every public type and member

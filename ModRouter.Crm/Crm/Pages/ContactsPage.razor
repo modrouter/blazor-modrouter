@@ -1,0 +1,15 @@
+<CrmHeading Title="Contacts" Subtitle="@($"{CrmData.Contacts.Count} people across {CrmData.Accounts.Count} accounts")" />
+
+<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    @foreach (var contact in CrmData.Contacts)
+    {
+        <RouteLink Route="contact" Parameters="@(new { id = contact.Id })" Class="group flex items-center gap-3 rounded-xlarge border border-stroke2 bg-background p-3.5 no-underline shadow-card transition-shadow hover:shadow-card2">
+            <UiAvatar Name="@contact.Name" Size="Size.Large" />
+            <span class="min-w-0">
+                <span class="block truncate text-sm font-semibold text-foreground">@contact.Name</span>
+                <span class="block truncate text-xs text-foreground3">@contact.Title</span>
+                <span class="block truncate text-xs text-foreground3">@CrmData.Account(contact.AccountId)?.Name</span>
+            </span>
+        </RouteLink>
+    }
+</div>

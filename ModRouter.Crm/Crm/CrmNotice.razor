@@ -1,0 +1,12 @@
+@* The content for the router's not-found, not-authorized and error states, built from the design system's empty state. *@
+<div class="flex h-full items-center justify-center p-6">
+    <UiEmptyState Kind="@Kind" Title="@Title" Description="@Hint" Icon="@IconFor">
+        <Actions>
+            <RouteLink Route="home" Match="RouteLinkMatch.Exact" Class="crm-link text-sm">Go to the dashboard</RouteLink>
+            @if (CanRetry)
+            {
+                <UiButton ButtonStyle="ButtonStyle.Primary" OnClick="Retry">Try again</UiButton>
+            }
+        </Actions>
+    </UiEmptyState>
+</div>

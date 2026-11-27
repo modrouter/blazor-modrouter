@@ -1,0 +1,35 @@
+<div class="grid gap-4 md:grid-cols-3">
+    <section class="rounded-xlarge border border-stroke2 bg-background p-4 shadow-card md:col-span-2">
+        <h2 class="mb-3 text-base font-semibold">Overview</h2>
+        <dl class="grid grid-cols-[8rem_1fr] gap-y-2.5 text-sm">
+            <dt class="text-foreground3">Industry</dt>
+            <dd>@View.Account.Industry</dd>
+            <dt class="text-foreground3">City</dt>
+            <dd>@View.Account.City</dd>
+            <dt class="text-foreground3">Owner</dt>
+            <dd>@View.Account.Owner</dd>
+            <dt class="text-foreground3">Annual revenue</dt>
+            <dd class="tabular-nums">@View.Account.Revenue.ToString("C0")</dd>
+            <dt class="text-foreground3">Relationship health</dt>
+            <dd class="flex items-center gap-3">
+                <span class="h-2 w-40 overflow-hidden rounded-circular bg-background3"><span class="block h-full rounded-circular @(View.Account.Health >= 70 ? "bg-statusGreen" : View.Account.Health >= 55 ? "bg-statusYellow" : "bg-statusRed")" style="width:@(View.Account.Health)%"></span></span>
+                <span class="tabular-nums">@View.Account.Health</span>
+            </dd>
+        </dl>
+    </section>
+    <section class="rounded-xlarge border border-stroke2 bg-background p-4 shadow-card">
+        <h2 class="mb-3 text-base font-semibold">Key people</h2>
+        <ul class="space-y-3">
+            @foreach (var contact in View.Contacts.Take(3))
+            {
+                <li class="flex items-center gap-3">
+                    <UiAvatar Name="@contact.Name" Size="Size.Small" />
+                    <div class="min-w-0">
+                        <RouteLink Route="contact" Parameters="@(new { id = contact.Id })" Class="crm-row-link truncate text-sm">@contact.Name</RouteLink>
+                        <p class="truncate text-xs text-foreground3">@contact.Title</p>
+                    </div>
+                </li>
+            }
+        </ul>
+    </section>
+</div>

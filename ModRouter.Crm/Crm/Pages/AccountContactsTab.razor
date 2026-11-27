@@ -1,0 +1,20 @@
+@if (View.Contacts.Count == 0)
+{
+    <UiEmptyState Kind="EmptyStateKind.Empty" Title="No contacts yet" Description="Add the first person at this account." />
+}
+else
+{
+    <ul class="divide-y divide-stroke2 overflow-hidden rounded-xlarge border border-stroke2 bg-background shadow-card">
+        @foreach (var contact in View.Contacts)
+        {
+            <li class="flex items-center gap-3 px-4 py-3">
+                <UiAvatar Name="@contact.Name" Size="Size.Medium" />
+                <div class="min-w-0 flex-1">
+                    <RouteLink Route="contact" Parameters="@(new { id = contact.Id })" Class="crm-row-link text-sm">@contact.Name</RouteLink>
+                    <p class="text-xs text-foreground3">@contact.Title</p>
+                </div>
+                <span class="hidden text-sm text-foreground2 sm:block">@contact.Email</span>
+            </li>
+        }
+    </ul>
+}

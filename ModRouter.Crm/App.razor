@@ -1,0 +1,15 @@
+@* The root: ModRouter replaces the built-in Router. Everything it can render around a page is declared here. *@
+<ModRouter DefaultLayout="typeof(ShellLayout)">
+    <Loading>
+        <div class="flex h-full items-center justify-center text-sm text-foreground3">Starting the router…</div>
+    </Loading>
+    <NotFound>
+        <CrmNotice Tone="Notice.Lost" Title="No route matches this address" Hint="Nothing in the route table fits. Pick a page from the navigation, or try a different address." />
+    </NotFound>
+    <NotAuthorized Context="error">
+        <CrmNotice Tone="Notice.Denied" Title="Not allowed" Hint="@error.Message" />
+    </NotAuthorized>
+    <Error Context="error">
+        <CrmNotice Tone="Notice.Failed" Title="The page could not load" Hint="@error.Message" Retry="error.Retry" CanRetry="error.IsChainLevel" />
+    </Error>
+</ModRouter>
