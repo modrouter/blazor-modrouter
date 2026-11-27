@@ -30,8 +30,8 @@ and keeps working for at least one minor version; it is removed in the next majo
 
 ## Supported frameworks
 
-The packages target every .NET release that is in Microsoft's support window when the version ships: now `net8.0`, `net9.0` and `net10.0`, each built
-against the first release of its own ASP.NET Core major so a consumer is asked for no more than its major needs. The suite runs on all three. .NET 8 reaches
+The packages target every .NET release that is in Microsoft's support window when the version ships: now `net8.0`, `net9.0`, `net10.0` and `net11.0`, each built
+against the first release of its own ASP.NET Core major so a consumer is asked for no more than its major needs. The suite runs on all four. .NET 8 reaches
 end of support in November 2026; a TFM is dropped in a minor version of the preview line (a major after 1.0), announced in the changelog one release earlier.
 Behavior that differs by framework is listed in the README's requirements.
 
@@ -39,8 +39,8 @@ Behavior that differs by framework is listed in the README's requirements.
 
 1. Update `CHANGELOG.md`: move "Unreleased" under the new version with its date.
 2. Set `Version` in `ModRouter.Package.props`.
-3. Build and test on all three frameworks (`.github/workflows/ci.yml` runs exactly this) and pack both packages in Release.
-4. Check the packed `ModRouter` package: `lib/` for the three frameworks, `analyzers/dotnet/cs/ModRouter.Generators.dll`, `staticwebassets/mod-router.js`,
+3. Build and test on all four frameworks (`.github/workflows/ci.yml` runs exactly this) and pack both packages in Release.
+4. Check the packed `ModRouter` package: `lib/` for the four frameworks, `analyzers/dotnet/cs/ModRouter.Generators.dll`, `staticwebassets/mod-router.js`,
    `README.md`, `icon.png`, and no dependency on anything but the ASP.NET Core Components packages.
 5. Tag the commit `modrouter-v{version}` and push the tag. `.github/workflows/release.yml` then builds, tests, packs and checks the packages again, pushes
    the `.nupkg` and `.snupkg` files to nuget.org and creates a GitHub release whose notes are the changelog section. The workflow refuses a tag that does

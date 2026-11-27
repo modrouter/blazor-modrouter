@@ -13,7 +13,7 @@ ambiguous or invalid routes fails at startup with a code and a message. A compat
 dotnet add package ModRouter --prerelease
 ```
 
-Targets .NET 8, 9 and 10. Read the [documentation site](https://modrouter.github.io/blazor-modrouter/) (guide and API reference), or start with the
+Targets .NET 8, 9, 10 and 11. Read the [documentation site](https://modrouter.github.io/blazor-modrouter/) (guide and API reference), or start with the
 [ModRouter README](ModRouter/README.md) for installation, a quick start and the documentation index.
 
 ## Repository layout

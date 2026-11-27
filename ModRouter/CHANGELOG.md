@@ -5,6 +5,14 @@ versions follow [Semantic Versioning](https://semver.org); see [Versioning](docs
 
 ## Unreleased
 
+## 0.1.0-preview.2
+
+Adds .NET 11.
+
+### Added
+
+- **.NET 11.** `ModRouter` and `ModRouter.AspNetCore` also target `net11.0`, and the test suite runs on it.
+
 ## 0.1.0-preview.1
 
 The first packaged preview. Until 1.0.0 a minor version may break the public API.

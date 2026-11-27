@@ -2,7 +2,7 @@
 
 Put ModRouter into a new Blazor WebAssembly app in about ten minutes, with a nested page and a named link. Back to the [README](../README.md).
 
-You need the .NET 8, 9 or 10 SDK. ModRouter is a preview, so you ask NuGet for the pre-release.
+You need the .NET 8, 9, 10 or 11 SDK. ModRouter is a preview, so you ask NuGet for the pre-release.
 
 ## 1. Create an app
 

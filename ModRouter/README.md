@@ -20,7 +20,7 @@ preview, so ask for the pre-release:
 dotnet add package ModRouter --prerelease
 ```
 
-Or pin the version in the project file: `<PackageReference Include="ModRouter" Version="0.1.0-preview.1" />`. An app that renders on the server also adds
+Or pin the version in the project file: `<PackageReference Include="ModRouter" Version="0.1.0-preview.2" />`. An app that renders on the server also adds
 [`ModRouter.AspNetCore`](https://www.nuget.org/packages/ModRouter.AspNetCore) (see [Hosting](docs/hosting.md)). To build from source instead, clone the
 repository and reference `ModRouter/ModRouter.csproj`.
 
@@ -82,14 +82,14 @@ The full documentation, with a searchable API reference, is at **[https://modrou
 
 ## Requirements
 
-- .NET 8, 9 or 10: `ModRouter` and `ModRouter.AspNetCore` target all three (`net8.0;net9.0;net10.0`) and the test suite runs on each. Differences by framework: on .NET 8 a failed navigation's exception is recorded as an `exception` event on its activity rather than with `Activity.AddException`, and `[ExcludeFromInteractiveRouting]` is only honored from .NET 9 (the attribute does not exist before). Blazor WebAssembly is the main target; a Blazor Web App (interactive Server, WebAssembly or Auto, with or without prerendering) works too, see [Hosting](docs/hosting.md). Blazor Hybrid is not handled.
+- .NET 8, 9, 10 or 11: `ModRouter` and `ModRouter.AspNetCore` target all four (`net8.0;net9.0;net10.0;net11.0`) and the test suite runs on each. Differences by framework: on .NET 8 a failed navigation's exception is recorded as an `exception` event on its activity rather than with `Activity.AddException`, and `[ExcludeFromInteractiveRouting]` is only honored from .NET 9 (the attribute does not exist before). Blazor WebAssembly is the main target; a Blazor Web App (interactive Server, WebAssembly or Auto, with or without prerendering) works too, see [Hosting](docs/hosting.md). Blazor Hybrid is not handled.
 - Nothing else: `RouteLink` and `RouteBreadcrumb` are plain markup.
 - Trimming: the default WebAssembly publish needs nothing, but an assembly that opts into trimming and holds pages found only by
   reflection must be rooted in the app project (see [Trimming](docs/route-sources.md#trimming)).
 
 ## Status
 
-Preview (`0.1.0-preview.1`). The core engine, the navigation pipeline and root components, guards, loaders and redirects, links,
+Preview (`0.1.0-preview.2`). The core engine, the navigation pipeline and root components, guards, loaders and redirects, links,
 breadcrumbs, title, focus and scroll, route sources, authorization, the compatibility layer and observability are built. What is still
 open, and what was decided not to change, is on the [known limitations](docs/known-limitations.md) page.
 

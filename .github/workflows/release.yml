@@ -1,6 +1,6 @@
 # Publishes ModRouter and ModRouter.AspNetCore to nuget.org and creates a GitHub release.
 #
-#   Release:   git tag modrouter-v0.1.0-preview.1 && git push origin modrouter-v0.1.0-preview.1
+#   Release:   git tag modrouter-v0.1.0-preview.2 && git push origin modrouter-v0.1.0-preview.2
 #   Dry run:   Actions > Release > Run workflow. It builds, tests, packs and checks the packages but pushes and releases nothing.
 #
 # The tag must match `Version` in ModRouter.Package.props, and CHANGELOG.md must have a section for that version (see
