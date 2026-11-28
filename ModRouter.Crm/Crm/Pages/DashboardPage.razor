@@ -4,8 +4,8 @@
 
 <UiKpiStrip Items="@Kpis" />
 
-<div class="mt-5 grid gap-4 lg:grid-cols-5">
-    <section class="rounded-xlarge border border-stroke2 bg-background p-4 shadow-card lg:col-span-3">
+<div class="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-5">
+    <section class="min-w-0 rounded-xlarge border border-stroke2 bg-background p-4 shadow-card lg:col-span-3">
         <div class="mb-3 flex items-center justify-between">
             <h2 class="text-base font-semibold">Top accounts</h2>
             <RouteLink Route="accounts" Class="crm-link text-sm">All accounts</RouteLink>
@@ -16,7 +16,7 @@
                 <li class="flex items-center gap-3 py-2.5">
                     <UiAvatar Name="@account.Name" Size="Size.Medium" Shape="Shape.Rounded" />
                     <div class="min-w-0 flex-1">
-                        <RouteLink Route="account" Parameters="@(new { id = account.Id })" Class="crm-row-link truncate text-sm">@account.Name</RouteLink>
+                        <RouteLink Route="account" Parameters="@(new { id = account.Id })" Class="crm-row-link block truncate text-sm">@account.Name</RouteLink>
                         <p class="text-xs text-foreground3">@account.Industry · @account.City</p>
                     </div>
                     <span class="text-sm font-medium tabular-nums">@account.Revenue.ToString("C0")</span>
@@ -26,7 +26,7 @@
         </ul>
     </section>
 
-    <section class="rounded-xlarge border border-stroke2 bg-background p-4 shadow-card lg:col-span-2">
+    <section class="min-w-0 rounded-xlarge border border-stroke2 bg-background p-4 shadow-card lg:col-span-2">
         <h2 class="mb-3 text-base font-semibold">Pipeline by stage</h2>
         <ul class="space-y-3">
             @foreach (var stage in Enum.GetValues<Stage>())

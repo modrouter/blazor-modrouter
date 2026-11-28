@@ -44,6 +44,11 @@ public partial class RouterLog : IDisposable
 
     LogSummary Summary { get; set; } = new(string.Empty, string.Empty);
 
+    // Below lg the log starts folded; the Show/Hide button flips this. From lg up CSS keeps the body open.
+    bool Open { get; set; }
+
+    void Toggle() => Open = !Open;
+
     protected override void OnInitialized()
     {
         Navigation.RouteStateChanged += OnStateChanged;

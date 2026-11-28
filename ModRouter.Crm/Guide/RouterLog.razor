@@ -2,12 +2,17 @@
 
 @* The guide's window into the router. Read top to bottom it tells one story about the last navigation:
    the address, the route levels it matched, the stages it passed through, and the few navigations before it. *@
-<section class="max-h-[46vh] overflow-y-auto border-t border-stroke2 bg-background2 px-5 py-3 text-xs" aria-label="What the router did">
+@* From lg up the log is always open and scrolls inside the guide. Below lg it is folded to its heading and summary until opened. *@
+<section class="border-t border-stroke2 bg-background2 px-5 py-3 text-xs lg:max-h-[46vh] lg:overflow-y-auto" aria-label="What the router did">
     <div class="flex items-center justify-between gap-3">
         <h3 class="font-semibold text-foreground">What the router did</h3>
-        <span class="tabular-nums font-medium @Summary.Class">@Summary.Text</span>
+        <span class="flex items-center gap-3">
+            <span class="tabular-nums font-medium @Summary.Class">@Summary.Text</span>
+            <button type="button" class="crm-link lg:hidden" aria-expanded="@(Open ? "true" : "false")" aria-controls="router-log-body" @onclick="Toggle">@(Open ? "Hide" : "Show")</button>
+        </span>
     </div>
 
+    <div id="router-log-body" class="@(Open ? "" : "hidden") lg:block">
     @if (Last is null)
     {
         <p class="mt-2 text-foreground3">Waiting for the first navigation.</p>
@@ -73,4 +78,5 @@
             </details>
         }
     }
+    </div>
 </section>
