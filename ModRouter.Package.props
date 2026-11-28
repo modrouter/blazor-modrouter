@@ -1,8 +1,8 @@
 <Project>
-	<!-- NuGet metadata shared by the packable ModRouter projects (ModRouter and ModRouter.AspNetCore): one version for the pair, bumped
+	<!-- NuGet metadata shared by the packable ModRouter projects (ModRouter and ModRouter.Server): one version for the pair, bumped
 	     by hand as docs/versioning.md in ModRouter describes. -->
 	<PropertyGroup>
-		<Version>0.1.0-preview.2</Version>
+		<Version>0.1.0-preview.3</Version>
 		<Authors>Paul Van Gundy</Authors>
 		<Copyright>Copyright (c) Paul Van Gundy</Copyright>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>

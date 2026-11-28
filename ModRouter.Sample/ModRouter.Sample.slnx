@@ -1,7 +1,7 @@
 <Solution>
   <Folder Name="/Project References/">
     <Project Path="../ModRouter/ModRouter.csproj" />
-    <Project Path="../ModRouter.AspNetCore/ModRouter.AspNetCore.csproj" />
+    <Project Path="../ModRouter.Server/ModRouter.Server.csproj" />
   </Folder>
   <Project Path="../ModRouter.Sample.Extra/ModRouter.Sample.Extra.csproj" />
   <Project Path="../ModRouter.Benchmarks/ModRouter.Benchmarks.csproj" />

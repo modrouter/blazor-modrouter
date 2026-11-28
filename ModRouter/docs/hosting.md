@@ -2,13 +2,26 @@
 
 Render modes, prerendering, the HTTP status of a server-rendered page and carrying loader data to the interactive pass. Back to the [README](../README.md).
 
+## Which package
+
+One install per project, chosen by where the project runs. `ModRouter.Server` depends on `ModRouter`, so a server project never installs both.
+
+| Project | Package |
+|---|---|
+| Blazor WebAssembly (standalone or hosted client) | `ModRouter` |
+| `.Client` project of a Blazor Web App (the routed components, loaders and guards) | `ModRouter` |
+| Server project of a Blazor Web App (any render mode, with or without prerendering) | `ModRouter.Server` |
+
+`ModRouter.Server` exists because setting an HTTP status needs `HttpContext`, which the browser does not have; keeping it out of `ModRouter` keeps server-only
+code out of every WebAssembly download. A server project that never prerenders can use `ModRouter` alone, but `ModRouter.Server` is harmless there.
+
 ## Render modes
 
 | Host | Status |
 |---|---|
 | Blazor WebAssembly (standalone or hosted) | The main target; everything in the other pages applies. |
 | Blazor Web App, interactive Server **without** prerendering | Works unchanged. Checked in a browser on a throw-away host: link interception, back and forward, a route declared only in the fluent map and the router's not-found content all work inside the circuit. |
-| Blazor Web App, interactive Server **with** prerendering (static SSR, then interactive) | Supported with the pieces below: `ModRouter.AspNetCore` for the status code, `PersistLoaderData` for loader data, `[Route]` or `@page` on every routed component. Checked on the same host. |
+| Blazor Web App, interactive Server **with** prerendering (static SSR, then interactive) | Supported with the pieces below: `ModRouter.Server` for the status code, `PersistLoaderData` for loader data, `[Route]` or `@page` on every routed component. Checked on the same host. |
 | Interactive WebAssembly and Auto render modes in a Blazor Web App | Supported; see [Auto and WebAssembly](#auto-and-webassembly). Checked in a browser on a throw-away Web App (global `InteractiveAuto`): the first visit runs in the circuit, later visits in WebAssembly, and both behaved the same. |
 | Blazor Hybrid | Not handled. |
 
@@ -60,13 +73,13 @@ serialize with `System.Text.Json` on both sides. A loader that needs a server-on
 
 ## The HTTP status of a server-rendered page
 
-The router tells an optional `IRouteStatusSink` what each committed state means, and `ModRouter.AspNetCore` provides the sink
+The router tells an optional `IRouteStatusSink` what each committed state means, and `ModRouter.Server` provides the sink
 that sets the response status:
 
 ```csharp
 // Program.cs of the server project
 builder.Services.AddModRouter(routes => ...);
-builder.Services.AddModRouterHttpStatus();   // ModRouter.AspNetCore
+builder.Services.AddModRouterHttpStatus();   // ModRouter.Server
 
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 ```

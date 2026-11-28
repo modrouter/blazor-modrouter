@@ -4,7 +4,7 @@ How ModRouter is versioned, what a breaking change is, and how a release is cut.
 
 ## Packages and version
 
-`ModRouter` and `ModRouter.AspNetCore` are released together under one version (`Version` in `ModRouter.Package.props`). The typed-route source
+`ModRouter` and `ModRouter.Server` are released together under one version (`Version` in `ModRouter.Package.props`). The typed-route source
 generator ships inside the `ModRouter` package.
 
 The version follows [Semantic Versioning 2.0.0](https://semver.org). Until 1.0.0 the line is a preview: a minor version may break the public API (the
@@ -52,7 +52,7 @@ To rehearse a release without publishing, run the **Release** workflow by hand f
 
 The release workflow publishes with [NuGet trusted publishing](https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing), so no API key is stored anywhere.
 
-1. Create the account at nuget.org. Check that the package ids `ModRouter` and `ModRouter.AspNetCore` are free before the first release. A published version
+1. Create the account at nuget.org. Check that the package ids `ModRouter` and `ModRouter.Server` are free before the first release. A published version
    cannot be deleted or reused (it can be unlisted), so check the version too.
 2. At nuget.org, open your profile name, then **Trusted Publishing**, and add a policy for the owner of the packages (you, or an organization):
    repository owner `modrouter`, repository `blazor-modrouter`, workflow file `release.yml` (the file name only), no environment, and the scopes

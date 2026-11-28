@@ -4,8 +4,8 @@ using ModRouter.Navigation;
 
 namespace ModRouter;
 
-/// <summary>Registers the ASP.NET Core pieces of the router for a server host: <c>AddModRouterHttpStatus</c>.</summary>
-public static class ModRouterAspNetCoreExtensions
+/// <summary>Registers the server-only pieces of the router for the server project of a Blazor Web App: <c>AddModRouterHttpStatus</c>.</summary>
+public static class ModRouterServerExtensions
 {
     /// <summary>
     /// Makes a prerendered (or static) request answer with the status of the page the router committed: 404 for an

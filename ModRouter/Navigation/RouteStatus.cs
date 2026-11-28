@@ -16,7 +16,7 @@ public enum RouteStatusKind
 /// <summary>
 /// Receives the HTTP meaning of each state <see cref="Components.ModRouter"/> commits, so a server host can answer a
 /// prerendered request with the right status code. Optional: nothing is registered by default (a WebAssembly app has no
-/// response), and <c>ModRouter.AspNetCore</c> registers the implementation that sets <c>HttpContext.Response.StatusCode</c>.
+/// response), and <c>ModRouter.Server</c> registers the implementation that sets <c>HttpContext.Response.StatusCode</c>.
 /// A state that is fine reports nothing.
 /// </summary>
 public interface IRouteStatusSink

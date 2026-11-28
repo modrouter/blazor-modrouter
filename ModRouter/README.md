@@ -13,16 +13,16 @@ read [Concepts](docs/concepts.md) for the picture, or see [Why ModRouter](docs/w
 
 ## Install and register
 
-Add the [`ModRouter`](https://www.nuget.org/packages/ModRouter) package to your Blazor app and register the router in `Program.cs`. ModRouter is a
-preview, so ask for the pre-release:
+Install one package per project, chosen by where the project runs, and register the router in `Program.cs`. ModRouter is a preview, so ask for the
+pre-release:
 
-```bash
-dotnet add package ModRouter --prerelease
-```
+| Your project | Install |
+|---|---|
+| Blazor WebAssembly app, or the `.Client` project of a Blazor Web App | [`ModRouter`](https://www.nuget.org/packages/ModRouter): `dotnet add package ModRouter --prerelease` |
+| The server project of a Blazor Web App (Server, WebAssembly or Auto rendering, with or without prerendering) | [`ModRouter.Server`](https://www.nuget.org/packages/ModRouter.Server): `dotnet add package ModRouter.Server --prerelease` (includes `ModRouter`) |
 
-Or pin the version in the project file: `<PackageReference Include="ModRouter" Version="0.1.0-preview.2" />`. An app that renders on the server also adds
-[`ModRouter.AspNetCore`](https://www.nuget.org/packages/ModRouter.AspNetCore) (see [Hosting](docs/hosting.md)). To build from source instead, clone the
-repository and reference `ModRouter/ModRouter.csproj`.
+Or pin the version in the project file: `<PackageReference Include="ModRouter" Version="0.1.0-preview.3" />`. See [Hosting](docs/hosting.md#which-package) for why the
+server project has its own package. To build from source instead, clone the repository and reference `ModRouter/ModRouter.csproj`.
 
 ```csharp
 // Program.cs
@@ -82,14 +82,14 @@ The full documentation, with a searchable API reference, is at **[https://modrou
 
 ## Requirements
 
-- .NET 8, 9, 10 or 11: `ModRouter` and `ModRouter.AspNetCore` target all four (`net8.0;net9.0;net10.0;net11.0`) and the test suite runs on each. Differences by framework: on .NET 8 a failed navigation's exception is recorded as an `exception` event on its activity rather than with `Activity.AddException`, and `[ExcludeFromInteractiveRouting]` is only honored from .NET 9 (the attribute does not exist before). Blazor WebAssembly is the main target; a Blazor Web App (interactive Server, WebAssembly or Auto, with or without prerendering) works too, see [Hosting](docs/hosting.md). Blazor Hybrid is not handled.
+- .NET 8, 9, 10 or 11: `ModRouter` and `ModRouter.Server` target all four (`net8.0;net9.0;net10.0;net11.0`) and the test suite runs on each. Differences by framework: on .NET 8 a failed navigation's exception is recorded as an `exception` event on its activity rather than with `Activity.AddException`, and `[ExcludeFromInteractiveRouting]` is only honored from .NET 9 (the attribute does not exist before). Blazor WebAssembly is the main target; a Blazor Web App (interactive Server, WebAssembly or Auto, with or without prerendering) works too, see [Hosting](docs/hosting.md). Blazor Hybrid is not handled.
 - Nothing else: `RouteLink` and `RouteBreadcrumb` are plain markup.
 - Trimming: the default WebAssembly publish needs nothing, but an assembly that opts into trimming and holds pages found only by
   reflection must be rooted in the app project (see [Trimming](docs/route-sources.md#trimming)).
 
 ## Status
 
-Preview (`0.1.0-preview.2`). The core engine, the navigation pipeline and root components, guards, loaders and redirects, links,
+Preview (`0.1.0-preview.3`). The core engine, the navigation pipeline and root components, guards, loaders and redirects, links,
 breadcrumbs, title, focus and scroll, route sources, authorization, the compatibility layer and observability are built. What is still
 open, and what was decided not to change, is on the [known limitations](docs/known-limitations.md) page.
 

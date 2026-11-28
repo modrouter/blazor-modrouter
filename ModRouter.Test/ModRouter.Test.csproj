@@ -5,7 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
-		<!-- Referencing ModRouter.AspNetCore brings the ASP.NET Core analyzers in; the probe components use computed sequence numbers on purpose. -->
+		<!-- Referencing ModRouter.Server brings the ASP.NET Core analyzers in; the probe components use computed sequence numbers on purpose. -->
 		<NoWarn>$(NoWarn);ASP0006</NoWarn>
 	</PropertyGroup>
 	<ItemGroup>
@@ -20,7 +20,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\ModRouter\ModRouter.csproj" />
-		<ProjectReference Include="..\ModRouter.AspNetCore\ModRouter.AspNetCore.csproj" />
+		<ProjectReference Include="..\ModRouter.Server\ModRouter.Server.csproj" />
 		<!-- The typed-route generator, run against small compilations by TypedRouteGeneratorTests. -->
 		<ProjectReference Include="..\ModRouter.Generators\ModRouter.Generators.csproj" />
 		<!-- The compatibility Router tests: the pages it routes (an assembly whose every page is valid) and the "lazy"

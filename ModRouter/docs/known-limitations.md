@@ -55,7 +55,7 @@ Each row has one status:
 
 | Limitation | Status | Note |
 |---|---|---|
-| Blazor Hybrid and the Auto render mode are not verified | **accept** | Blazor WebAssembly is the main target and a server host with prerendering is described on the [hosting](hosting.md) page (`ModRouter.AspNetCore`, `PersistLoaderData`). The route table holder takes a lock on `Freeze` and the binder's cache is a `ConcurrentDictionary`, so shared use is safe by construction. |
+| Blazor Hybrid and the Auto render mode are not verified | **accept** | Blazor WebAssembly is the main target and a server host with prerendering is described on the [hosting](hosting.md) page (`ModRouter.Server`, `PersistLoaderData`). The route table holder takes a lock on `Freeze` and the binder's cache is a `ConcurrentDictionary`, so shared use is safe by construction. |
 | The freeze signature ignores `ModRoutePages.Filter` and `TitleFunc` identity | **accept** | A WebAssembly app has one router and one markup, so a remount with different closures that keeps the first table is harmless. Revisit before any hot-reload scenario. |
 | `<ModRoutePages>` has no RT0024 test of its own | **open** | `RouteEntryCollector` shares `PageDiscovery` and `RouteMap.FullTemplatesOf` with `AddPages`, and `PageDiscoveryTests` covers that path; no test drives an ambiguous `[RouteParent]` through the markup collector. Reopen with the next change to the collector. |
 

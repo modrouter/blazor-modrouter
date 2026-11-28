@@ -19,7 +19,8 @@ The template comes with the built-in `Router` in `App.razor`. You will swap it f
 dotnet add package ModRouter --prerelease
 ```
 
-This adds the [`ModRouter`](https://www.nuget.org/packages/ModRouter) package. To use a clone of the repository instead (to try a change of your own), add
+This adds the [`ModRouter`](https://www.nuget.org/packages/ModRouter) package, the right one for a WebAssembly app. For the server project of a Blazor Web App
+install [`ModRouter.Server`](https://www.nuget.org/packages/ModRouter.Server) instead; it includes `ModRouter` (see [Hosting](hosting.md#which-package)). To use a clone of the repository instead (to try a change of your own), add
 `<ProjectReference Include="..\blazor-modrouter\ModRouter\ModRouter.csproj" />` to the project file.
 
 ## 3. Swap the router

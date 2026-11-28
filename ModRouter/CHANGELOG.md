@@ -1,9 +1,19 @@
 # Changelog
 
-All notable changes to ModRouter and ModRouter.AspNetCore. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the
+All notable changes to ModRouter and ModRouter.Server (named ModRouter.AspNetCore up to 0.1.0-preview.2). The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the
 versions follow [Semantic Versioning](https://semver.org); see [Versioning](docs/versioning.md) for what counts as a breaking change.
 
 ## Unreleased
+
+## 0.1.0-preview.3
+
+Renames the server package.
+
+### Changed
+
+- **`ModRouter.AspNetCore` is now `ModRouter.Server`**, the one package to install in the server project of a Blazor Web App (it includes `ModRouter`).
+  Replace the package reference; the API (`AddModRouterHttpStatus`) is unchanged. The old id stays on nuget.org at its last version. A WebAssembly app and the
+  `.Client` project of a Web App still install `ModRouter` alone. The install tables in the READMEs and the hosting page now say which to choose.
 
 ## 0.1.0-preview.2
 

@@ -1,6 +1,6 @@
-# Publishes ModRouter and ModRouter.AspNetCore to nuget.org and creates a GitHub release.
+# Publishes ModRouter and ModRouter.Server to nuget.org and creates a GitHub release.
 #
-#   Release:   git tag modrouter-v0.1.0-preview.2 && git push origin modrouter-v0.1.0-preview.2
+#   Release:   git tag modrouter-v0.1.0-preview.3 && git push origin modrouter-v0.1.0-preview.3
 #   Dry run:   Actions > Release > Run workflow. It builds, tests, packs and checks the packages but pushes and releases nothing.
 #
 # The tag must match `Version` in ModRouter.Package.props, and CHANGELOG.md must have a section for that version (see
@@ -57,7 +57,7 @@ jobs:
       - name: Pack
         run: |
           dotnet pack ModRouter/ModRouter.csproj -c Release -o artifacts
-          dotnet pack ModRouter.AspNetCore/ModRouter.AspNetCore.csproj -c Release -o artifacts
+          dotnet pack ModRouter.Server/ModRouter.Server.csproj -c Release -o artifacts
 
       - name: Check the packages
         run: |
@@ -66,8 +66,8 @@ jobs:
           for entry in lib/net8.0/ModRouter.dll lib/net9.0/ModRouter.dll lib/net10.0/ModRouter.dll lib/net11.0/ModRouter.dll analyzers/dotnet/cs/ModRouter.Generators.dll staticwebassets/mod-router.js README.md icon.png; do
             echo "$listing" | grep -qx "$entry" || { echo "missing $entry in $package"; exit 1; }
           done
-          adapter=$(ls artifacts/ModRouter.AspNetCore.[0-9]*.nupkg)
-          for entry in lib/net8.0/ModRouter.AspNetCore.dll lib/net10.0/ModRouter.AspNetCore.dll lib/net11.0/ModRouter.AspNetCore.dll README.md icon.png; do
+          adapter=$(ls artifacts/ModRouter.Server.[0-9]*.nupkg)
+          for entry in lib/net8.0/ModRouter.Server.dll lib/net10.0/ModRouter.Server.dll lib/net11.0/ModRouter.Server.dll README.md icon.png; do
             unzip -Z1 "$adapter" | grep -qx "$entry" || { echo "missing $entry in $adapter"; exit 1; }
           done
           ls artifacts/*.snupkg > /dev/null || { echo "no symbol packages"; exit 1; }

@@ -6,8 +6,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<PackageId>ModRouter.AspNetCore</PackageId>
-		<Description>The ASP.NET Core pieces of ModRouter for server hosts: sets the HTTP status (404, 401, 403, 500, 302) of a server-rendered page from the route state.</Description>
+		<PackageId>ModRouter.Server</PackageId>
+		<Description>ModRouter for the server project of a Blazor Web App: includes ModRouter and sets the HTTP status (404, 401, 403, 500, 302) of a server-rendered page from the route state.</Description>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="/" />

@@ -372,12 +372,12 @@ public sealed class ArchitectureTests
 
     /// <summary>The ASP.NET Core adapter exports one extension class; the sink itself stays internal.</summary>
     [Test]
-    public void The_AspNetCore_adapter_exposes_only_its_registration_extension()
+    public void The_Server_package_exposes_only_its_registration_extension()
     {
-        var adapter = typeof(ModRouterAspNetCoreExtensions).Assembly;
+        var adapter = typeof(ModRouterServerExtensions).Assembly;
 
         Assert.That(adapter, Is.Not.SameAs(typeof(CompiledRouteTable).Assembly));
-        Assert.That(adapter.GetExportedTypes().Select(type => type.FullName), Is.EqualTo(new[] { "ModRouter.ModRouterAspNetCoreExtensions" }));
+        Assert.That(adapter.GetExportedTypes().Select(type => type.FullName), Is.EqualTo(new[] { "ModRouter.ModRouterServerExtensions" }));
         Assert.That(typeof(CompiledRouteTable).Assembly.GetReferencedAssemblies().Select(reference => reference.Name), Does.Not.Contain("Microsoft.AspNetCore.Http.Abstractions"),
             "the router package itself knows nothing about HttpContext");
     }
@@ -475,7 +475,7 @@ public sealed class ArchitectureTests
 
     /// <summary>Every public member of the library is documented; the build enforces it (CS1591) as long as nothing suppresses the warning.</summary>
     [TestCase("ModRouter")]
-    [TestCase("ModRouter.AspNetCore")]
+    [TestCase("ModRouter.Server")]
     public void The_library_does_not_suppress_missing_XML_comments(string projectName)
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

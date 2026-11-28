@@ -80,7 +80,7 @@ jobs:
       - name: Pack
         run: |
           dotnet pack ModRouter/ModRouter.csproj -c Release -o artifacts
-          dotnet pack ModRouter.AspNetCore/ModRouter.AspNetCore.csproj -c Release -o artifacts
+          dotnet pack ModRouter.Server/ModRouter.Server.csproj -c Release -o artifacts
       - name: Check the ModRouter package contents
         run: |
           package=$(ls artifacts/ModRouter.[0-9]*.nupkg)
